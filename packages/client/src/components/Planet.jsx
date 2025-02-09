@@ -2,7 +2,12 @@ import React, { useRef, useMemo } from "react";
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 
-import { SCALE_FACTOR } from "@/data/config.json";
+import {
+  SCALE_FACTOR,
+  WIDTH_SEGMENT,
+  HEIGHT_SEGMENT,
+  PLANET_OUTLINE,
+} from "@/data/config.json";
 
 const OrbitCurve = ({ coords, color = 0x00ff00 }) => {
   const geometry = useMemo(() => {
@@ -23,21 +28,19 @@ const OrbitCurve = ({ coords, color = 0x00ff00 }) => {
   );
 };
 
-const CircleSprite = ({ circleRef, color }) => {
+const CircleSprite = ({ circleRef, color, onClick }) => {
   const texture = useMemo(() => {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
 
-    canvas.width = 256;
-    canvas.height = 256;
+    canvas.width = PLANET_OUTLINE.canvas.width;
+    canvas.height = PLANET_OUTLINE.canvas.height;
 
     ctx.beginPath();
-    ctx.arc(128, 128, 128, 0, Math.PI * 2);
+    const arc = PLANET_OUTLINE.arc;
+    ctx.arc(arc.centerX, arc.centerY, arc.radius, 0, Math.PI * 2);
     ctx.lineWidth = 15;
-    ctx.strokeStyle = `rgb(
-        255
-        0
-        0)`;
+    ctx.strokeStyle = `rgb(255 0 0)`;
     ctx.stroke();
 
     return new THREE.CanvasTexture(canvas);
@@ -45,16 +48,15 @@ const CircleSprite = ({ circleRef, color }) => {
 
   return (
     <mesh>
-      <sprite ref={circleRef}>
+      <sprite ref={circleRef} onClick={onClick}>
         {texture && <spriteMaterial attach="material" map={texture} />}
       </sprite>
     </mesh>
   );
 };
 
-function Planet({ trajectory, color, radius, followRef = null }) {
-  const internalMeshRef = useRef();
-  const planetRef = followRef || internalMeshRef;
+function Planet({ trajectory, color, radius, selectPlanet }) {
+  const planetRef = useRef();
   const circleRef = useRef();
 
   const { camera } = useThree();
@@ -85,10 +87,13 @@ function Planet({ trajectory, color, radius, followRef = null }) {
   return (
     <>
       <mesh ref={planetRef}>
-        <sphereGeometry args={[radius, 32, 32]} />
+        <sphereGeometry args={[radius, WIDTH_SEGMENT, HEIGHT_SEGMENT]} />
         <meshStandardMaterial color={color} />
       </mesh>
-      <CircleSprite circleRef={circleRef} />
+      <CircleSprite
+        circleRef={circleRef}
+        onClick={() => selectPlanet(planetRef)}
+      />
       <OrbitCurve coords={trajectory.orbitCoords} color={color} />
     </>
   );

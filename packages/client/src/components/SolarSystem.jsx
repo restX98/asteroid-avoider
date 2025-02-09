@@ -1,23 +1,33 @@
-import React, { useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Planet from "@/components/Planet";
 import Trajectory from "@/utils/Trajectory";
-import { useFrame } from "@react-three/fiber";
+import { useThree } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
 
 import planetData from "@/data/planets.json";
-import { SCALE_FACTOR } from "@/data/config.json";
+import {
+  SCALE_FACTOR,
+  SUN_RADIUS,
+  WIDTH_SEGMENT,
+  HEIGHT_SEGMENT,
+} from "@/data/config.json";
 
 function SolarSystem() {
   const controlsRef = useRef();
-  const planetRef = useRef();
+  const { camera } = useThree();
 
-  // TODO: Remove to manage it on planet click
-  useFrame(() => {
-    if (planetRef.current && controlsRef.current) {
-      controlsRef.current.target.copy(planetRef.current.position);
+  const [selectedPlanetRef, setSelectedPlanetRef] = useState(null);
+
+  useEffect(() => {
+    if (selectedPlanetRef?.current && controlsRef.current) {
+      const planet = selectedPlanetRef.current;
+      const { x, y, z } = planet.position;
+      controlsRef.current.target.set(x, y, z);
       controlsRef.current.update();
+
+      camera.position.set(x, y, z - 10);
     }
-  });
+  }, [selectedPlanetRef]);
 
   const planets = Object.keys(planetData).map((planetKey) => {
     const data = planetData[planetKey];
@@ -48,18 +58,20 @@ function SolarSystem() {
       />
       <mesh>
         <ambientLight intensity={0.2} />
-        <directionalLight position={[5, 5, 5]} intensity={1} />
         <OrbitControls ref={controlsRef} />
       </mesh>
 
       {/* Sun */}
       <mesh>
-        <sphereGeometry args={[0.004655 * SCALE_FACTOR, 32, 32]} />
+        <sphereGeometry
+          args={[SUN_RADIUS * SCALE_FACTOR, WIDTH_SEGMENT, HEIGHT_SEGMENT]}
+        />
         <meshStandardMaterial
           color="orange"
           emissive="yellow"
           emissiveIntensity={1}
         />
+        <pointLight position={[0, 0, 0]} intensity={1} decay={0} />
       </mesh>
 
       {planets.map(({ name, trajectory, color, radius }) => (
@@ -68,7 +80,10 @@ function SolarSystem() {
           trajectory={trajectory}
           color={color}
           radius={radius}
-          followRef={null}
+          selectPlanet={(ref) => {
+            if (selectedPlanetRef === ref) return;
+            setSelectedPlanetRef(ref);
+          }}
         />
       ))}
     </>
