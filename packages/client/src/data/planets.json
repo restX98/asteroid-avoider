@@ -1,0 +1,13 @@
+{
+  "mercury": {
+    "mean_anomaly": 174.79,
+    "orbital_period": 0.241,
+    "eccentricity": 0.205636,
+    "semi_major_axis": 0.3871,
+    "ascending_node_longitude": 48.33,
+    "perihelion_argument": 29.13,
+    "inclination": 7.0,
+    "color": "red",
+    "radius": 0.000033
+  }
+}

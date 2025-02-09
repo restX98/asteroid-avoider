@@ -1,12 +1,36 @@
 import React from "react";
 import Planet from "@/components/Planet";
+import Trajectory from "@/utils/Trajectory";
 
-function SolarSystem() {
+import planetData from "@/data/planets.json";
+import { SCALE_FACTOR } from "@/data/config.json";
+
+function SolarSystem({ planetRef }) {
+  const planets = Object.keys(planetData).map((planetKey) => {
+    const data = planetData[planetKey];
+    const trajectory = new Trajectory(
+      planetKey,
+      data.mean_anomaly,
+      data.orbital_period,
+      data.eccentricity,
+      data.semi_major_axis,
+      data.ascending_node_longitude,
+      data.perihelion_argument,
+      data.inclination
+    );
+    return {
+      name: planetKey,
+      trajectory,
+      color: data.color,
+      size: data.radius * SCALE_FACTOR,
+    };
+  });
+
   return (
     <>
       {/* Sun */}
       <mesh>
-        <sphereGeometry args={[2, 32, 32]} />
+        <sphereGeometry args={[0.0093 * SCALE_FACTOR, 32, 32]} />
         <meshStandardMaterial
           color="orange"
           emissive="yellow"
@@ -14,15 +38,15 @@ function SolarSystem() {
         />
       </mesh>
 
-      {/* Planets */}
-      {/* Mercury */}
-      <Planet distance={4} size={0.5} color="gray" speed={1.5} />
-      {/* Venus */}
-      <Planet distance={6} size={0.8} color="gold" speed={1.2} />
-      {/* Earth */}
-      <Planet distance={8} size={1} color="blue" speed={1} />
-      {/* Mars */}
-      <Planet distance={10} size={0.7} color="red" speed={0.8} />
+      {planets.map(({ name, trajectory, color, size }) => (
+        <Planet
+          key={name}
+          trajectory={trajectory}
+          color={color}
+          size={size}
+          followRef={planetRef}
+        />
+      ))}
     </>
   );
 }
