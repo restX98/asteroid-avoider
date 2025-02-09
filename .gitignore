@@ -1,5 +1,8 @@
 # Node Modules
 node_modules
 
+# Build
+dist
+
 # Editor directories and files
 .vscode/*

@@ -20,7 +20,7 @@ const MyMesh = () => {
     <mesh>
       <ambientLight intensity={0.2} />
       <directionalLight position={[5, 5, 5]} intensity={1} />
-      <SolarSystem planetRef={planetRef} />
+      <SolarSystem planetRef={null} />
       <OrbitControls ref={controlsRef} />
     </mesh>
   );
@@ -29,7 +29,7 @@ const MyMesh = () => {
 function App() {
   return (
     <div id="canvas-container" style={{ width: "100vw", height: "100vh" }}>
-      <Canvas camera={{ position: [0, 0, 2100], far: 400000 }}>
+      <Canvas camera={{ position: [0, 0, 2100], far: 10000000 }}>
         <MyMesh />
       </Canvas>
     </div>

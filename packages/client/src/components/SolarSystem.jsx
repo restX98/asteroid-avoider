@@ -22,7 +22,7 @@ function SolarSystem({ planetRef }) {
       name: planetKey,
       trajectory,
       color: data.color,
-      size: data.radius * SCALE_FACTOR,
+      radius: data.radius * SCALE_FACTOR,
     };
   });
 
@@ -30,7 +30,7 @@ function SolarSystem({ planetRef }) {
     <>
       {/* Sun */}
       <mesh>
-        <sphereGeometry args={[0.0093 * SCALE_FACTOR, 32, 32]} />
+        <sphereGeometry args={[0.004655 * SCALE_FACTOR, 32, 32]} />
         <meshStandardMaterial
           color="orange"
           emissive="yellow"
@@ -38,12 +38,12 @@ function SolarSystem({ planetRef }) {
         />
       </mesh>
 
-      {planets.map(({ name, trajectory, color, size }) => (
+      {planets.map(({ name, trajectory, color, radius }) => (
         <Planet
           key={name}
           trajectory={trajectory}
           color={color}
-          size={size}
+          radius={radius}
           followRef={planetRef}
         />
       ))}
