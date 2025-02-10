@@ -19,3 +19,5 @@ TODO List:
 - [ ] add max and min zoom and avoid go inside planet
 - [ ] add loader
 - [ ] move camera with planet
+- [ ] add profiling tool to check performance
+- [ ] move solar system logic on separated context
