@@ -10,7 +10,7 @@ Currently, two official plugins are available:
 TODO List:
 
 - [ ] add atmosphere to the sun
-- [ ] add planets 3D model
+- [x] add planets 3D model
 - [x] create interface for time travel
 - [ ] create breadcrumbs to navigate out of planet
 - [ ] create interface to show information
