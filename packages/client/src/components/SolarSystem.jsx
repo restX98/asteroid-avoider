@@ -1,20 +1,19 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useMemo, createRef, useEffect } from "react";
 import { useThree, useFrame } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
 
 import Planet from "@/components/Planet";
+import Sun from "@/components/Sun";
 import Trajectory from "@/utils/Trajectory";
 
 import planetData from "@/data/planets.json";
-import {
-  SCALE_FACTOR,
-  SUN_RADIUS,
-  WIDTH_SEGMENT,
-  HEIGHT_SEGMENT,
-} from "@/data/config.json";
+import { SCALE_FACTOR } from "@/data/config.json";
 
 function SolarSystem({ simulationTime, setSimulationTime, multiplier }) {
   const controlsRef = useRef();
+  const planetRefs = useRef({});
+  const circleRefs = useRef({}); //TODO: merge planet and circle mesh to try to remove this ref
+
   const { camera } = useThree();
 
   const [selectedPlanetRef, setSelectedPlanetRef] = useState(null);
@@ -30,27 +29,36 @@ function SolarSystem({ simulationTime, setSimulationTime, multiplier }) {
     }
   }, [selectedPlanetRef]);
 
-  const planets = Object.keys(planetData).map((planetKey) => {
-    const data = planetData[planetKey];
-    const trajectory = new Trajectory(
-      planetKey,
-      data.mean_anomaly,
-      data.orbital_period,
-      data.eccentricity,
-      data.semi_major_axis,
-      data.ascending_node_longitude,
-      data.perihelion_argument,
-      data.inclination
-    );
-    return {
-      name: planetKey,
-      trajectory,
-      color: data.color,
-      radius: data.radius * SCALE_FACTOR,
-      planetRef: useRef(),
-      circleRef: useRef(),
-    };
-  });
+  const planets = useMemo(() =>
+    Object.keys(planetData).map((planetKey) => {
+      const data = planetData[planetKey];
+      const trajectory = new Trajectory(
+        planetKey,
+        data.mean_anomaly,
+        data.orbital_period,
+        data.eccentricity,
+        data.semi_major_axis,
+        data.ascending_node_longitude,
+        data.perihelion_argument,
+        data.inclination
+      );
+
+      if (!planetRefs.current[planetKey]) {
+        planetRefs.current[planetKey] = createRef();
+        circleRefs.current[planetKey] = createRef();
+      }
+
+      return {
+        name: planetKey,
+        trajectory,
+        color: data.color,
+        radius: data.radius * SCALE_FACTOR,
+        planetRef: planetRefs.current[planetKey],
+        circleRef: circleRefs.current[planetKey],
+        model: data.model,
+      };
+    })
+  );
 
   useFrame((state, delta) => {
     setSimulationTime((prevTime) => {
@@ -88,26 +96,16 @@ function SolarSystem({ simulationTime, setSimulationTime, multiplier }) {
         <OrbitControls ref={controlsRef} />
       </mesh>
 
-      {/* Sun */}
-      <mesh>
-        <sphereGeometry
-          args={[SUN_RADIUS * SCALE_FACTOR, WIDTH_SEGMENT, HEIGHT_SEGMENT]}
-        />
-        <meshStandardMaterial
-          color="orange"
-          emissive="yellow"
-          emissiveIntensity={1}
-        />
-        <pointLight position={[0, 0, 0]} intensity={1} decay={0} />
-      </mesh>
+      <Sun />
 
       {planets.map(
-        ({ name, trajectory, color, radius, planetRef, circleRef }) => (
+        ({ name, trajectory, color, radius, model, planetRef, circleRef }) => (
           <Planet
             key={name}
             trajectory={trajectory}
             color={color}
             radius={radius}
+            model={model}
             planetRef={planetRef}
             circleRef={circleRef}
             selectPlanet={(ref) => {
