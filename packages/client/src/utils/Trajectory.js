@@ -1,6 +1,7 @@
 class Trajectory {
   static #EARTH_PERIOD = 365.25;
-
+  static #J2000 = new Date("2000-01-01");
+  static #MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
   /**
    * Create a Planet instance with its orbital parameters.
    *
@@ -27,13 +28,13 @@ class Trajectory {
   }
 
   #traceOrbit() {
-    const steps = 100; // Number of points to compute
-    const dt = this.P / steps; // Time step in days
+    const steps = this.P > 50 ? 3000 : 100;
+    const dt = this.P / steps;
     let orbit = [];
 
     for (let i = 0; i <= steps; i++) {
       let t = i * dt; // Time in days
-      let coords = this.getCoordinates(t);
+      let coords = this.#getCoordinates(t);
       orbit.push(coords);
     }
 
@@ -106,7 +107,7 @@ class Trajectory {
    * @param {number} t - Time elapsed since the J2000.0 epoch.
    * @return {Object} An object containing x, y, and z coordinates.
    */
-  getCoordinates(t) {
+  #getCoordinates(t) {
     // Compute the mean anomaly
     const M = this.#getMeanAnomaly(t);
 
@@ -131,6 +132,14 @@ class Trajectory {
     const z = r * Math.sin(angle) * Math.sin(this.i);
 
     return { x, y, z };
+  }
+
+  getCoordinatesByDate(date) {
+    const simTimeInDays =
+      (date.getTime() - Trajectory.#J2000.getTime()) /
+      Trajectory.#MILLISECONDS_PER_DAY;
+
+    return this.#getCoordinates(simTimeInDays);
   }
 }
 

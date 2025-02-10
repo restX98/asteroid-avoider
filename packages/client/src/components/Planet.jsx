@@ -1,6 +1,5 @@
 import React, { useRef, useMemo } from "react";
 import * as THREE from "three";
-import { useFrame, useThree } from "@react-three/fiber";
 
 import {
   SCALE_FACTOR,
@@ -55,35 +54,14 @@ const CircleSprite = ({ circleRef, color, onClick }) => {
   );
 };
 
-function Planet({ trajectory, color, radius, selectPlanet }) {
-  const planetRef = useRef();
-  const circleRef = useRef();
-
-  const { camera } = useThree();
-
-  useFrame((state, delta) => {
-    if (planetRef.current) {
-      const { x, y, z } = trajectory.getCoordinates(0);
-      planetRef.current.position.set(
-        x * SCALE_FACTOR,
-        y * SCALE_FACTOR,
-        z * SCALE_FACTOR
-      );
-
-      if (circleRef.current) {
-        circleRef.current.position.set(
-          x * SCALE_FACTOR,
-          y * SCALE_FACTOR,
-          z * SCALE_FACTOR
-        );
-        const scale =
-          circleRef.current.position.distanceTo(camera.position) / 20;
-
-        circleRef.current.scale.set(scale, scale, scale);
-      }
-    }
-  });
-
+function Planet({
+  trajectory,
+  color,
+  radius,
+  planetRef,
+  circleRef,
+  selectPlanet,
+}) {
   return (
     <>
       <mesh ref={planetRef}>
