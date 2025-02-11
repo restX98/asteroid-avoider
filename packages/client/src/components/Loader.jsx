@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { useProgress, Html } from "@react-three/drei";
+import { useEffect } from "react";
 
 const ProgressBar = ({ progress }) => {
   return (
@@ -16,8 +17,14 @@ const ProgressBar = ({ progress }) => {
   );
 };
 
-function Loader({ children }) {
+function Loader({ children, setIsLoaded }) {
   const { progress } = useProgress();
+
+  useEffect(() => {
+    if (progress >= 100) {
+      setIsLoaded(true);
+    }
+  }, [progress]);
 
   return (
     <Suspense fallback={<ProgressBar progress={progress} />}>
