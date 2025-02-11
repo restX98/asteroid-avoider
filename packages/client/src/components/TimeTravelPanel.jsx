@@ -1,5 +1,7 @@
 import React from "react";
 
+import { formatDate } from "@/utils/formatDate";
+
 const TimeTravelPanel = ({
   simulationTime,
   setSimulationTime,
@@ -45,9 +47,9 @@ const TimeTravelPanel = ({
           Select Date:&nbsp;
           <input
             type="date"
+            value={formatDate(simulationTime)}
             onChange={(e) => {
-              const selectedDate = new Date(e.target.value);
-              setSimulationTime(selectedDate);
+              setSimulationTime(new Date(e.target.value));
             }}
           />
         </label>

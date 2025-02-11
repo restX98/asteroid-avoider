@@ -78,6 +78,4 @@ function Planet({
   );
 }
 
-// useGLTF.preload(model);
-
 export default Planet;
