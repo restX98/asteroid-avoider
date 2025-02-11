@@ -9,7 +9,7 @@ import Trajectory from "@/utils/Trajectory";
 import planetData from "@/data/planets.json";
 import { SCALE_FACTOR } from "@/data/config.json";
 
-function SolarSystem({ simulationTime, setSimulationTime, multiplier }) {
+function SolarSystem({ simulationTimeRef, multiplier }) {
   const controlsRef = useRef();
   const planetRefs = useRef({});
   const circleRefs = useRef({}); //TODO: merge planet and circle mesh to try to remove this ref
@@ -60,13 +60,15 @@ function SolarSystem({ simulationTime, setSimulationTime, multiplier }) {
     })
   );
 
-  useFrame((state, delta) => {
-    setSimulationTime((prevTime) => {
-      return new Date(prevTime.getTime() + delta * multiplier * 1000);
-    });
+  useFrame(({ camera }, delta) => {
+    simulationTimeRef.current = new Date(
+      simulationTimeRef.current.getTime() + delta * multiplier * 1000
+    );
 
     planets.forEach(({ trajectory, planetRef, circleRef }) => {
-      const { x, y, z } = trajectory.getCoordinatesByDate(simulationTime);
+      const { x, y, z } = trajectory.getCoordinatesByDate(
+        simulationTimeRef.current
+      );
       const scaledX = x * SCALE_FACTOR;
       const scaledY = y * SCALE_FACTOR;
       const scaledZ = z * SCALE_FACTOR;

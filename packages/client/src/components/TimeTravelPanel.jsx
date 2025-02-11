@@ -1,13 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import { formatDate } from "@/utils/formatDate";
 
 const TimeTravelPanel = ({
-  simulationTime,
-  setSimulationTime,
+  simulationTimeRef,
+  onTimeChange,
   multiplier,
   setMultiplier,
 }) => {
+  const [displayTime, setDisplayTime] = useState(simulationTimeRef.current);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDisplayTime(new Date(simulationTimeRef.current));
+    }, 100);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div
       style={{
@@ -47,16 +56,18 @@ const TimeTravelPanel = ({
           Select Date:&nbsp;
           <input
             type="date"
-            value={formatDate(simulationTime)}
+            value={formatDate(displayTime)}
             onChange={(e) => {
-              setSimulationTime(new Date(e.target.value));
+              const date = new Date(e.target.value);
+              setDisplayTime(date);
+              onTimeChange(date);
             }}
           />
         </label>
       </div>
 
       <div>
-        <strong>Sim Time:</strong> {simulationTime.toLocaleString()}
+        <strong>Sim Time:</strong> {displayTime.toLocaleString()}
       </div>
     </div>
   );

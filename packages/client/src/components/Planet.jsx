@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, memo } from "react";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { useScaledScene } from "@/hooks/useScaleScene";
@@ -51,31 +51,33 @@ const CircleSprite = ({ circleRef, color, onClick }) => {
   );
 };
 
-function Planet({
-  trajectory,
-  color,
-  radius,
-  model,
-  planetRef,
-  circleRef,
-  selectPlanet,
-}) {
-  const { scene } = useGLTF(model);
-  const scaledScene = useScaledScene(
-    useMemo(() => scene.clone(), [scene]),
-    radius * 2
-  );
+const Planet = memo(
+  ({
+    trajectory,
+    color,
+    radius,
+    model,
+    planetRef,
+    circleRef,
+    selectPlanet,
+  }) => {
+    const { scene } = useGLTF(model);
+    const scaledScene = useScaledScene(
+      useMemo(() => scene.clone(), [scene]),
+      radius * 2
+    );
 
-  return (
-    <>
-      <primitive ref={planetRef} object={scaledScene} />
-      <CircleSprite
-        circleRef={circleRef}
-        onClick={() => selectPlanet(planetRef)}
-      />
-      <OrbitCurve coords={trajectory.orbitCoords} color={color} />
-    </>
-  );
-}
+    return (
+      <>
+        <primitive ref={planetRef} object={scaledScene} />
+        <CircleSprite
+          circleRef={circleRef}
+          onClick={() => selectPlanet(planetRef)}
+        />
+        <OrbitCurve coords={trajectory.orbitCoords} color={color} />
+      </>
+    );
+  }
+);
 
 export default Planet;
