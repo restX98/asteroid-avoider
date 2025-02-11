@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Canvas } from "@react-three/fiber";
 
+import Loader from "@/components/Loader";
 import SolarSystem from "@/components/SolarSystem";
 import TimeTravelPanel from "@/components/TimeTravelPanel";
 
@@ -17,28 +18,20 @@ function App() {
       }}
     >
       <Canvas camera={{ position: [0, 0, 2100], far: 10000000 }}>
-        <SolarSystem
-          simulationTime={simulationTime}
-          setSimulationTime={setSimulationTime}
-          multiplier={multiplier}
-        />
+        <Loader>
+          <SolarSystem
+            simulationTime={simulationTime}
+            setSimulationTime={setSimulationTime}
+            multiplier={multiplier}
+          />
+          <TimeTravelPanel
+            simulationTime={simulationTime}
+            setSimulationTime={setSimulationTime}
+            multiplier={multiplier}
+            setMultiplier={setMultiplier}
+          />
+        </Loader>
       </Canvas>
-
-      <div
-        style={{
-          position: "absolute",
-          top: "10px",
-          left: "10px",
-          zIndex: 1000,
-        }}
-      >
-        <TimeTravelPanel
-          simulationTime={simulationTime}
-          setSimulationTime={setSimulationTime}
-          multiplier={multiplier}
-          setMultiplier={setMultiplier}
-        />
-      </div>
     </div>
   );
 }

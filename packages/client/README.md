@@ -17,5 +17,5 @@ TODO List:
 - [ ] create test
 - [ ] call backend to retrieve asteroids near to earth
 - [ ] add max and min zoom and avoid go inside planet
-- [ ] add loader
+- [x] add loader
 - [ ] move camera with planet
