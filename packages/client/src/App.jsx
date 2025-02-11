@@ -36,9 +36,9 @@ function App() {
       >
         <Scene
           setIsLoaded={setIsLoaded}
-              simulationTimeRef={simulationTimeRef}
-              multiplier={multiplier}
-            />
+          simulationTimeRef={simulationTimeRef}
+          multiplier={multiplier}
+        />
       </div>
 
       {isLoaded && (

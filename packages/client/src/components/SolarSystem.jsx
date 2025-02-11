@@ -12,7 +12,6 @@ import { SCALE_FACTOR } from "@/data/config.json";
 function SolarSystem({ simulationTimeRef, multiplier }) {
   const controlsRef = useRef();
   const planetRefs = useRef({});
-  const circleRefs = useRef({}); //TODO: merge planet and circle mesh to try to remove this ref
 
   const { camera } = useThree();
 
@@ -45,7 +44,6 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
 
       if (!planetRefs.current[planetKey]) {
         planetRefs.current[planetKey] = createRef();
-        circleRefs.current[planetKey] = createRef();
       }
 
       return {
@@ -54,13 +52,12 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
         color: data.color,
         radius: data.radius * SCALE_FACTOR,
         planetRef: planetRefs.current[planetKey],
-        circleRef: circleRefs.current[planetKey],
         model: data.model,
       };
     })
   );
 
-  useFrame(({ camera }, delta) => {
+  useFrame(({}, delta) => {
     simulationTimeRef.current = new Date(
       simulationTimeRef.current.getTime() + delta * multiplier * 1000
     );
@@ -72,16 +69,8 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
       const scaledX = x * SCALE_FACTOR;
       const scaledY = y * SCALE_FACTOR;
       const scaledZ = z * SCALE_FACTOR;
-
       if (planetRef.current) {
         planetRef.current.position.set(scaledX, scaledY, scaledZ);
-      }
-
-      if (circleRef.current) {
-        circleRef.current.position.set(scaledX, scaledY, scaledZ);
-        const scale =
-          circleRef.current.position.distanceTo(camera.position) / 20;
-        circleRef.current.scale.set(scale, scale, scale);
       }
     });
   });
@@ -109,7 +98,6 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
             radius={radius}
             model={model}
             planetRef={planetRef}
-            circleRef={circleRef}
             selectPlanet={(ref) => {
               if (selectedPlanetRef === ref) return;
               setSelectedPlanetRef(ref);

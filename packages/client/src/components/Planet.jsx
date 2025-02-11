@@ -1,4 +1,5 @@
-import React, { useMemo, memo } from "react";
+import React, { useRef, useMemo, memo } from "react";
+import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { useScaledScene } from "@/hooks/useScaleScene";
@@ -24,7 +25,9 @@ const OrbitCurve = ({ coords, color = 0x00ff00 }) => {
   );
 };
 
-const CircleSprite = ({ circleRef, color, onClick }) => {
+const CircleSprite = ({ color, onClick }) => {
+  const spriteRef = useRef();
+
   const texture = useMemo(() => {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
@@ -42,9 +45,19 @@ const CircleSprite = ({ circleRef, color, onClick }) => {
     return new THREE.CanvasTexture(canvas);
   }, []);
 
+  const worldPos = new THREE.Vector3();
+  useFrame(({ camera }) => {
+    if (spriteRef.current) {
+      spriteRef.current.getWorldPosition(worldPos);
+
+      const scale = worldPos.distanceTo(camera.position) / 20;
+      spriteRef.current.scale.set(scale, scale, scale);
+    }
+  });
+
   return (
     <mesh>
-      <sprite ref={circleRef} onClick={onClick}>
+      <sprite ref={spriteRef} onClick={onClick}>
         {texture && <spriteMaterial attach="material" map={texture} />}
       </sprite>
     </mesh>
@@ -52,15 +65,7 @@ const CircleSprite = ({ circleRef, color, onClick }) => {
 };
 
 const Planet = memo(
-  ({
-    trajectory,
-    color,
-    radius,
-    model,
-    planetRef,
-    circleRef,
-    selectPlanet,
-  }) => {
+  ({ trajectory, color, radius, model, planetRef, selectPlanet }) => {
     const { scene } = useGLTF(model);
     const scaledScene = useScaledScene(
       useMemo(() => scene.clone(), [scene]),
@@ -69,11 +74,11 @@ const Planet = memo(
 
     return (
       <>
-        <primitive ref={planetRef} object={scaledScene} />
-        <CircleSprite
-          circleRef={circleRef}
-          onClick={() => selectPlanet(planetRef)}
-        />
+        <group ref={planetRef}>
+          <primitive object={scaledScene} />
+          <CircleSprite onClick={() => selectPlanet(planetRef)} />
+        </group>
+
         <OrbitCurve coords={trajectory.orbitCoords} color={color} />
       </>
     );

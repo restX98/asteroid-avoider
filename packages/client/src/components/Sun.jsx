@@ -6,7 +6,7 @@ import { SCALE_FACTOR, SUN_RADIUS } from "@/data/config.json";
 const Sun = memo(() => {
   const { scene } = useGLTF("/models/sun.glb");
 
-  const scaledScene = useScaledScene(scene, SUN_RADIUS * SCALE_FACTOR);
+  const scaledScene = useScaledScene(scene, SUN_RADIUS * 2 * SCALE_FACTOR);
 
   return (
     <>
