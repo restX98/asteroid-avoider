@@ -42,36 +42,37 @@ const getAsteroids = async (req, res) => {
     const feedData = feedResponse.data;
 
     const nearEarthObjects = feedData.near_earth_objects;
+    const asteroids = Object.keys(nearEarthObjects).flatMap((date) =>
+      nearEarthObjects[date].map((asteroid) => ({
+        id: asteroid.id,
+        name: asteroid.name,
+        diameter: {
+          min: Number(
+            asteroid.estimated_diameter.meters.estimated_diameter_min
+          ),
+          max: Number(
+            asteroid.estimated_diameter.meters.estimated_diameter_max
+          ),
+          unit: "m",
+        },
+        velocity: {
+          value: Number(
+            asteroid.close_approach_data[0].relative_velocity
+              .kilometers_per_hour
+          ),
+          unit: "km/h",
+        },
+        miss_distance: {
+          value: Number(
+            asteroid.close_approach_data[0].miss_distance.kilometers
+          ),
+          unit: "km",
+        },
+        is_potentially_hazardous: asteroid.is_potentially_hazardous_asteroid,
+      }))
+    );
 
-    let asteroidDetailPromises = [];
-
-    Object.keys(nearEarthObjects).forEach((date) => {
-      const asteroids = nearEarthObjects[date];
-      asteroids.forEach((asteroid) => {
-        if (asteroid.links && asteroid.links.self) {
-          const detailUrl = asteroid.links.self;
-          asteroidDetailPromises.push(axios.get(detailUrl));
-        }
-      });
-    });
-
-    const asteroidDetailResponses = await Promise.all(asteroidDetailPromises);
-    const result = asteroidDetailResponses.map((response) => {
-      const asteroidData = response.data;
-      const orbitalData = asteroidData.orbital_data || {};
-      return {
-        name: asteroidData.name,
-        M0: orbitalData.mean_anomaly,
-        P: orbitalData.orbital_period,
-        e: orbitalData.eccentricity,
-        a: orbitalData.semi_major_axis,
-        N: orbitalData.ascending_node_longitude,
-        w: orbitalData.perihelion_argument,
-        i: orbitalData.inclination,
-      };
-    });
-
-    res.json(result);
+    res.json(asteroids);
   } catch (error) {
     console.error("Error fetching asteroids:", error);
     res.status(500).json({ error: "Failed to retrieve asteroid data" });
