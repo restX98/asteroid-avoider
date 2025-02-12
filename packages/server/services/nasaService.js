@@ -44,4 +44,56 @@ const getAsteroidDataByDate = async (startDate, endDate) => {
   return response.data;
 };
 
-module.exports = { mapAsteroidData, getAsteroidDataByDate };
+/**
+ * Maps the raw asteroid detail data to only the needed orbital parameters.
+ * @param {Object} data - The raw asteroid data from the API.
+ * @returns {Object} - An object containing the mapped parameters.
+ * @throws {Error} - If orbital_data is missing.
+ *
+ * Mapped fields:
+ *   - name: The asteroid name.
+ *   - meanAnomaly: Mean anomaly at epoch J2000.0 (in degree).
+ *   - orbitalPeriod : Orbital period.
+ *   - eccentricity : Orbital eccentricity.
+ *   - semiMajorAxis : Semi-major axis.
+ *   - ascendingNodeLongitude : Longitude of ascending node (in degree).
+ *   - perihelionArgument : Argument of periapsis (in degree).
+ *   - inclination : Inclination (in degree).
+ */
+const mapAsteroidDetailData = (data) => {
+  //TODO: Extends with other details to show information on frontend
+  if (!data.orbital_data) {
+    throw new Error("Orbital data not available");
+  }
+  const orbitalData = data.orbital_data;
+  return {
+    name: data.name,
+    meanAnomaly: Number(orbitalData.mean_anomaly),
+    orbitalPeriod: Number(orbitalData.orbital_period),
+    eccentricity: Number(orbitalData.eccentricity),
+    semiMajorAxis: Number(orbitalData.semi_major_axis),
+    ascendingNodeLongitude: Number(orbitalData.ascending_node_longitude),
+    perihelionArgument: Number(orbitalData.perihelion_argument),
+    inclination: Number(orbitalData.inclination),
+  };
+};
+
+/**
+ * Calls the NASA API to get detailed information for a single asteroid.
+ * @param {string} asteroidId - The ID of the asteroid.
+ * @param {string} apiKey - Your NASA API key.
+ * @param {string} baseUrl - The base URL for the NASA API.
+ * @returns {Promise<Object>} - The raw API response data.
+ */
+const getAsteroidDetailById = async (asteroidId) => {
+  const url = `${baseUrl}/neo/${asteroidId}?api_key=${apiKey}`;
+  const response = await axios.get(url);
+  return response.data;
+};
+
+module.exports = {
+  mapAsteroidData,
+  getAsteroidDataByDate,
+  mapAsteroidDetailData,
+  getAsteroidDetailById,
+};
