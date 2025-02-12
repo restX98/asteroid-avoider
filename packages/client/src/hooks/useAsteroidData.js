@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchAsteroidData } from "../services/asteroidService";
+import { fetchAsteroidData } from "@/services/asteroidService";
 
 export function useAsteroidData({ startDate, endDate }) {
   const [asteroids, setAsteroids] = useState([]);
