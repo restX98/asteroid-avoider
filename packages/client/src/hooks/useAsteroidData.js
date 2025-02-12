@@ -10,7 +10,6 @@ export function useAsteroidData({ startDate, endDate }) {
     async function getAsteroidsData() {
       try {
         const data = await fetchAsteroidData({ startDate, endDate });
-        console.log(data);
         setAsteroids(data);
       } catch (err) {
         setError(err);

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useAsteroidData } from "@/hooks/useAsteroidData";
 import { formatDate } from "@/utils/formatDate";
 

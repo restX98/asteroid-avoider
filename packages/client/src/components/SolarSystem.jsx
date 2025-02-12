@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, createRef, useEffect } from "react";
+import { useState, useRef, useMemo, createRef, useEffect } from "react";
 import { useThree, useFrame } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
 
