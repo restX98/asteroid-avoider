@@ -65,17 +65,13 @@ const CircleSprite = ({ color, onClick }) => {
 };
 
 const Planet = memo(
-  ({ trajectory, color, radius, model, planetRef, selectPlanet }) => {
-    const { scene } = useGLTF(model);
-    const scaledScene = useScaledScene(
-      useMemo(() => scene.clone(), [scene]),
-      radius * 2
-    );
+  ({ trajectory, color, radius, planetRef, selectPlanet, component }) => {
+    const PlanetComponent = component;
 
     return (
       <>
         <group ref={planetRef}>
-          <primitive object={scaledScene} />
+          <PlanetComponent diameter={radius * 2} />
           <CircleSprite onClick={() => selectPlanet(planetRef)} />
         </group>
 

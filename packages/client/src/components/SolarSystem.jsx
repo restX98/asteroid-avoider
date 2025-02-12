@@ -6,7 +6,7 @@ import Planet from "@/components/Planet";
 import Sun from "@/components/Sun";
 import Trajectory from "@/utils/Trajectory";
 
-import planetData from "@/data/planets.json";
+import planetData from "@/data/planets.js";
 import { SCALE_FACTOR } from "@/data/config.json";
 
 function SolarSystem({ simulationTimeRef, multiplier }) {
@@ -52,7 +52,7 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
         color: data.color,
         radius: data.radius * SCALE_FACTOR,
         planetRef: planetRefs.current[planetKey],
-        model: data.model,
+        component: data.component,
       };
     })
   );
@@ -90,20 +90,24 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
       <Sun />
 
       {planets.map(
-        ({ name, trajectory, color, radius, model, planetRef, circleRef }) => (
-          <Planet
-            key={name}
-            trajectory={trajectory}
-            color={color}
-            radius={radius}
-            model={model}
-            planetRef={planetRef}
-            selectPlanet={(ref) => {
-              if (selectedPlanetRef === ref) return;
-              setSelectedPlanetRef(ref);
-            }}
-          />
-        )
+        ({ name, trajectory, color, radius, model, planetRef, component }) => {
+          // const PlanetComponent = component;
+          return (
+            <Planet
+              key={name}
+              trajectory={trajectory}
+              color={color}
+              radius={radius}
+              model={model}
+              planetRef={planetRef}
+              component={component}
+              selectPlanet={(ref) => {
+                if (selectedPlanetRef === ref) return;
+                setSelectedPlanetRef(ref);
+              }}
+            />
+          );
+        }
       )}
     </>
   );
