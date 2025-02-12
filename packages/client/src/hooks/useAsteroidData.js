@@ -18,7 +18,7 @@ export function useAsteroidData({ startDate, endDate }) {
       }
     }
     getAsteroidsData();
-  }, []);
+  }, [startDate, endDate]);
 
   return { asteroids, loading, error };
 }
