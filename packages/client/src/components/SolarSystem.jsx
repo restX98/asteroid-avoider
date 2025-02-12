@@ -78,9 +78,10 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
   return (
     <>
       <Environment
-        files="/textures/starmap_g8k.jpg"
+        files="/textures/hiptyc_2020_4k.exr"
         background
         backgroundBlurriness={0}
+        resolution={256}
       />
       <mesh>
         <ambientLight intensity={0.2} />
