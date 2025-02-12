@@ -12,7 +12,7 @@ import { useRef, memo } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useAutoScale } from "@/hooks/useAutoScale";
 
-import { SCALE_FACTOR, SUN_RADIUS } from "@/data/config.json";
+import { SCALE_FACTOR, SUN } from "@/data/config.js";
 
 function Model({ diameter }) {
   const group = useRef();
@@ -51,10 +51,11 @@ function Model({ diameter }) {
 useGLTF.preload("models/sun-transformed.glb");
 
 const Sun = memo(() => {
+  const { radius, position, intensity, decay } = SUN;
   return (
     <>
-      <Model diameter={SUN_RADIUS * 2 * SCALE_FACTOR} />
-      <pointLight position={[0, 0, 0]} intensity={10} decay={0.05} />
+      <Model diameter={radius * 2 * SCALE_FACTOR} />
+      <pointLight position={position} intensity={intensity} decay={decay} />
     </>
   );
 });

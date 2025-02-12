@@ -7,7 +7,7 @@ import Sun from "@/components/Sun";
 import Trajectory from "@/utils/Trajectory";
 
 import planetData from "@/data/planets.js";
-import { SCALE_FACTOR } from "@/data/config.json";
+import { SCALE_FACTOR, ENVIRONMENT } from "@/data/config.js";
 
 function SolarSystem({ simulationTimeRef, multiplier }) {
   const controlsRef = useRef();
@@ -24,6 +24,7 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
       controlsRef.current.target.set(x, y, z);
       controlsRef.current.update();
 
+      //TODO: fix position on change
       camera.position.set(x, y, z - 10);
     }
   }, [selectedPlanetRef]);
@@ -78,13 +79,13 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
   return (
     <>
       <Environment
-        files="/textures/hiptyc_2020_4k.exr"
+        files={ENVIRONMENT.file}
         background
-        backgroundBlurriness={0}
-        resolution={256}
+        backgroundBlurriness={ENVIRONMENT.backgroundBlurriness}
+        resolution={ENVIRONMENT.resolution}
       />
       <mesh>
-        <ambientLight intensity={0.2} />
+        <ambientLight intensity={ENVIRONMENT.ambientLight} />
         <OrbitControls ref={controlsRef} />
       </mesh>
 
@@ -92,7 +93,6 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
 
       {planets.map(
         ({ name, trajectory, color, radius, model, planetRef, component }) => {
-          // const PlanetComponent = component;
           return (
             <Planet
               key={name}

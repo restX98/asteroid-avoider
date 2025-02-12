@@ -3,7 +3,7 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import Disposable from "@/components/Disposable";
 
-import { SCALE_FACTOR, PLANET_OUTLINE } from "@/data/config.json";
+import { SCALE_FACTOR, PLANET_OUTLINE } from "@/data/config.js";
 
 const OrbitCurve = ({ coords, color = 0x00ff00 }) => {
   const geometry = useMemo(() => {
