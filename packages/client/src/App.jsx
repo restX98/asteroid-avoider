@@ -1,5 +1,6 @@
 import { useState, useRef, memo } from "react";
 import { Canvas } from "@react-three/fiber";
+import { Perf } from "r3f-perf";
 
 import Loader from "@/components/Loader";
 import SolarSystem from "@/components/SolarSystem";
@@ -27,6 +28,10 @@ const Scene = memo(({ setIsLoaded, simulationTimeRef, multiplier }) => {
           multiplier={multiplier}
         />
       </Loader>
+
+      {process.env.NODE_ENV === "development" && (
+        <Perf position="bottom-left" />
+      )}
     </Canvas>
   );
 });
