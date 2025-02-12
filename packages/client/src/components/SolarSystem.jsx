@@ -101,6 +101,7 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
               model={model}
               planetRef={planetRef}
               component={component}
+              active={selectedPlanetRef == planetRef}
               selectPlanet={(ref) => {
                 if (selectedPlanetRef === ref) return;
                 setSelectedPlanetRef(ref);

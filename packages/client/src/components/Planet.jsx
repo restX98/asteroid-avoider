@@ -1,7 +1,7 @@
 import { useRef, useMemo, memo } from "react";
 import { useFrame } from "@react-three/fiber";
-import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
+import Disposable from "@/components/Disposable";
 
 import { SCALE_FACTOR, PLANET_OUTLINE } from "@/data/config.json";
 
@@ -64,13 +64,24 @@ const CircleSprite = ({ color, onClick }) => {
 };
 
 const Planet = memo(
-  ({ trajectory, color, radius, planetRef, selectPlanet, component }) => {
+  ({
+    trajectory,
+    color,
+    radius,
+    planetRef,
+    selectPlanet,
+    component,
+    active,
+  }) => {
     const PlanetComponent = component;
-
     return (
       <>
         <group ref={planetRef}>
-          <PlanetComponent diameter={radius * 2} />
+          {active && (
+            <Disposable>
+              <PlanetComponent diameter={radius * 2} />
+            </Disposable>
+          )}
           <CircleSprite onClick={() => selectPlanet(planetRef)} />
         </group>
 
