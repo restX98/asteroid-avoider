@@ -2,7 +2,7 @@ import { useState, useRef, useMemo, createRef, useEffect } from "react";
 import { useThree, useFrame } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
 
-import Planet from "@/components/Planet";
+import OrbitalObject from "@/components/OrbitalObject";
 import Sun from "@/components/Sun";
 import Trajectory from "@/utils/Trajectory";
 
@@ -94,13 +94,13 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
       {planets.map(
         ({ name, trajectory, color, radius, model, planetRef, component }) => {
           return (
-            <Planet
+            <OrbitalObject
               key={name}
               trajectory={trajectory}
               color={color}
               radius={radius}
               model={model}
-              planetRef={planetRef}
+              objectRef={planetRef}
               component={component}
               active={selectedPlanetRef == planetRef}
               selectPlanet={(ref) => {
