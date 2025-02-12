@@ -2,7 +2,6 @@ import { useRef, useMemo, memo } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
-import { useScaledScene } from "@/hooks/useScaleScene";
 
 import { SCALE_FACTOR, PLANET_OUTLINE } from "@/data/config.json";
 
