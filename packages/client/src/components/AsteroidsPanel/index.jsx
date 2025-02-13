@@ -1,54 +1,15 @@
-import { useState, useMemo } from "react";
-import { useAsteroidData } from "@/hooks/useAsteroidData";
+import { useState, useEffect, useMemo } from "react";
+import { useAsteroids } from "@/hooks/useAsteroids";
 import { formatDate } from "@/utils/formatDate";
+import AsteroidList from "./AsteroidList";
 
-const AsteroidListItem = ({ asteroid }) => {
-  return (
-    <div style={{ borderBottom: "1px solid gray", padding: "5px 0" }}>
-      <h4>
-        {asteroid.name} ID: {asteroid.id}
-      </h4>
-      <p>
-        Diameter: {asteroid.diameter.min.toFixed(2)} -{" "}
-        {asteroid.diameter.max.toFixed(2)} {asteroid.diameter.unit}
-      </p>
-      <p>
-        Velocity: {asteroid.velocity.value.toFixed(2)} {asteroid.velocity.unit}
-      </p>
-      <p>
-        Miss Distance: {asteroid.miss_distance.value.toFixed(2)}{" "}
-        {asteroid.miss_distance.unit}
-      </p>
-      <p style={{ color: asteroid.is_potentially_hazardous ? "red" : "green" }}>
-        {asteroid.is_potentially_hazardous
-          ? "Potentially Hazardous"
-          : "Not Hazardous"}
-      </p>
-    </div>
-  );
-};
-
-const AsteroidList = ({ asteroids }) => {
-  return (
-    <div style={{ maxHeight: "200px", overflowY: "auto" }}>
-      {asteroids.length > 0 ? (
-        asteroids.map((asteroid) => (
-          <AsteroidListItem key={asteroid.id} asteroid={asteroid} />
-        ))
-      ) : (
-        <p>No asteroids found.</p>
-      )}
-    </div>
-  );
-};
-
-const AsteroidsPanel = () => {
+function AsteroidsPanel({ onToggleDetail }) {
   const nowDate = useMemo(() => formatDate(new Date()), []);
 
   const [startDate, setStartDate] = useState(nowDate);
   const [endDate, setEndDate] = useState(nowDate);
 
-  const { asteroids, loading, error } = useAsteroidData({ startDate, endDate });
+  const { asteroids, loading, error } = useAsteroids({ startDate, endDate });
 
   const maxStart = useMemo(() => {
     if (endDate) {
@@ -108,9 +69,11 @@ const AsteroidsPanel = () => {
           />
         </label>
       </div>
-      {asteroids && <AsteroidList asteroids={asteroids} />}
+      {asteroids && (
+        <AsteroidList asteroids={asteroids} onToggleDetail={onToggleDetail} />
+      )}
     </div>
   );
-};
+}
 
 export default AsteroidsPanel;

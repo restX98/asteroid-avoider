@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { fetchAsteroidData } from "@/services/asteroidService";
+import { fetchAsteroids } from "@/services/asteroidService";
 
-export function useAsteroidData({ startDate, endDate }) {
+export function useAsteroids({ startDate, endDate }) {
   const [asteroids, setAsteroids] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -9,7 +9,7 @@ export function useAsteroidData({ startDate, endDate }) {
   useEffect(() => {
     async function getAsteroidsData() {
       try {
-        const data = await fetchAsteroidData({ startDate, endDate });
+        const data = await fetchAsteroids({ startDate, endDate });
         setAsteroids(data);
       } catch (err) {
         setError(err);

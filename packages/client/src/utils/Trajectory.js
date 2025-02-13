@@ -2,6 +2,7 @@ class Trajectory {
   static #EARTH_PERIOD = 365.25;
   static #J2000 = new Date("2000-01-01");
   static #MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
+
   /**
    * Create a Planet instance with its orbital parameters.
    *
