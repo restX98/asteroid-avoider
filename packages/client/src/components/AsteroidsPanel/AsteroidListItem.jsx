@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useAsteroidDetail } from "@/hooks/useAsteroidDetail";
 
+import emitter from "@/utils/emitter";
+
 function AsteroidListItem({ asteroid }) {
   const [checked, setChecked] = useState(false);
   const [asteroidId, setAsteroidId] = useState(null);
@@ -9,10 +11,22 @@ function AsteroidListItem({ asteroid }) {
 
   useEffect(() => {
     if (checked) {
-      //   asteroidDetail && onToggleDetail(asteroid.id, asteroidDetail);
+      asteroidDetail &&
+        emitter.emit("addAsteroid", {
+          asteroidId: asteroid.id,
+          asteroidDetail: asteroidDetail,
+        });
     } else {
-      //   onToggleDetail(asteroid.id, null);
+      emitter.emit("removeAsteroid", {
+        asteroidId: asteroid.id,
+      });
     }
+
+    return () => {
+      emitter.emit("removeAsteroid", {
+        asteroidId: asteroid.id,
+      });
+    };
   }, [checked, asteroidDetail]);
 
   return (
