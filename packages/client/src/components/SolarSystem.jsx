@@ -4,6 +4,8 @@ import { Environment, OrbitControls } from "@react-three/drei";
 
 import OrbitalObject from "@/components/OrbitalObject";
 import Sun from "@/components/Sun";
+import Asteroids from "@/components/Asteroids";
+
 import Trajectory from "@/utils/Trajectory";
 
 import planetData from "@/data/planets.js";
@@ -12,9 +14,11 @@ import { SCALE_FACTOR, ENVIRONMENT } from "@/data/config.js";
 function SolarSystem({ simulationTimeRef, multiplier }) {
   const controlsRef = useRef();
   const planetRefs = useRef({});
+  const asteroidsListRef = useRef([]);
 
   const { camera } = useThree();
 
+  // TODO: Move this state to avoid rerendering at every planet selection
   const [selectedPlanetRef, setSelectedPlanetRef] = useState(null);
 
   useEffect(() => {
@@ -52,7 +56,7 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
         trajectory,
         color: data.color,
         radius: data.radius * SCALE_FACTOR,
-        planetRef: planetRefs.current[planetKey],
+        objectRef: planetRefs.current[planetKey],
         component: data.component,
       };
     })
@@ -63,17 +67,19 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
       simulationTimeRef.current.getTime() + delta * multiplier * 1000
     );
 
-    planets.forEach(({ trajectory, planetRef, circleRef }) => {
-      const { x, y, z } = trajectory.getCoordinatesByDate(
-        simulationTimeRef.current
-      );
-      const scaledX = x * SCALE_FACTOR;
-      const scaledY = y * SCALE_FACTOR;
-      const scaledZ = z * SCALE_FACTOR;
-      if (planetRef.current) {
-        planetRef.current.position.set(scaledX, scaledY, scaledZ);
+    [...planets, ...asteroidsListRef.current].forEach(
+      ({ trajectory, objectRef }) => {
+        const { x, y, z } = trajectory.getCoordinatesByDate(
+          simulationTimeRef.current
+        );
+        const scaledX = x * SCALE_FACTOR;
+        const scaledY = y * SCALE_FACTOR;
+        const scaledZ = z * SCALE_FACTOR;
+        if (objectRef.current) {
+          objectRef.current.position.set(scaledX, scaledY, scaledZ);
+        }
       }
-    });
+    );
   });
 
   return (
@@ -92,7 +98,7 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
       <Sun />
 
       {planets.map(
-        ({ name, trajectory, color, radius, model, planetRef, component }) => {
+        ({ name, trajectory, color, radius, model, objectRef, component }) => {
           return (
             <OrbitalObject
               key={name}
@@ -100,9 +106,9 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
               color={color}
               radius={radius}
               model={model}
-              objectRef={planetRef}
+              objectRef={objectRef}
               component={component}
-              active={selectedPlanetRef == planetRef}
+              active={selectedPlanetRef == objectRef}
               selectPlanet={(ref) => {
                 if (selectedPlanetRef === ref) return;
                 setSelectedPlanetRef(ref);
@@ -111,6 +117,12 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
           );
         }
       )}
+
+      <Asteroids
+        asteroidsListRef={asteroidsListRef}
+        selectedPlanetRef={selectedPlanetRef}
+        setSelectedPlanetRef={setSelectedPlanetRef}
+      />
     </>
   );
 }
