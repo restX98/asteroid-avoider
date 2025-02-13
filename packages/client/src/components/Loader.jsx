@@ -1,18 +1,12 @@
-import { Suspense } from "react";
+import { useEffect, Suspense } from "react";
 import { useProgress, Html } from "@react-three/drei";
-import { useEffect } from "react";
+
+import { Progress } from "@/components/ui/progress";
 
 const ProgressBar = ({ progress }) => {
   return (
-    <Html fullscreen={true} style={styles.container}>
-      <div style={styles.progressBarContainer}>
-        <div
-          style={{
-            width: `${progress}%`,
-            ...styles.progressBar,
-          }}
-        />
-      </div>
+    <Html fullscreen={true} className="flex justify-center items-center">
+      <Progress value={progress} className="lg:w-1/3 md:w-2/3 w-4/5" />
     </Html>
   );
 };
@@ -32,24 +26,5 @@ function Loader({ children, setIsLoaded }) {
     </Suspense>
   );
 }
-
-const styles = {
-  container: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  progressBarContainer: {
-    width: "30%",
-    height: "0.5rem",
-    backgroundColor: "#4a5568",
-    overflow: "hidden",
-  },
-  progressBar: {
-    height: "100%",
-    backgroundColor: "#3b82f6",
-    transition: "width 0.2s",
-  },
-};
 
 export default Loader;
