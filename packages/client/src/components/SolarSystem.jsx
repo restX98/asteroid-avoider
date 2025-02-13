@@ -1,6 +1,7 @@
 import { useState, useRef, useMemo, createRef, useEffect } from "react";
 import { useThree, useFrame } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
+import * as THREE from "three";
 
 import OrbitalObject from "@/components/OrbitalObject";
 import Sun from "@/components/Sun";
@@ -11,25 +12,30 @@ import Trajectory from "@/utils/Trajectory";
 import planetData from "@/data/planets.js";
 import { SCALE_FACTOR, ENVIRONMENT } from "@/data/config.js";
 
+const EPSILON = 0.01;
+const defaultOffset = new THREE.Vector3(0, 0, 0.1);
+const utilityVector3 = new THREE.Vector3(0, 0, 0);
+
 function SolarSystem({ simulationTimeRef, multiplier }) {
   const controlsRef = useRef();
   const planetRefs = useRef({});
   const asteroidsListRef = useRef([]);
 
-  const { camera } = useThree();
+  const {
+    camera,
+    gl: { domElement },
+  } = useThree();
 
-  // TODO: Move this state to avoid rerendering at every planet selection
+  // TODO: Move these state to avoid rerendering at every planet selection
   const [selectedPlanetRef, setSelectedPlanetRef] = useState(null);
 
-  useEffect(() => {
-    if (selectedPlanetRef?.current && controlsRef.current) {
-      const planet = selectedPlanetRef.current;
-      const { x, y, z } = planet.position;
-      controlsRef.current.target.set(x, y, z);
-      controlsRef.current.update();
+  const offsetRef = useRef(new THREE.Vector3(0, 0, 0.1));
+  const isTransitioning = useRef(false);
 
-      //TODO: fix position on change
-      camera.position.set(x, y, z - 10);
+  useEffect(() => {
+    if (selectedPlanetRef?.current) {
+      // TODO: edit based on planet radius
+      offsetRef.current.copy(defaultOffset);
     }
   }, [selectedPlanetRef]);
 
@@ -62,7 +68,7 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
     })
   );
 
-  useFrame(({}, delta) => {
+  useFrame(({ camera }, delta) => {
     simulationTimeRef.current = new Date(
       simulationTimeRef.current.getTime() + delta * multiplier * 1000
     );
@@ -80,6 +86,24 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
         }
       }
     );
+
+    if (selectedPlanetRef?.current && controlsRef.current) {
+      const planet = selectedPlanetRef.current;
+      controlsRef.current.target.lerp(planet.position, 1);
+
+      const offset = offsetRef.current;
+      utilityVector3.copy(planet.position);
+      utilityVector3.add(offset);
+      camera.position.lerp(utilityVector3, isTransitioning.current ? 0.1 : 1);
+
+      if (
+        isTransitioning.current &&
+        camera.position.distanceTo(utilityVector3) < EPSILON
+      ) {
+        isTransitioning.current = false;
+      }
+      controlsRef.current.update();
+    }
   });
 
   return (
@@ -92,7 +116,20 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
       />
       <mesh>
         <ambientLight intensity={ENVIRONMENT.ambientLight} />
-        <OrbitControls ref={controlsRef} />
+        <OrbitControls
+          ref={controlsRef}
+          args={[camera, domElement]}
+          enableZoom={true}
+          enableRotate={true}
+          enablePan={true}
+          enableDamping={true}
+          onChange={() => {
+            if (!isTransitioning?.current && selectedPlanetRef?.current) {
+              offsetRef.current.copy(camera.position);
+              offsetRef.current.sub(selectedPlanetRef.current.position);
+            }
+          }}
+        />
       </mesh>
 
       <Sun />
@@ -112,6 +149,7 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
               selectPlanet={(ref) => {
                 if (selectedPlanetRef === ref) return;
                 setSelectedPlanetRef(ref);
+                isTransitioning.current = true;
               }}
             />
           );

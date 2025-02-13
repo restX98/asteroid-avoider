@@ -43,10 +43,12 @@ const TimeTravelPanel = ({
             <option value={10}>10 sec/sec</option>
             <option value={30}>30 sec/sec</option>
             <option value={60}>1 min/sec</option>
-            <option value={600}>10 min/sec</option>
-            <option value={3600}>1 hour/sec</option>
-            <option value={86400}>1 day/sec</option>
-            <option value={31536000}>1 year/sec</option>
+            <option value={60 * 10}>10 min/sec</option>
+            <option value={60 * 60}>1 hour/sec</option>
+            <option value={60 * 60 * 24}>1 day/sec</option>
+            <option value={60 * 60 * 24 * 2}>2 day/sec</option>
+            <option value={60 * 60 * 24 * 10}>10 day/sec</option>
+            <option value={60 * 60 * 24 * 365}>1 year/sec</option>
           </select>
         </label>
       </div>
