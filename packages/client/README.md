@@ -15,9 +15,9 @@ TODO List:
 - [ ] create breadcrumbs to navigate out of planet
 - [ ] create interface to show information
 - [ ] create test
-- [ ] call backend to retrieve asteroids near to earth
+- [x] call backend to retrieve asteroids near to earth
 - [ ] add max and min zoom and avoid go inside planet
 - [x] add loader
 - [ ] move camera with planet
-- [ ] add profiling tool to check performance
+- [x] add profiling tool to check performance
 - [ ] move solar system logic on separated context
