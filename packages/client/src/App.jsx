@@ -4,15 +4,13 @@ import { Perf } from "r3f-perf";
 
 import Loader from "@/components/Loader";
 import SolarSystem from "@/components/SolarSystem";
-import TimeTravelPanel from "@/components/TimeTravelPanel";
-import AsteroidsPanel from "@/components/AsteroidsPanel";
+import Interface from "@/components/Interface";
 
 const Scene = memo(({ setIsLoaded, simulationTimeRef, multiplier }) => {
   // TODO: Deep on near and far
   return (
     <Canvas
       camera={{
-        position: [0, 0, 5000],
         near: 0.001,
         far: 10000000,
       }}
@@ -59,18 +57,11 @@ function App() {
       </div>
 
       {isLoaded && (
-        <div>
-          <TimeTravelPanel
-            simulationTimeRef={simulationTimeRef}
-            onTimeChange={(newTime) => {
-              simulationTimeRef.current = newTime;
-            }}
-            multiplier={multiplier}
-            setMultiplier={setMultiplier}
-          />
-
-          <AsteroidsPanel />
-        </div>
+        <Interface
+          simulationTimeRef={simulationTimeRef}
+          multiplier={multiplier}
+          setMultiplier={setMultiplier}
+        />
       )}
     </>
   );

@@ -14,8 +14,8 @@ import { useAutoScale } from "@/hooks/useAutoScale";
 
 import { SCALE_FACTOR, SUN } from "@/data/config.js";
 
-function Model({ diameter }) {
-  const group = useRef();
+function Model({ diameter, sunRef }) {
+  const group = sunRef || useRef();
   const { nodes, materials } = useGLTF("/models/sun-transformed.glb");
 
   useAutoScale(group, diameter);
@@ -50,11 +50,11 @@ function Model({ diameter }) {
 
 useGLTF.preload("models/sun-transformed.glb");
 
-const Sun = memo(() => {
+const Sun = memo(({ sunRef }) => {
   const { radius, position, intensity, decay } = SUN;
   return (
     <>
-      <Model diameter={radius * 2 * SCALE_FACTOR} />
+      <Model sunRef={sunRef} diameter={radius * 2 * SCALE_FACTOR} />
       <pointLight position={position} intensity={intensity} decay={decay} />
     </>
   );

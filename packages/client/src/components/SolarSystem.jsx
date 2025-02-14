@@ -8,16 +8,19 @@ import Sun from "@/components/Sun";
 import Asteroids from "@/components/Asteroids";
 
 import Trajectory from "@/utils/Trajectory";
+import emitter from "@/utils/emitter";
 
 import planetData from "@/data/planets.js";
 import { SCALE_FACTOR, ENVIRONMENT } from "@/data/config.js";
 
 const EPSILON = 0.01;
+const sunOffset = new THREE.Vector3(0, 0, 5000);
 const defaultOffset = new THREE.Vector3(0, 0, 0.1);
 const utilityVector3 = new THREE.Vector3(0, 0, 0);
 
 function SolarSystem({ simulationTimeRef, multiplier }) {
   const controlsRef = useRef();
+  const sunRef = useRef();
   const planetRefs = useRef({});
   const asteroidsListRef = useRef([]);
 
@@ -26,18 +29,36 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
     gl: { domElement },
   } = useThree();
 
-  // TODO: Move these state to avoid rerendering at every planet selection
-  const [selectedPlanetRef, setSelectedPlanetRef] = useState(null);
+  // TODO: Try to make is a simple ref to fix sun bug
+  // the bug seams caused that the rerender of the scene on unselect planet.
+  const [selectedPlanetRef, setSelectedPlanetRef] = useState(sunRef);
 
   const offsetRef = useRef(new THREE.Vector3(0, 0, 0.1));
   const isTransitioning = useRef(false);
 
   useEffect(() => {
     if (selectedPlanetRef?.current) {
-      // TODO: edit based on planet radius
-      offsetRef.current.copy(defaultOffset);
+      if (selectedPlanetRef === sunRef) {
+        offsetRef.current.copy(sunOffset);
+      } else {
+        // TODO: edit based on planet radius
+        offsetRef.current.copy(defaultOffset);
+      }
     }
   }, [selectedPlanetRef]);
+
+  useEffect(() => {
+    const unselectPlanetHandler = () => {
+      setSelectedPlanetRef(sunRef);
+      isTransitioning.current = true;
+    };
+
+    emitter.on("unselectPlanet", unselectPlanetHandler);
+
+    return () => {
+      emitter.off("unselectPlanet", unselectPlanetHandler);
+    };
+  }, []);
 
   const planets = useMemo(() =>
     Object.keys(planetData).map((planetKey) => {
@@ -132,7 +153,7 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
         />
       </mesh>
 
-      <Sun />
+      <Sun sunRef={sunRef} />
 
       {planets.map(
         ({ name, trajectory, color, radius, model, objectRef, component }) => {
