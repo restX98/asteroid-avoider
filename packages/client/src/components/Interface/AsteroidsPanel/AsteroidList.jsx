@@ -1,8 +1,11 @@
-import AsteroidListItem from "./AsteroidListItem";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-function AsteroidList({ asteroids }) {
+import AsteroidListItem from "./AsteroidListItem";
+import { cn } from "@/lib/utils";
+
+function AsteroidList({ className, asteroids }) {
   return (
-    <div style={{ maxHeight: "200px", overflowY: "auto" }}>
+    <ScrollArea className={cn("h-full w-full rounded-md border", className)}>
       {asteroids.length > 0 ? (
         asteroids.map((asteroid) => (
           <AsteroidListItem key={asteroid.id} asteroid={asteroid} />
@@ -10,7 +13,7 @@ function AsteroidList({ asteroids }) {
       ) : (
         <p>No asteroids found.</p>
       )}
-    </div>
+    </ScrollArea>
   );
 }
 

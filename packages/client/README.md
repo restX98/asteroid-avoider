@@ -12,7 +12,7 @@ TODO List:
 - [ ] add atmosphere to the sun
 - [x] add planets 3D model
 - [x] create interface for time travel
-- [ ] create breadcrumbs to navigate out of planet
+- [x] create arrow to navigate out of planet
 - [ ] create interface to show information
 - [x] call backend to retrieve asteroids near to earth
 - [ ] add max and min zoom and avoid go inside planet

@@ -22,7 +22,7 @@ const TimeTravelPanel = ({
       style={{
         position: "absolute",
         bottom: "10px",
-        right: "10px",
+        left: "10px",
         background: "rgba(0,0,0,0.5)",
         color: "white",
         padding: "10px",

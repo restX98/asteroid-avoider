@@ -1,78 +1,90 @@
-import { useState, useEffect, useMemo } from "react";
-import { useAsteroids } from "@/hooks/useAsteroids";
-import { formatDate } from "@/utils/formatDate";
+import { useState, useMemo } from "react";
+import { addDays, format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
+
+import AsteroidIcon from "@/components/icons/AsteroidIcon";
+import { Button } from "@/components/ui/button";
+
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
 import AsteroidList from "./AsteroidList";
 
-function AsteroidsPanel({ onToggleDetail }) {
-  const nowDate = useMemo(() => formatDate(new Date()), []);
+import { useAsteroids } from "@/hooks/useAsteroids";
+import { cn } from "@/lib/utils";
 
-  const [startDate, setStartDate] = useState(nowDate);
-  const [endDate, setEndDate] = useState(nowDate);
+function AsteroidsPanel({ className, onToggleDetail }) {
+  const nowDate = useMemo(() => new Date(), []);
 
-  const { asteroids, loading, error } = useAsteroids({ startDate, endDate });
+  const [date, setDate] = useState({
+    from: nowDate,
+    to: addDays(nowDate, 1),
+  });
 
-  const maxStart = useMemo(() => {
-    if (endDate) {
-      const end = new Date(endDate);
-      end.setDate(end.getDate());
-      return formatDate(end);
-    }
-    return "";
-  }, [endDate]);
-
-  const minEnd = useMemo(() => {
-    if (startDate) {
-      const start = new Date(startDate);
-      start.setDate(start.getDate());
-      return formatDate(start);
-    }
-    return "";
-  }, [startDate]);
+  const { asteroids, loading, error } = useAsteroids({
+    startDate: date.from,
+    endDate: date.to,
+  });
 
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: "10px",
-        right: "10px",
-        background: "rgba(0,0,0,0.5)",
-        color: "white",
-        padding: "10px",
-        borderRadius: "4px",
-        zIndex: 1000,
-      }}
-    >
-      <h3>Near Asteroids</h3>
-      <div style={{ marginBottom: "5px" }}>
-        <label>
-          Start Date:&nbsp;
-          <input
-            type="date"
-            value={startDate}
-            max={maxStart}
-            onChange={(e) => {
-              setStartDate(formatDate(new Date(e.target.value)));
-            }}
-          />
-        </label>
+    <>
+      <Button
+        variant="outline"
+        className={className}
+        onClick={() => setOpen((prev) => !prev)}
+      >
+        <AsteroidIcon />
+        <span className="hidden md:inline">Asteroids</span>
+      </Button>
+
+      <div className="fixed bottom-0 right-0 hidden">
+        <div className="py-4">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                id="date"
+                variant={"outline"}
+                className={cn(
+                  "w-full justify-start text-left font-normal",
+                  !date && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon />
+                {date?.from ? (
+                  date.to ? (
+                    <>
+                      {format(date.from, "LLL dd, y")} -{" "}
+                      {format(date.to, "LLL dd, y")}
+                    </>
+                  ) : (
+                    format(date.from, "LLL dd, y")
+                  )
+                ) : (
+                  <span>Pick a date</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                initialFocus
+                mode="range"
+                defaultMonth={date?.from}
+                selected={date}
+                onSelect={setDate}
+                numberOfMonths={2}
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+        {asteroids && (
+          <AsteroidList className={"flex-1"} asteroids={asteroids} />
+        )}
       </div>
-      <div style={{ marginBottom: "5px" }}>
-        <label>
-          End Date:&nbsp;
-          <input
-            type="date"
-            value={endDate}
-            min={minEnd}
-            onChange={(e) => {
-              setEndDate(formatDate(new Date(e.target.value)));
-            }}
-          />
-        </label>
-      </div>
-      {asteroids && (
-        <AsteroidList asteroids={asteroids} onToggleDetail={onToggleDetail} />
-      )}
-    </div>
+    </>
   );
 }
 
