@@ -18,7 +18,7 @@ const sunOffset = new THREE.Vector3(0, 0, 5000);
 const defaultOffset = new THREE.Vector3(0, 0, 0.1);
 const utilityVector3 = new THREE.Vector3(0, 0, 0);
 
-function SolarSystem({ simulationTimeRef, multiplier }) {
+function SolarSystem({ simulationTimeRef, multiplierRef }) {
   const controlsRef = useRef();
   const sunRef = useRef();
   const planetRefs = useRef({});
@@ -29,7 +29,7 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
     gl: { domElement },
   } = useThree();
 
-  // TODO: Try to make is a simple ref to fix sun bug
+  // TODO: Try to make it a simple ref to fix sun bug
   // the bug seams caused that the rerender of the scene on unselect planet.
   const [selectedPlanetRef, setSelectedPlanetRef] = useState(sunRef);
 
@@ -91,7 +91,7 @@ function SolarSystem({ simulationTimeRef, multiplier }) {
 
   useFrame(({ camera }, delta) => {
     simulationTimeRef.current = new Date(
-      simulationTimeRef.current.getTime() + delta * multiplier * 1000
+      simulationTimeRef.current.getTime() + delta * multiplierRef.current * 1000
     );
 
     [...planets, ...asteroidsListRef.current].forEach(

@@ -1,13 +1,10 @@
 import { useState, useEffect } from "react";
-
 import { format } from "date-fns";
 
-const TimeTravelPanel = ({
-  simulationTimeRef,
-  onTimeChange,
-  multiplier,
-  setMultiplier,
-}) => {
+import { Slider } from "@/components/ui/slider";
+import { TIME_MAPPING } from "@/data/config";
+
+function CurrentDate({ simulationTimeRef }) {
   const [displayTime, setDisplayTime] = useState(simulationTimeRef.current);
 
   useEffect(() => {
@@ -17,60 +14,41 @@ const TimeTravelPanel = ({
     return () => clearInterval(interval);
   }, []);
 
+  return <span>{format(displayTime, "d/M/y H:mm:ss")}</span>;
+}
+
+const TimeTravelPanel = ({ simulationTimeRef, multiplierRef, className }) => {
+  const [sliderIndex, setSliderIndex] = useState({
+    value: 0,
+    isForward: 1,
+  });
+  const selected = TIME_MAPPING[sliderIndex.value];
+
+  useEffect(() => {
+    multiplierRef.current = selected.multiplier * sliderIndex.isForward;
+  }, [sliderIndex]);
+
   return (
-    <div
-      style={{
-        position: "absolute",
-        bottom: "10px",
-        left: "10px",
-        background: "rgba(0,0,0,0.5)",
-        color: "white",
-        padding: "10px",
-        borderRadius: "4px",
-        zIndex: 1000,
-      }}
-    >
-      <h3>Time Travel Controls</h3>
-
-      <div style={{ marginBottom: "5px" }}>
-        <label>
-          Speed:&nbsp;
-          <select
-            value={multiplier}
-            onChange={(e) => setMultiplier(Number(e.target.value))}
-          >
-            <option value={1}>1 sec/sec</option>
-            <option value={10}>10 sec/sec</option>
-            <option value={30}>30 sec/sec</option>
-            <option value={60}>1 min/sec</option>
-            <option value={60 * 10}>10 min/sec</option>
-            <option value={60 * 60}>1 hour/sec</option>
-            <option value={60 * 60 * 24}>1 day/sec</option>
-            <option value={60 * 60 * 24 * 2}>2 day/sec</option>
-            <option value={60 * 60 * 24 * 10}>10 day/sec</option>
-            <option value={60 * 60 * 24 * 365}>1 year/sec</option>
-          </select>
-        </label>
-      </div>
-
-      <div style={{ marginBottom: "5px" }}>
-        <label>
-          Select Date:&nbsp;
-          <input
-            type="date"
-            value={format(displayTime, "yyyy-MM-dd")}
-            onChange={(e) => {
-              const date = new Date(e.target.value);
-              setDisplayTime(date);
-              onTimeChange(date);
-            }}
-          />
-        </label>
-      </div>
-
-      <div>
-        <strong>Sim Time:</strong> {displayTime.toLocaleString()}
-      </div>
+    <div className="flex flex-col justify-center items-center mx-auto lg:w-1/2 md:w-2/3 w-4/5">
+      <CurrentDate simulationTimeRef={simulationTimeRef} />
+      <span className="mb-4 text-2xl">
+        {sliderIndex.isForward === -1 ? "-" : ""}
+        {selected?.label}
+      </span>
+      <Slider
+        className={className}
+        value={[sliderIndex.value * sliderIndex.isForward]}
+        defaultValue={[0]}
+        min={-(TIME_MAPPING.length - 1)}
+        max={TIME_MAPPING.length - 1}
+        step={1}
+        onValueChange={(value) => {
+          setSliderIndex((prev) => {
+            const isForward = value[0] >= 0 ? 1 : -1;
+            return { value: value[0] * isForward, isForward: isForward };
+          });
+        }}
+      />
     </div>
   );
 };

@@ -8,6 +8,7 @@ import Interface from "@/components/Interface";
 
 const performancePanelEnabled = process.env.PERFORMANCE_PANEL_ENABLED;
 
+const Scene = memo(({ setIsLoaded, simulationTimeRef, multiplierRef }) => {
   // TODO: Deep on near and far
   return (
     <Canvas
@@ -24,7 +25,7 @@ const performancePanelEnabled = process.env.PERFORMANCE_PANEL_ENABLED;
       <Loader setIsLoaded={setIsLoaded}>
         <SolarSystem
           simulationTimeRef={simulationTimeRef}
-          multiplier={multiplier}
+          multiplierRef={multiplierRef}
         />
       </Loader>
 
@@ -37,7 +38,7 @@ function App() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const simulationTimeRef = useRef(new Date());
-  const [multiplier, setMultiplier] = useState(1);
+  const multiplierRef = useRef(1);
 
   return (
     <>
@@ -51,15 +52,14 @@ function App() {
         <Scene
           setIsLoaded={setIsLoaded}
           simulationTimeRef={simulationTimeRef}
-          multiplier={multiplier}
+          multiplierRef={multiplierRef}
         />
       </div>
 
       {isLoaded && (
         <Interface
           simulationTimeRef={simulationTimeRef}
-          multiplier={multiplier}
-          setMultiplier={setMultiplier}
+          multiplierRef={multiplierRef}
         />
       )}
     </>
