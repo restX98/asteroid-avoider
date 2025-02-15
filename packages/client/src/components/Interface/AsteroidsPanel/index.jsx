@@ -5,8 +5,8 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import AsteroidIcon from "@/components/icons/AsteroidIcon";
 import { Button } from "@/components/ui/button";
 
-import { Calendar } from "@/components/ui/calendar";
 import CustomSheet from "@/components/ui/custom-sheet";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
