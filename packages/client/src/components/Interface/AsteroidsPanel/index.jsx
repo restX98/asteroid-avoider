@@ -38,13 +38,8 @@ function AsteroidsPanel({ className }) {
         <span className="hidden md:inline">Asteroids</span>
       </CustomSheet.Trigger>
       <CustomSheet.Content className="flex flex-col">
-        <div className="flex flex-col space-y-2 text-center sm:text-left">
-          <h2 className="text-lg font-semibold text-foreground">Asteroids</h2>
-          <p className="text-sm text-muted-foreground">
-            Make changes to your profile here. Click save when you're done.
-          </p>
-        </div>
-        <div className="py-4">
+        <h2 className="text-lg font-semibold text-foreground">Asteroids</h2>
+        <div className="py-2">
           <Popover>
             <PopoverTrigger asChild>
               <Button
