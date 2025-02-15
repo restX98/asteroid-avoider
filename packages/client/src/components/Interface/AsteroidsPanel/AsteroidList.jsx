@@ -88,6 +88,14 @@ function AsteroidList({ className, asteroids }) {
       return { visible: false, ...asteroid };
     }
 
+    // Filter by Hazardous
+    if (filters.hazardous !== "") {
+      const isHazardous = filters.hazardous === "true";
+      if (asteroid.is_potentially_hazardous !== isHazardous) {
+        return { visible: false, ...asteroid };
+      }
+    }
+
     return { visible: true, ...asteroid };
   });
 

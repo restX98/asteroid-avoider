@@ -7,6 +7,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 function AsteroidFilterBar({ filters, setFilters }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,7 +46,7 @@ function AsteroidFilterBar({ filters, setFilters }) {
           }
           placeholder="Search by name or ID"
         />
-        <div className="pt-2 flex flex-wrap gap-y-2 justify-between">
+        <div className="pt-2 flex flex-wrap gap-y-2 justify-evenly">
           {/* Velocity */}
           <Popover>
             <PopoverTrigger asChild>
@@ -185,6 +192,21 @@ function AsteroidFilterBar({ filters, setFilters }) {
               />
             </PopoverContent>
           </Popover>
+
+          <Select
+            value={filters.hazardous}
+            onValueChange={(value) =>
+              setFilters((prev) => ({ ...prev, hazardous: value }))
+            }
+          >
+            <SelectTrigger className="w-auto">
+              <SelectValue placeholder="Is hazardous?" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="true">Hazardous</SelectItem>
+              <SelectItem value="false">Not hazardous</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
     </div>
