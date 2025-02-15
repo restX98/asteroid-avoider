@@ -6,10 +6,10 @@ import BackButton from "./BackButton";
 function Interface({ simulationTimeRef, multiplier, setMultiplier }) {
   return (
     <>
-      <TopBar className={"pointer-events-none justify-between"}>
-        <BackButton className={"pointer-events-auto"} />
+      <TopBar className="pointer-events-none justify-between">
+        <BackButton className="pointer-events-auto" />
 
-        <AsteroidsPanel className={"pointer-events-auto"} />
+        <AsteroidsPanel className="pointer-events-auto" />
       </TopBar>
 
       <TimeTravelPanel

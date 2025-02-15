@@ -1,5 +1,5 @@
 import { ArrowLeft } from "lucide-react";
-import emitter from "@/utils/emitter";
+import emitter from "@/lib/emitter";
 import { cn } from "@/lib/utils";
 
 function BackButton({ className }) {

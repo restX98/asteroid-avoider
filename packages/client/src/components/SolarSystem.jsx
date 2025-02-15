@@ -7,8 +7,8 @@ import OrbitalObject from "@/components/OrbitalObject";
 import Sun from "@/components/Sun";
 import Asteroids from "@/components/Asteroids";
 
-import Trajectory from "@/utils/Trajectory";
-import emitter from "@/utils/emitter";
+import Trajectory from "@/lib/Trajectory";
+import emitter from "@/lib/emitter";
 
 import planetData from "@/data/planets.js";
 import { SCALE_FACTOR, ENVIRONMENT } from "@/data/config.js";

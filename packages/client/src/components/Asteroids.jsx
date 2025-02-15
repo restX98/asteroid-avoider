@@ -3,8 +3,8 @@ import { useState, useEffect, useMemo, useRef, createRef } from "react";
 import OrbitalObject from "@/components/OrbitalObject";
 import Asteroid from "@/components/Asteroid";
 
-import Trajectory from "@/utils/Trajectory";
-import emitter from "@/utils/emitter";
+import Trajectory from "@/lib/Trajectory";
+import emitter from "@/lib/emitter";
 
 import { SCALE_FACTOR } from "@/data/config.js";
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { formatDate } from "@/utils/formatDate";
+import { format } from "date-fns";
 
 const TimeTravelPanel = ({
   simulationTimeRef,
@@ -58,7 +58,7 @@ const TimeTravelPanel = ({
           Select Date:&nbsp;
           <input
             type="date"
-            value={formatDate(displayTime)}
+            value={format(displayTime, "yyyy-MM-dd")}
             onChange={(e) => {
               const date = new Date(e.target.value);
               setDisplayTime(date);

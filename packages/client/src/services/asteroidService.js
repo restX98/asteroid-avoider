@@ -1,13 +1,13 @@
 import axios from "axios";
-const apiUrl = import.meta.env.VITE_API_URL;
+import { format } from "date-fns";
 
-import { formatDate } from "@/utils/formatDate";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 export async function fetchAsteroids({ startDate, endDate }) {
   const response = await axios.get(
-    `${apiUrl}/api/asteroids?start_date=${formatDate(
-      startDate
-    )}&end_date=${formatDate(endDate)}`
+    `${apiUrl}/api/asteroids` +
+      `?start_date=${format(startDate, "yyyy-MM-dd")}` +
+      `&end_date=${format(startDate, "yyyy-MM-dd")}`
   );
   return response.data;
 }

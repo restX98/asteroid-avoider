@@ -37,7 +37,7 @@ function AsteroidsPanel({ className }) {
         <AsteroidIcon />
         <span className="hidden md:inline">Asteroids</span>
       </CustomSheet.Trigger>
-      <CustomSheet.Content className={"flex flex-col"}>
+      <CustomSheet.Content className="flex flex-col">
         <div className="flex flex-col space-y-2 text-center sm:text-left">
           <h2 className="text-lg font-semibold text-foreground">Asteroids</h2>
           <p className="text-sm text-muted-foreground">
@@ -49,22 +49,18 @@ function AsteroidsPanel({ className }) {
             <PopoverTrigger asChild>
               <Button
                 id="date"
-                variant={"outline"}
+                variant="outline"
                 className={cn(
                   "w-full justify-start text-left font-normal",
                   !date && "text-muted-foreground"
                 )}
               >
                 <CalendarIcon />
-                {date?.from ? (
-                  date.to ? (
-                    <>
-                      {format(date.from, "LLL dd, y")} -{" "}
-                      {format(date.to, "LLL dd, y")}
-                    </>
-                  ) : (
-                    format(date.from, "LLL dd, y")
-                  )
+                {date?.from && date.to ? (
+                  <>
+                    {format(date.from, "LLL dd, y")} -{" "}
+                    {format(date.to, "LLL dd, y")}
+                  </>
                 ) : (
                   <span>Pick a date</span>
                 )}
@@ -82,9 +78,7 @@ function AsteroidsPanel({ className }) {
             </PopoverContent>
           </Popover>
         </div>
-        {asteroids && (
-          <AsteroidList className={"flex-1"} asteroids={asteroids} />
-        )}
+        {asteroids && <AsteroidList className="flex-1" asteroids={asteroids} />}
       </CustomSheet.Content>
     </CustomSheet>
   );

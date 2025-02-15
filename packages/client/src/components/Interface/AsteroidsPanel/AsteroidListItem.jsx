@@ -3,7 +3,7 @@ import { useAsteroidDetail } from "@/hooks/useAsteroidDetail";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
-import emitter from "@/utils/emitter";
+import emitter from "@/lib/emitter";
 
 function AsteroidListItem({ asteroid }) {
   const [checked, setChecked] = useState(false);
@@ -79,9 +79,7 @@ function AsteroidListItem({ asteroid }) {
             setAsteroidId(asteroid.id);
           }}
           className="w-10 h-6 bg-muted p-1 data-[state=checked]:bg-chart-1 transition-colors"
-        >
-          <Switch.Thumb className="block w-4 h-4 bg-foreground rounded-full shadow transition-transform data-[state=checked]:translate-x-4" />
-        </Switch>
+        />
         <Label htmlFor={asteroid.id} className="text-sm">
           Show Asteroid
         </Label>
