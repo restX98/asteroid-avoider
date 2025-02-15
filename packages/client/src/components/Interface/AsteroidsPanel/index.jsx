@@ -6,6 +6,7 @@ import AsteroidIcon from "@/components/icons/AsteroidIcon";
 import { Button } from "@/components/ui/button";
 
 import { Calendar } from "@/components/ui/calendar";
+import CustomSheet from "@/components/ui/custom-sheet";
 import {
   Popover,
   PopoverContent,
@@ -17,7 +18,7 @@ import AsteroidList from "./AsteroidList";
 import { useAsteroids } from "@/hooks/useAsteroids";
 import { cn } from "@/lib/utils";
 
-function AsteroidsPanel({ className, onToggleDetail }) {
+function AsteroidsPanel({ className }) {
   const nowDate = useMemo(() => new Date(), []);
 
   const [date, setDate] = useState({
@@ -31,17 +32,18 @@ function AsteroidsPanel({ className, onToggleDetail }) {
   });
 
   return (
-    <>
-      <Button
-        variant="outline"
-        className={className}
-        onClick={() => setOpen((prev) => !prev)}
-      >
+    <CustomSheet>
+      <CustomSheet.Trigger variant="outline" className={className}>
         <AsteroidIcon />
         <span className="hidden md:inline">Asteroids</span>
-      </Button>
-
-      <div className="fixed bottom-0 right-0 hidden">
+      </CustomSheet.Trigger>
+      <CustomSheet.Content className={"flex flex-col"}>
+        <div className="flex flex-col space-y-2 text-center sm:text-left">
+          <h2 className="text-lg font-semibold text-foreground">Asteroids</h2>
+          <p className="text-sm text-muted-foreground">
+            Make changes to your profile here. Click save when you're done.
+          </p>
+        </div>
         <div className="py-4">
           <Popover>
             <PopoverTrigger asChild>
@@ -83,8 +85,8 @@ function AsteroidsPanel({ className, onToggleDetail }) {
         {asteroids && (
           <AsteroidList className={"flex-1"} asteroids={asteroids} />
         )}
-      </div>
-    </>
+      </CustomSheet.Content>
+    </CustomSheet>
   );
 }
 

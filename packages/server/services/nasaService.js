@@ -3,6 +3,9 @@ const axios = require("axios");
 const apiKey = process.env.NASA_API_KEY;
 const baseUrl = process.env.ASTEROIDS_NEOWS_API_BASE_URL;
 
+//TODO: check the X-RateLimit-Remaining to handle rate limit error
+// https://api.nasa.gov/assets/html/authentication.html
+
 /**
  * Maps the raw asteroid object to a simplified structure.
  * @param {Object} asteroid - The asteroid data from the API.
