@@ -6,7 +6,8 @@ import Loader from "@/components/Loader";
 import SolarSystem from "@/components/SolarSystem";
 import Interface from "@/components/Interface";
 
-const Scene = memo(({ setIsLoaded, simulationTimeRef, multiplier }) => {
+const performancePanelEnabled = process.env.PERFORMANCE_PANEL_ENABLED;
+
   // TODO: Deep on near and far
   return (
     <Canvas
@@ -27,9 +28,7 @@ const Scene = memo(({ setIsLoaded, simulationTimeRef, multiplier }) => {
         />
       </Loader>
 
-      {process.env.NODE_ENV === "development" && (
-        <Perf position="bottom-left" />
-      )}
+      {performancePanelEnabled && <Perf position="bottom-right" />}
     </Canvas>
   );
 });

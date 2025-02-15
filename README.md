@@ -3,4 +3,3 @@
 TODO 14/02:
 
 - [ ] style time travel control
-- [ ] add filtering on asteroids tab
