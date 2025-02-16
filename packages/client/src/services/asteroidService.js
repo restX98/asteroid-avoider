@@ -7,7 +7,7 @@ export async function fetchAsteroids({ startDate, endDate }) {
   const response = await axios.get(
     `${apiUrl}/api/asteroids` +
       `?start_date=${format(startDate, "yyyy-MM-dd")}` +
-      `&end_date=${format(startDate, "yyyy-MM-dd")}`
+      `&end_date=${format(endDate, "yyyy-MM-dd")}`
   );
   return response.data;
 }
