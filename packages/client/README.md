@@ -19,5 +19,5 @@ TODO List:
 - [x] add loader
 - [x] move camera with planet
 - [x] add profiling tool to check performance
-- [ ] move solar system logic on separated context
+- [x] move solar system logic on separated context
 - [ ] create test
