@@ -3,9 +3,6 @@ const axios = require("axios");
 const apiKey = process.env.NASA_API_KEY;
 const baseUrl = process.env.ASTEROIDS_NEOWS_API_BASE_URL;
 
-//TODO: check the X-RateLimit-Remaining to handle rate limit error
-// https://api.nasa.gov/assets/html/authentication.html
-
 /**
  * Maps the raw asteroid object to a simplified structure.
  * @param {Object} asteroid - The asteroid data from the API.
@@ -33,18 +30,22 @@ const mapAsteroidData = (asteroid) => ({
 });
 
 /**
- * Retrieves asteroid data for a specific date segment from the NASA API.
+ * Retrieves asteroid data for a specific range date from the NASA API.
  * @param {Object} startDate - start date as strings.
  * @param {Object} endDate - end date as strings.
- * @param {Object} segment - Contains start and end dates as strings.
- * @param {string} apiKey - Your NASA API key.
- * @param {string} baseUrl - The NASA API base URL.
  * @returns {Promise<Object>} - The API response data.
  */
 const getAsteroidDataByDate = async (startDate, endDate) => {
-  const feedUrl = `${baseUrl}/feed?start_date=${startDate}&end_date=${endDate}&api_key=${apiKey}`;
-  const response = await axios.get(feedUrl);
-  return response.data;
+  try {
+    const feedUrl = `${baseUrl}/feed?start_date=${startDate}&end_date=${endDate}&api_key=${apiKey}`;
+    const response = await axios.get(feedUrl);
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.status === 429) {
+      throw new Error("Rate limit exceeded. Please try again later.");
+    }
+    throw new Error("Failed to fetch asteroid data by date");
+  }
 };
 
 /**
@@ -84,14 +85,19 @@ const mapAsteroidDetailData = (data) => {
 /**
  * Calls the NASA API to get detailed information for a single asteroid.
  * @param {string} asteroidId - The ID of the asteroid.
- * @param {string} apiKey - Your NASA API key.
- * @param {string} baseUrl - The base URL for the NASA API.
  * @returns {Promise<Object>} - The raw API response data.
  */
 const getAsteroidDetailById = async (asteroidId) => {
-  const url = `${baseUrl}/neo/${asteroidId}?api_key=${apiKey}`;
-  const response = await axios.get(url);
-  return response.data;
+  try {
+    const detailUrl = `${baseUrl}/neo/${asteroidId}?api_key=${apiKey}`;
+    const response = await axios.get(detailUrl);
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.status === 429) {
+      throw new Error("Rate limit exceeded. Please try again later.");
+    }
+    throw new Error("Failed to fetch asteroid detail");
+  }
 };
 
 module.exports = {

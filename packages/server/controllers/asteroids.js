@@ -39,7 +39,12 @@ const getAsteroids = async (req, res) => {
     res.json(Array.from(asteroidMap.values()));
   } catch (error) {
     console.error("Error fetching asteroids:", error);
-    res.status(500).json({ error: "Failed to retrieve asteroid data" });
+    if (error.message.includes("Rate limit exceeded")) {
+      return res.status(429).json({
+        error: "Rate limit exceeded. Please wait a while and try again.",
+      });
+    }
+    res.status(500).json({ error: "Failed to retrieve asteroids." });
   }
 };
 
