@@ -1,4 +1,5 @@
 const axios = require("axios");
+const redisClient = require("../redisClient");
 
 const apiKey = process.env.NASA_API_KEY;
 const baseUrl = process.env.ASTEROIDS_NEOWS_API_BASE_URL;
@@ -88,10 +89,29 @@ const mapAsteroidDetailData = (data) => {
  * @returns {Promise<Object>} - The raw API response data.
  */
 const getAsteroidDetailById = async (asteroidId) => {
+  const cacheKey = `asteroid:detail:${asteroidId}`;
+
+  try {
+    const cachedData = await redisClient.get(cacheKey);
+    if (cachedData) {
+      return JSON.parse(cachedData);
+    }
+  } catch (cacheError) {
+    console.error("Error retrieving detail from Redis:", cacheError);
+  }
+
   try {
     const detailUrl = `${baseUrl}/neo/${asteroidId}?api_key=${apiKey}`;
     const response = await axios.get(detailUrl);
-    return response.data;
+    const data = mapAsteroidDetailData(response.data);
+
+    try {
+      await redisClient.setEx(cacheKey, 3600, JSON.stringify(data));
+    } catch (cacheError) {
+      console.error("Error saving detail data to Redis:", cacheError);
+    }
+
+    return data;
   } catch (error) {
     if (error.response && error.response.status === 429) {
       throw new Error("Rate limit exceeded. Please try again later.");
@@ -103,6 +123,5 @@ const getAsteroidDetailById = async (asteroidId) => {
 module.exports = {
   mapAsteroidData,
   getAsteroidDataByDate,
-  mapAsteroidDetailData,
   getAsteroidDetailById,
 };

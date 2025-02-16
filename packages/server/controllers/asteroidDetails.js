@@ -1,7 +1,4 @@
-const {
-  getAsteroidDetailById,
-  mapAsteroidDetailData,
-} = require("../services/nasaService");
+const { getAsteroidDetailById } = require("../services/nasaService");
 
 /**
  * Controller to retrieve detailed information for a single asteroid.
@@ -14,12 +11,16 @@ const getAsteroidDetail = async (req, res) => {
       return res.status(400).json({ error: "Asteroid ID is required" });
     }
 
-    const rawData = await getAsteroidDetailById(asteroidId);
-    const mappedData = mapAsteroidDetailData(rawData);
+    const asteroidDetail = await getAsteroidDetailById(asteroidId);
 
-    res.json(mappedData);
+    res.json(asteroidDetail);
   } catch (error) {
     console.error("Error fetching asteroid detail:", error);
+    if (error.message.includes("Rate limit exceeded")) {
+      return res.status(429).json({
+        error: "Rate limit exceeded. Please wait a while and try again.",
+      });
+    }
     res.status(500).json({ error: "Failed to retrieve asteroid detail" });
   }
 };
