@@ -1,10 +1,17 @@
 import React, { createContext, useContext, useRef, useMemo } from "react";
 import { useThree, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+
 import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
-import planetData from "@/data/planets.js";
+
 import Trajectory from "@/lib/Trajectory";
-import { SCALE_FACTOR, ENVIRONMENT } from "@/data/config.js";
+
+import planetData from "@/data/planets.js";
+import {
+  SCALE_FACTOR,
+  ALPHA_DEFAULT,
+  ALPHA_TRANSITION,
+} from "@/data/config.js";
 
 const EPSILON = 1;
 const utilityVector3 = new THREE.Vector3(0, 0, 0);
@@ -88,13 +95,13 @@ export const SolarSystemLogicProvider = ({ children }) => {
 
     if (controlsRef.current) {
       const planet = selectedPlanet?.current || sunRef.current;
-      controlsRef.current.target.lerp(planet.position, 1);
+      controlsRef.current.target.lerp(planet.position, ALPHA_DEFAULT);
 
       utilityVector3.copy(planet.position);
       utilityVector3.add(offsetRef.current);
       camera.position.lerp(
         utilityVector3,
-        isTransitioningRef.current ? 0.25 : 1
+        isTransitioningRef.current ? ALPHA_TRANSITION : ALPHA_DEFAULT
       );
 
       if (

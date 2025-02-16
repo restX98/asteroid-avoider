@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useRef, createRef } from "react";
 
-import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
+import { useSolarSystemLogicContext } from "@/context/SolarSystemLogicContext";
 import OrbitalObject from "@/components/OrbitalObject";
 import Asteroid from "@/components/Asteroid";
 
@@ -9,8 +9,8 @@ import emitter from "@/lib/emitter";
 
 import { SCALE_FACTOR } from "@/data/config.js";
 
-function Asteroids({ asteroidsListRef }) {
-  const { selectedPlanet, setSelectedPlanet } = useSolarSystemInfoContext();
+function Asteroids() {
+  const { asteroidsListRef } = useSolarSystemLogicContext();
 
   const [asteroids, setAsteroids] = useState({});
   const asteroidRefs = useRef({});
@@ -61,7 +61,7 @@ function Asteroids({ asteroidsListRef }) {
         name: asteroidId,
         trajectory,
         color: "grey",
-        radius: 0.001 * SCALE_FACTOR,
+        radius: 0.001 * SCALE_FACTOR, // TODO: scale asteroids in the right way
         objectRef: asteroidRefs.current[asteroidId],
         component: Asteroid,
       };
