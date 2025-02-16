@@ -1,29 +1,29 @@
 import { memo } from "react";
 
+import { useSolarSystemInfoContext } from "@/context/solar-system-info-context";
+import Disposable from "@/components/Disposable";
 import OrbitCurve from "./OrbitCurve";
 import CircleSprite from "./CircleSprite";
-import Disposable from "@/components/Disposable";
 
 const OrbitalObject = memo(
-  ({
-    trajectory,
-    color,
-    radius,
-    objectRef,
-    selectPlanet,
-    component,
-    active,
-  }) => {
+  ({ trajectory, color, radius, objectRef, component }) => {
     const ObjectComponent = component;
+
+    const { selectedPlanet, setSelectedPlanet } = useSolarSystemInfoContext();
+
     return (
       <>
         <group ref={objectRef}>
-          {active && (
+          {selectedPlanet === objectRef && (
             <Disposable>
               <ObjectComponent diameter={radius * 2} />
             </Disposable>
           )}
-          <CircleSprite onClick={() => selectPlanet(objectRef)} />
+          <CircleSprite
+            onClick={() => {
+              setSelectedPlanet(objectRef);
+            }}
+          />
         </group>
 
         <OrbitCurve coords={trajectory.orbitCoords} color={color} />

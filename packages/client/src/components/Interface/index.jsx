@@ -1,8 +1,8 @@
+import { useSolarSystemInfoContext } from "@/context/solar-system-info-context";
 import TimeTravelPanel from "./TimeTravelPanel";
 import AsteroidsPanel from "./AsteroidsPanel";
 import { TopBar, BottomBar } from "./NavBars";
 import BackButton from "./BackButton";
-import { useSolarSystemInfoContext } from "@/context/solar-system-info-context";
 
 function Interface() {
   const { isLoaded } = useSolarSystemInfoContext();

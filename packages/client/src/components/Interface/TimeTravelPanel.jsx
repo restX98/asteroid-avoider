@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 
-import { Slider } from "@/components/ui/slider";
-import { TIME_MAPPING } from "@/data/config";
 import { useSolarSystemInfoContext } from "@/context/solar-system-info-context";
+import { Slider } from "@/components/ui/slider";
+
+import { TIME_MAPPING } from "@/data/config";
 
 function CurrentDate() {
   const { simulationTimeRef } = useSolarSystemInfoContext();
