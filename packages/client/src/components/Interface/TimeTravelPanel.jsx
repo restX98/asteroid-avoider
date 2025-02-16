@@ -3,8 +3,11 @@ import { format } from "date-fns";
 
 import { Slider } from "@/components/ui/slider";
 import { TIME_MAPPING } from "@/data/config";
+import { useSolarSystemInfoContext } from "@/context/solar-system-info-context";
 
-function CurrentDate({ simulationTimeRef }) {
+function CurrentDate() {
+  const { simulationTimeRef } = useSolarSystemInfoContext();
+
   const [displayTime, setDisplayTime] = useState(simulationTimeRef.current);
 
   useEffect(() => {
@@ -17,7 +20,9 @@ function CurrentDate({ simulationTimeRef }) {
   return <span>{format(displayTime, "d/M/y H:mm:ss")}</span>;
 }
 
-const TimeTravelPanel = ({ simulationTimeRef, multiplierRef, className }) => {
+const TimeTravelPanel = ({ className }) => {
+  const { multiplierRef } = useSolarSystemInfoContext();
+
   const [sliderIndex, setSliderIndex] = useState({
     value: 0,
     isForward: 1,
@@ -30,7 +35,7 @@ const TimeTravelPanel = ({ simulationTimeRef, multiplierRef, className }) => {
 
   return (
     <div className="flex flex-col justify-center items-center mx-auto lg:w-1/2 md:w-2/3 w-4/5">
-      <CurrentDate simulationTimeRef={simulationTimeRef} />
+      <CurrentDate />
       <span className="mb-4 text-2xl">
         {sliderIndex.isForward === -1 ? "-" : ""}
         {selected?.label}

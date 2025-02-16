@@ -2,6 +2,7 @@ import { useEffect, Suspense } from "react";
 import { useProgress, Html } from "@react-three/drei";
 
 import { Progress } from "@/components/ui/progress";
+import { useSolarSystemInfoContext } from "@/context/solar-system-info-context";
 
 const ProgressBar = ({ progress }) => {
   return (
@@ -11,7 +12,8 @@ const ProgressBar = ({ progress }) => {
   );
 };
 
-function Loader({ children, setIsLoaded }) {
+function Loader({ children }) {
+  const { setIsLoaded } = useSolarSystemInfoContext();
   const { progress } = useProgress();
 
   useEffect(() => {

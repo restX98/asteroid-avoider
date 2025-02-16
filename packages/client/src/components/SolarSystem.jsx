@@ -7,6 +7,8 @@ import OrbitalObject from "@/components/OrbitalObject";
 import Sun from "@/components/Sun";
 import Asteroids from "@/components/Asteroids";
 
+import { useSolarSystemInfoContext } from "@/context/solar-system-info-context";
+
 import Trajectory from "@/lib/Trajectory";
 import emitter from "@/lib/emitter";
 
@@ -18,7 +20,9 @@ const sunOffset = new THREE.Vector3(0, 0, 5000);
 const defaultOffset = new THREE.Vector3(0, 0, 0.1);
 const utilityVector3 = new THREE.Vector3(0, 0, 0);
 
-function SolarSystem({ simulationTimeRef, multiplierRef }) {
+function SolarSystem() {
+  const { simulationTimeRef, multiplierRef } = useSolarSystemInfoContext();
+
   const controlsRef = useRef();
   const sunRef = useRef();
   const planetRefs = useRef({});
