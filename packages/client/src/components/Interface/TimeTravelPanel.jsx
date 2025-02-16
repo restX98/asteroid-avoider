@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 
-import { useSolarSystemInfoContext } from "@/context/solar-system-info-context";
+import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
 import { Slider } from "@/components/ui/slider";
 
 import { TIME_MAPPING } from "@/data/config";

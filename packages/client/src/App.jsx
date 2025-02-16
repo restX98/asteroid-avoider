@@ -2,7 +2,9 @@ import { memo } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Perf } from "r3f-perf";
 
-import { SolarSystemInfoProvider } from "@/context/solar-system-info-context";
+import { SolarSystemInfoProvider } from "@/context/SolarSystemInfoContext";
+import { SolarSystemLogicProvider } from "@/context/SolarSystemLogicContext";
+
 import Loader from "@/components/Loader";
 import SolarSystem from "@/components/SolarSystem";
 import Interface from "@/components/Interface";
@@ -25,7 +27,9 @@ const Scene = memo(() => {
         }}
       >
         <Loader>
-          <SolarSystem />
+          <SolarSystemLogicProvider>
+            <SolarSystem />
+          </SolarSystemLogicProvider>
         </Loader>
         {performancePanelEnabled && <Perf position="bottom-right" />}
       </Canvas>

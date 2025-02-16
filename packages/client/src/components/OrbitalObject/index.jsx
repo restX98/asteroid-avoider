@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-import { useSolarSystemInfoContext } from "@/context/solar-system-info-context";
+import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
 import Disposable from "@/components/Disposable";
 import OrbitCurve from "./OrbitCurve";
 import CircleSprite from "./CircleSprite";

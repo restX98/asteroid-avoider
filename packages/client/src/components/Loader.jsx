@@ -1,7 +1,7 @@
 import { useEffect, Suspense } from "react";
 import { useProgress, Html } from "@react-three/drei";
 
-import { useSolarSystemInfoContext } from "@/context/solar-system-info-context";
+import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
 import { Progress } from "@/components/ui/progress";
 
 const ProgressBar = ({ progress }) => {

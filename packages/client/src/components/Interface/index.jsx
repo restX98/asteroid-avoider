@@ -1,4 +1,4 @@
-import { useSolarSystemInfoContext } from "@/context/solar-system-info-context";
+import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
 import TimeTravelPanel from "./TimeTravelPanel";
 import AsteroidsPanel from "./AsteroidsPanel";
 import { TopBar, BottomBar } from "./NavBars";

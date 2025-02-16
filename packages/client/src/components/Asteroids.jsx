@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useRef, createRef } from "react";
 
-import { useSolarSystemInfoContext } from "@/context/solar-system-info-context";
+import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
 import OrbitalObject from "@/components/OrbitalObject";
 import Asteroid from "@/components/Asteroid";
 

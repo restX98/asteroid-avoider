@@ -1,5 +1,5 @@
 import { ArrowLeft } from "lucide-react";
-import { useSolarSystemInfoContext } from "@/context/solar-system-info-context";
+import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
 import { cn } from "@/lib/utils";
 
 function BackButton({ className }) {
