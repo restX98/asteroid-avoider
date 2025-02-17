@@ -20,7 +20,11 @@ export function useAsteroidDetail(asteroidId) {
         const data = await fetchAsteroidDetails({ asteroidId });
         setAsteroidDetail(data);
       } catch (err) {
-        setError(err);
+        const { response } = err;
+        setError({
+          status: response?.status,
+          message: response?.data?.error,
+        });
       } finally {
         setLoading(false);
       }
