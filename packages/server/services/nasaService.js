@@ -48,20 +48,24 @@ const getAsteroidDataByDate = async (startDate, endDate) => {
     (date) => `asteroid:feed:${format(date, "yyyy-MM-dd")}`
   );
 
-  try {
-    const cachedResults = await redisClient.mGet(keys);
+  if (redisClient.isReady) {
+    try {
+      const cachedResults = await redisClient.mGet(keys);
 
-    for (let i = 0; i < dates.length; i++) {
-      const date = dates[i];
-      const cachedData = cachedResults[i];
-      if (cachedData) {
-        results[date] = JSON.parse(cachedData);
-      } else {
-        missingDates.push(date);
+      for (let i = 0; i < dates.length; i++) {
+        const date = dates[i];
+        const cachedData = cachedResults[i];
+        if (cachedData) {
+          results[date] = JSON.parse(cachedData);
+        } else {
+          missingDates.push(date);
+        }
       }
+    } catch (cacheError) {
+      console.error("Error retrieving bulk cache:", cacheError);
+      missingDates.push(...dates);
     }
-  } catch (cacheError) {
-    console.error("Error retrieving bulk cache:", cacheError);
+  } else {
     missingDates.push(...dates);
   }
 
@@ -82,14 +86,16 @@ const getAsteroidDataByDate = async (startDate, endDate) => {
           return mapAsteroidData(asteroid);
         });
 
-        try {
-          await redisClient.setEx(
-            `asteroid:feed:${date}`,
-            3600,
-            JSON.stringify(results[date])
-          );
-        } catch (cacheError) {
-          console.error(`Error saving cache for ${date}:`, cacheError);
+        if (redisClient.isReady) {
+          try {
+            await redisClient.setEx(
+              `asteroid:feed:${date}`,
+              3600,
+              JSON.stringify(results[date])
+            );
+          } catch (cacheError) {
+            console.error(`Error saving cache for ${date}:`, cacheError);
+          }
         }
       }
     }
@@ -145,13 +151,15 @@ const mapAsteroidDetailData = (data) => {
 const getAsteroidDetailById = async (asteroidId) => {
   const cacheKey = `asteroid:detail:${asteroidId}`;
 
-  try {
-    const cachedData = await redisClient.get(cacheKey);
-    if (cachedData) {
-      return JSON.parse(cachedData);
+  if (redisClient.isReady) {
+    try {
+      const cachedData = await redisClient.get(cacheKey);
+      if (cachedData) {
+        return JSON.parse(cachedData);
+      }
+    } catch (cacheError) {
+      console.error("Error retrieving detail from Redis:", cacheError);
     }
-  } catch (cacheError) {
-    console.error("Error retrieving detail from Redis:", cacheError);
   }
 
   try {
@@ -159,10 +167,12 @@ const getAsteroidDetailById = async (asteroidId) => {
     const response = await axios.get(detailUrl);
     const data = mapAsteroidDetailData(response.data);
 
-    try {
-      await redisClient.setEx(cacheKey, 3600, JSON.stringify(data));
-    } catch (cacheError) {
-      console.error("Error saving detail data to Redis:", cacheError);
+    if (redisClient.isReady) {
+      try {
+        await redisClient.setEx(cacheKey, 3600, JSON.stringify(data));
+      } catch (cacheError) {
+        console.error("Error saving detail data to Redis:", cacheError);
+      }
     }
 
     return data;
