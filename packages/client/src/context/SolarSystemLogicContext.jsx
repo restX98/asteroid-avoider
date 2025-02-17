@@ -7,11 +7,7 @@ import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
 import Trajectory from "@/lib/Trajectory";
 
 import planetData from "@/data/planets.js";
-import {
-  SCALE_FACTOR,
-  ALPHA_DEFAULT,
-  ALPHA_TRANSITION,
-} from "@/data/config.js";
+import { SCALE_FACTOR, ALPHA_DEFAULT, ALPHA_TRANSITION } from "@/data/config";
 
 const EPSILON = 1;
 const utilityVector3 = new THREE.Vector3(0, 0, 0);

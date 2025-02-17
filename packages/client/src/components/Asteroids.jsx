@@ -7,7 +7,7 @@ import Asteroid from "@/components/Asteroid";
 import Trajectory from "@/lib/Trajectory";
 import emitter from "@/lib/emitter";
 
-import { SCALE_FACTOR } from "@/data/config.js";
+import { SCALE_FACTOR } from "@/data/config";
 
 function Asteroids() {
   const { asteroidsListRef } = useSolarSystemLogicContext();

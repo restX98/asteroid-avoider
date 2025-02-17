@@ -4,6 +4,11 @@ export const ALPHA_TRANSITION = 0.25;
 
 export const MAX_RANGE_DATE = 31;
 
+export const CAMERA = {
+  near: 0.001,
+  far: 10000,
+};
+
 export const ENVIRONMENT = {
   file: "/textures/hiptyc_2020_4k.exr",
   backgroundBlurriness: 0,

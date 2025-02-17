@@ -12,7 +12,7 @@ import { useRef, memo } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useAutoScale } from "@/hooks/useAutoScale";
 
-import { SCALE_FACTOR, SUN } from "@/data/config.js";
+import { SCALE_FACTOR, SUN } from "@/data/config";
 
 function Model({ diameter, sunRef }) {
   const group = sunRef || useRef();

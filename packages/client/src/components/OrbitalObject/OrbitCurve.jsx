@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import * as THREE from "three";
 
-import { SCALE_FACTOR } from "@/data/config.js";
+import { SCALE_FACTOR } from "@/data/config";
 
 const OrbitCurve = ({ coords, color = 0x00ff00 }) => {
   const geometry = useMemo(() => {

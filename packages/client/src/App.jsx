@@ -9,6 +9,8 @@ import Loader from "@/components/Loader";
 import SolarSystem from "@/components/SolarSystem";
 import Interface from "@/components/Interface";
 
+import { CAMERA } from "@/data/config";
+
 const performancePanelEnabled =
   import.meta.env.VITE_PERFORMANCE_PANEL === "true";
 
@@ -18,8 +20,8 @@ const Scene = memo(() => {
     <div className="w-screen h-screen">
       <Canvas
         camera={{
-          near: 0.001,
-          far: 10000000,
+          near: CAMERA.near,
+          far: CAMERA.far,
         }}
         gl={{
           logarithmicDepthBuffer: true,
