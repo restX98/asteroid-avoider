@@ -1,35 +1,51 @@
-import { useState, useMemo } from "react";
-import { addDays, format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
-
-import AsteroidIcon from "@/components/icons/AsteroidIcon";
-import { Button } from "@/components/ui/button";
-
-import CustomSheet from "@/components/ui/custom-sheet";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-
-import AsteroidList from "./AsteroidList";
+import { useState, useMemo, useEffect, useRef } from "react";
 
 import { useAsteroids } from "@/hooks/useAsteroids";
-import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
+
+import AsteroidIcon from "@/components/icons/AsteroidIcon";
+import CustomSheet from "@/components/ui/custom-sheet";
+import RangeDatePicker from "@/components/ui/range-date-picker";
+import AsteroidList from "./AsteroidList";
 
 function AsteroidsPanel({ className }) {
+  const { toast } = useToast();
+
   const nowDate = useMemo(() => new Date(), []);
 
-  const [date, setDate] = useState({
+  const [dates, setDates] = useState({
     from: nowDate,
-    to: addDays(nowDate, 1),
+    to: nowDate,
   });
 
-  const { asteroids, loading, error } = useAsteroids({
-    startDate: date?.from,
-    endDate: date?.to,
+  const rollbackDates = useRef();
+
+  const { asteroids, error } = useAsteroids({
+    startDate: dates.from,
+    endDate: dates.to,
   });
+
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: "Error fetching asteroids list",
+        description:
+          error?.message || "An error occurred while fetching asteroids list.",
+      });
+      setDates({
+        from: rollbackDates.current.from,
+        to: rollbackDates.current.to,
+      });
+      return;
+    }
+  }, [error]);
+
+  useEffect(() => {
+    rollbackDates.current = {
+      from: dates.from,
+      to: dates.to,
+    };
+  }, [asteroids]);
 
   return (
     <CustomSheet>
@@ -39,44 +55,9 @@ function AsteroidsPanel({ className }) {
       </CustomSheet.Trigger>
       <CustomSheet.Content className="flex flex-col">
         <h2 className="text-lg font-semibold text-foreground">Asteroids</h2>
-        <div className="py-2">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                id="date"
-                variant="outline"
-                className={cn(
-                  "w-full justify-start text-left font-normal",
-                  !date && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon />
-                {date?.from && date.to ? (
-                  <>
-                    {format(date.from, "LLL dd, y")} -{" "}
-                    {format(date.to, "LLL dd, y")}
-                  </>
-                ) : (
-                  <span>Pick a date</span>
-                )}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                initialFocus
-                mode="range"
-                defaultMonth={date?.from}
-                selected={date}
-                onSelect={(rangeDate) => {
-                  if (!rangeDate) return;
-                  setDate({ from: rangeDate.from, to: rangeDate.to });
-                }}
-                numberOfMonths={1}
-                max={31}
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
+
+        <RangeDatePicker dates={dates} setDates={setDates} />
+
         {asteroids && <AsteroidList className="flex-1" asteroids={asteroids} />}
       </CustomSheet.Content>
     </CustomSheet>

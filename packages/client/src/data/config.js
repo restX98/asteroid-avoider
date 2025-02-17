@@ -2,6 +2,8 @@ export const SCALE_FACTOR = 1000;
 export const ALPHA_DEFAULT = 1;
 export const ALPHA_TRANSITION = 0.25;
 
+export const MAX_RANGE_DATE = 31;
+
 export const ENVIRONMENT = {
   file: "/textures/hiptyc_2020_4k.exr",
   backgroundBlurriness: 0,
