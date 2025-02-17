@@ -5,7 +5,7 @@ const redisClient = require("../redisClient");
 const { splitDate, groupDatesInRanges } = require("../utils/dateUtils");
 
 const apiKey = process.env.NASA_API_KEY;
-const baseUrl = process.env.ASTEROIDS_NEOWS_API_BASE_URL;
+const baseUrl = "https://api.nasa.gov/neo/rest/v1";
 
 /**
  * Maps the raw asteroid object to a simplified structure.
