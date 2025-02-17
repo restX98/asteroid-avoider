@@ -1,18 +1,39 @@
 import { useState, useEffect } from "react";
+
 import { useAsteroidDetail } from "@/hooks/useAsteroidDetail";
+import { useToast } from "@/hooks/use-toast";
+
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
 import emitter from "@/lib/emitter";
 
 function AsteroidListItem({ asteroid }) {
-  const [checked, setChecked] = useState(false);
-  const [asteroidId, setAsteroidId] = useState(null);
+  const [asteroidState, setAsteroidState] = useState({
+    checked: false,
+    asteroidId: null,
+  });
 
-  const { asteroidDetail, loading, error } = useAsteroidDetail(asteroidId);
+  const { toast } = useToast();
+  const { asteroidDetail, error } = useAsteroidDetail(asteroidState.asteroidId);
 
   useEffect(() => {
-    if (checked) {
+    if (error) {
+      toast({
+        title: "Error fetching asteroid details",
+        description:
+          error?.message ||
+          "An error occurred while fetching asteroid details.",
+      });
+      setAsteroidState({
+        checked: false,
+        asteroidId: null,
+      });
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (asteroidState.checked) {
       asteroidDetail &&
         emitter.emit("addAsteroid", {
           asteroidId: asteroid.id,
@@ -29,7 +50,7 @@ function AsteroidListItem({ asteroid }) {
         asteroidId: asteroid.id,
       });
     };
-  }, [checked, asteroidDetail]);
+  }, [asteroidState, asteroidDetail]);
 
   return (
     <div className="px-4 py-3 bg-card text-card-foreground shadow-sm">
@@ -73,11 +94,13 @@ function AsteroidListItem({ asteroid }) {
       <div className="mt-3 flex items-center space-x-2">
         <Switch
           id={asteroid.id}
-          checked={checked}
-          onCheckedChange={(value) => {
-            setChecked(value);
-            setAsteroidId(asteroid.id);
-          }}
+          checked={asteroidState.checked}
+          onCheckedChange={(value) =>
+            setAsteroidState({
+              checked: value,
+              asteroidId: asteroid.id,
+            })
+          }
           className="w-10 h-6 bg-muted p-1 data-[state=checked]:bg-chart-1 transition-colors"
         />
         <Label htmlFor={asteroid.id} className="text-sm">

@@ -3,6 +3,7 @@ import TimeTravelPanel from "./TimeTravelPanel";
 import AsteroidsPanel from "./AsteroidsPanel";
 import { TopBar, BottomBar } from "./NavBars";
 import BackButton from "./BackButton";
+import { Toaster } from "@/components/ui/toaster";
 
 function Interface() {
   const { isLoaded } = useSolarSystemInfoContext();
@@ -19,6 +20,8 @@ function Interface() {
         <BottomBar className="mb-6 pointer-events-none">
           <TimeTravelPanel className="pointer-events-auto" />
         </BottomBar>
+
+        <Toaster />
       </>
     )
   );

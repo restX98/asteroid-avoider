@@ -20,4 +20,6 @@ TODO List:
 - [x] move camera with planet
 - [x] add profiling tool to check performance
 - [x] move solar system logic on separated context
+- [x] handle asteroid detail error
+- [ ] handle asteroid list error
 - [ ] create test
