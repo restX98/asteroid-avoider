@@ -1,3 +1,5 @@
+const { addDays } = require("date-fns");
+
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
 /**
@@ -38,38 +40,51 @@ const validateDates = (start_date, end_date) => {
 };
 
 /**
- * Formats a Date object into YYYY-MM-DD.
- * @param {Date} date - The Date object.
- * @returns {string} - Formatted date string.
+ * Returns an array of date strings (YYYY-MM-DD) from start to end (inclusive).
+ * @param {Date} start - Start date in YYYY-MM-DD format.
+ * @param {Date} end - End date in YYYY-MM-DD format.
+ * @returns {Date[]} Array of date strings.
  */
-const formatDate = (date) => date.toISOString().split("T")[0];
-
-/**
- * Splits the overall date range into segments of at most maxDays days.
- * @param {Date} startDate - Start of the range.
- * @param {Date} endDate - End of the range.
- * @param {number} maxDays - Maximum number of days per segment.
- * @returns {Array} - Array of objects with start and end properties.
- */
-const splitDateRange = (startDate, endDate, maxDays = 7) => {
-  const segments = [];
-  let currentStart = new Date(startDate);
-
-  while (currentStart <= endDate) {
-    let currentEnd = new Date(currentStart);
-    currentEnd.setDate(currentEnd.getDate() + maxDays - 1);
-    if (currentEnd > endDate) {
-      currentEnd = new Date(endDate);
-    }
-    segments.push({
-      start: formatDate(currentStart),
-      end: formatDate(currentEnd),
-    });
-    currentStart = new Date(currentEnd);
-    currentStart.setDate(currentStart.getDate() + 1);
+const splitDate = (start, end) => {
+  const dates = [];
+  let currentDate = start;
+  while (currentDate <= end) {
+    dates.push(currentDate);
+    currentDate = addDays(currentDate, 1);
   }
-
-  return segments;
+  return dates;
 };
 
-module.exports = { validateDates, formatDate, splitDateRange };
+/**
+ * Groups an array of dates into ranges where the maximum span within each range is 7 days.
+ *
+ * @param {Date[]} dates - An array of Date objects (must be valid JavaScript Date instances).
+ * @returns {{ min: Date, max: Date }[]} An array of objects representing date ranges,
+ *                                       each with `min` (start date) and `max` (end date).
+ */
+function groupDatesInRanges(dates) {
+  dates.sort((a, b) => a - b);
+
+  const ranges = [];
+  let i = 0;
+  while (i < dates.length) {
+    const startDate = dates[i];
+    const rangeLimit = addDays(startDate, 7);
+
+    let j = i;
+    while (j < dates.length && dates[j] <= rangeLimit) {
+      j++;
+    }
+
+    ranges.push({ min: startDate, max: dates[j - 1] });
+    i = j;
+  }
+
+  return ranges;
+}
+
+module.exports = {
+  validateDates,
+  splitDate,
+  groupDatesInRanges,
+};

@@ -1,5 +1,8 @@
 const axios = require("axios");
+const { format } = require("date-fns");
+
 const redisClient = require("../redisClient");
+const { splitDate, groupDatesInRanges } = require("../utils/dateUtils");
 
 const apiKey = process.env.NASA_API_KEY;
 const baseUrl = process.env.ASTEROIDS_NEOWS_API_BASE_URL;
@@ -37,10 +40,61 @@ const mapAsteroidData = (asteroid) => ({
  * @returns {Promise<Object>} - The API response data.
  */
 const getAsteroidDataByDate = async (startDate, endDate) => {
+  const dates = splitDate(startDate, endDate);
+  const results = {};
+  const missingDates = [];
+
+  const keys = dates.map(
+    (date) => `asteroid:feed:${format(date, "yyyy-MM-dd")}`
+  );
+
   try {
-    const feedUrl = `${baseUrl}/feed?start_date=${startDate}&end_date=${endDate}&api_key=${apiKey}`;
-    const response = await axios.get(feedUrl);
-    return response.data;
+    const cachedResults = await redisClient.mGet(keys);
+
+    for (let i = 0; i < dates.length; i++) {
+      const date = dates[i];
+      const cachedData = cachedResults[i];
+      if (cachedData) {
+        results[date] = JSON.parse(cachedData);
+      } else {
+        missingDates.push(date);
+      }
+    }
+  } catch (cacheError) {
+    console.error("Error retrieving bulk cache:", cacheError);
+    missingDates.push(...dates);
+  }
+
+  if (missingDates.length === 0) return results;
+
+  try {
+    const ranges = groupDatesInRanges(missingDates);
+
+    for (const { min, max } of ranges) {
+      const feedUrl = `${baseUrl}/feed?start_date=${format(
+        min,
+        "yyyy-MM-dd"
+      )}&end_date=${format(max, "yyyy-MM-dd")}&api_key=${apiKey}`;
+      const response = await axios.get(feedUrl);
+      const nearEarthObjectsGroupedByDate = response.data.near_earth_objects;
+      for (const date in nearEarthObjectsGroupedByDate) {
+        results[date] = nearEarthObjectsGroupedByDate[date].map((asteroid) => {
+          return mapAsteroidData(asteroid);
+        });
+
+        try {
+          await redisClient.setEx(
+            `asteroid:feed:${date}`,
+            3600,
+            JSON.stringify(results[date])
+          );
+        } catch (cacheError) {
+          console.error(`Error saving cache for ${date}:`, cacheError);
+        }
+      }
+    }
+
+    return results;
   } catch (error) {
     if (error.response && error.response.status === 429) {
       throw new Error("Rate limit exceeded. Please try again later.");
@@ -121,7 +175,6 @@ const getAsteroidDetailById = async (asteroidId) => {
 };
 
 module.exports = {
-  mapAsteroidData,
   getAsteroidDataByDate,
   getAsteroidDetailById,
 };

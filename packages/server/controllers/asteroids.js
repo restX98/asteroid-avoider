@@ -1,8 +1,5 @@
-const { validateDates, splitDateRange } = require("../utils/dateUtils");
-const {
-  mapAsteroidData,
-  getAsteroidDataByDate,
-} = require("../services/nasaService");
+const { validateDates } = require("../utils/dateUtils");
+const { getAsteroidDataByDate } = require("../services/nasaService");
 
 /**
  * Controller to get asteroids. It validates dates, splits date ranges,
@@ -17,26 +14,13 @@ const getAsteroids = async (req, res) => {
     } catch (err) {
       return res.status(err.status || 400).json({ error: err.message });
     }
-    const dateSegments = splitDateRange(startDate, endDate);
 
-    const segmentPromises = dateSegments.map(({ start, end }) =>
-      getAsteroidDataByDate(start, end)
+    const asteroidsDataByDate = await getAsteroidDataByDate(startDate, endDate);
+    const asteroidsList = Object.keys(asteroidsDataByDate).flatMap(
+      (date) => asteroidsDataByDate[date]
     );
-    const responses = await Promise.all(segmentPromises);
 
-    const asteroidMap = new Map();
-    responses.forEach((data) => {
-      const nearEarthObjects = data.near_earth_objects;
-      Object.keys(nearEarthObjects).forEach((date) => {
-        nearEarthObjects[date].forEach((asteroid) => {
-          if (!asteroidMap.has(asteroid.id)) {
-            asteroidMap.set(asteroid.id, mapAsteroidData(asteroid));
-          }
-        });
-      });
-    });
-
-    res.json(Array.from(asteroidMap.values()));
+    res.json(asteroidsList);
   } catch (error) {
     console.error("Error fetching asteroids:", error);
     if (error.message.includes("Rate limit exceeded")) {
