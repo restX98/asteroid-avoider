@@ -69,6 +69,7 @@ function AsteroidsPanel({ className }) {
                 selected={date}
                 onSelect={setDate}
                 numberOfMonths={1}
+                max={31}
               />
             </PopoverContent>
           </Popover>
