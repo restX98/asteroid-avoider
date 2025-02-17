@@ -9,7 +9,8 @@ import Loader from "@/components/Loader";
 import SolarSystem from "@/components/SolarSystem";
 import Interface from "@/components/Interface";
 
-const performancePanelEnabled = import.meta.env.VITE_PERFORMANCE_PANEL;
+const performancePanelEnabled =
+  import.meta.env.VITE_PERFORMANCE_PANEL === "true";
 
 const Scene = memo(() => {
   // TODO: Deep on near and far
