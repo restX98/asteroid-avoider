@@ -27,8 +27,8 @@ function AsteroidsPanel({ className }) {
   });
 
   const { asteroids, loading, error } = useAsteroids({
-    startDate: date.from,
-    endDate: date.to,
+    startDate: date?.from,
+    endDate: date?.to,
   });
 
   return (
@@ -67,7 +67,10 @@ function AsteroidsPanel({ className }) {
                 mode="range"
                 defaultMonth={date?.from}
                 selected={date}
-                onSelect={setDate}
+                onSelect={(rangeDate) => {
+                  if (!rangeDate) return;
+                  setDate({ from: rangeDate.from, to: rangeDate.to });
+                }}
                 numberOfMonths={1}
                 max={31}
               />
