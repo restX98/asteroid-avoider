@@ -7,6 +7,8 @@ const { splitDate, groupDatesInRanges } = require("../utils/dateUtils");
 const apiKey = process.env.NASA_API_KEY;
 const baseUrl = "https://api.nasa.gov/neo/rest/v1";
 
+const AU_IN_METERS = 149597870700;
+
 /**
  * Maps the raw asteroid object to a simplified structure.
  * @param {Object} asteroid - The asteroid data from the API.
@@ -114,25 +116,32 @@ const getAsteroidDataByDate = async (startDate, endDate) => {
  * @param {Object} data - The raw asteroid data from the API.
  * @returns {Object} - An object containing the mapped parameters.
  * @throws {Error} - If orbital_data is missing.
- *
- * Mapped fields:
- *   - name: The asteroid name.
- *   - meanAnomaly: Mean anomaly at epoch J2000.0 (in degree).
- *   - orbitalPeriod : Orbital period.
- *   - eccentricity : Orbital eccentricity.
- *   - semiMajorAxis : Semi-major axis.
- *   - ascendingNodeLongitude : Longitude of ascending node (in degree).
- *   - perihelionArgument : Argument of periapsis (in degree).
- *   - inclination : Inclination (in degree).
  */
 const mapAsteroidDetailData = (data) => {
-  //TODO: Extends with other details to show information on frontend
-  if (!data.orbital_data) {
-    throw new Error("Orbital data not available");
-  }
   const orbitalData = data.orbital_data;
+
+  const estimatedDiameterMin = Number(
+    data.estimated_diameter.meters.estimated_diameter_min
+  );
+  const estimatedDiameterMax = Number(
+    data.estimated_diameter.meters.estimated_diameter_max
+  );
+
   return {
+    id: data.id,
     name: data.name,
+    estimatedDiameter: {
+      meters: {
+        min: estimatedDiameterMin,
+        max: estimatedDiameterMax,
+        unit: "m",
+      },
+      astronomicalUnit: {
+        min: estimatedDiameterMin / AU_IN_METERS,
+        max: estimatedDiameterMax / AU_IN_METERS,
+        unit: "AU",
+      },
+    },
     meanAnomaly: Number(orbitalData.mean_anomaly),
     orbitalPeriod: Number(orbitalData.orbital_period),
     eccentricity: Number(orbitalData.eccentricity),
