@@ -59,7 +59,7 @@ function Asteroids() {
 
       return {
         name: asteroidId,
-        orbitCoords: trajectory.orbitCoords,
+        trajectory,
         color: "grey",
         radius: 0.001 * SCALE_FACTOR, // TODO: scale asteroids in the right way
         objectRef: asteroidRefs.current[asteroidId],
@@ -74,7 +74,7 @@ function Asteroids() {
         ({ name, trajectory, color, radius, model, objectRef, component }) => (
           <OrbitalObject
             key={name}
-            trajectory={trajectory}
+            orbitCoords={trajectory.orbitCoords}
             color={color}
             radius={radius}
             model={model}
