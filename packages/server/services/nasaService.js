@@ -17,6 +17,7 @@ const AU_IN_METERS = 149597870691;
 const mapAsteroidData = (asteroid) => ({
   id: asteroid.id,
   name: asteroid.name,
+  nasaJplUrl: `${asteroid.nasa_jpl_url}&view=OVDC`,
   diameter: {
     min: Number(asteroid.estimated_diameter.meters.estimated_diameter_min),
     max: Number(asteroid.estimated_diameter.meters.estimated_diameter_max),
