@@ -17,8 +17,8 @@ const CircleSprite = ({ color, onClick }) => {
     ctx.beginPath();
     const arc = PLANET_OUTLINE.arc;
     ctx.arc(arc.centerX, arc.centerY, arc.radius, 0, Math.PI * 2);
-    ctx.lineWidth = 15;
-    ctx.strokeStyle = `rgb(255 0 0)`;
+    ctx.lineWidth = PLANET_OUTLINE.line.width;
+    ctx.strokeStyle = color;
     ctx.stroke();
 
     return new THREE.CanvasTexture(canvas);

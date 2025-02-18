@@ -13,7 +13,7 @@ import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
 
 import Trajectory from "@/lib/Trajectory";
 
-import planetData from "@/data/planets.js";
+import planetData from "@/data/planets";
 import { SCALE_FACTOR, TRANSITION, SUN, ORBIT_CONTROL } from "@/data/config";
 
 const utilityVector3 = new THREE.Vector3(0, 0, 0);

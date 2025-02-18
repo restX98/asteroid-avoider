@@ -44,8 +44,9 @@ export const PLANET_OUTLINE = {
     radius: 118,
   },
   line: {
-    lineWidth: 15,
+    width: 15,
   },
+  defaultColor: "white",
 };
 
 export const TIME_MAPPING = [

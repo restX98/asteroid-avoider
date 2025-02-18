@@ -3,7 +3,7 @@ import * as THREE from "three";
 
 import { SCALE_FACTOR } from "@/data/config";
 
-const OrbitCurve = ({ coords, color = 0x00ff00 }) => {
+const OrbitCurve = ({ coords, color }) => {
   const geometry = useMemo(() => {
     const pts = [];
     for (let i = 0; i < coords.length; i++) {
