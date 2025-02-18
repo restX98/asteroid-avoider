@@ -1,21 +1,21 @@
-export const SCALE_FACTOR = 1000;
+export const SCALE_FACTOR = 1000000000;
 
 export const TRANSITION = {
   alphaDefault: 1,
   alpha: 0.25,
-  littleEpsilon: 0.01,
-  bigEpsilon: 1,
+  bigEpsilon: 1e-2 * SCALE_FACTOR,
+  littleEpsilonScalar: 1.3,
 };
 
 export const MAX_RANGE_DATE = 31;
 
 export const CAMERA = {
-  near: 0.0001,
-  far: 100000,
+  near: 3e-12 * SCALE_FACTOR,
+  far: 100 * SCALE_FACTOR,
 };
 
 export const ORBIT_CONTROL = {
-  maxDistance: 50000,
+  maxDistance: 50 * SCALE_FACTOR,
   minDistanceScalar: 1.2,
 };
 

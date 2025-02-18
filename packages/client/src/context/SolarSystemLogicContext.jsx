@@ -17,8 +17,8 @@ import planetData from "@/data/planets";
 import { SCALE_FACTOR, TRANSITION, SUN, ORBIT_CONTROL } from "@/data/config";
 
 const utilityVector3 = new THREE.Vector3(0, 0, 0);
-const sunOffset = new THREE.Vector3(0, 0, 5000);
-const defaultOffset = new THREE.Vector3(0, 0.2, 1);
+const initialOffset = new THREE.Vector3(0, 0, 5 * SCALE_FACTOR);
+const relativeOffset = new THREE.Vector3(0, 0.4, 2);
 
 const SolarSystemLogicContext = createContext();
 
@@ -30,7 +30,8 @@ export const SolarSystemLogicProvider = ({ children }) => {
   const sunRef = useRef();
   const planetRefs = useRef({});
   const asteroidsListRef = useRef([]);
-  const offsetRef = useRef(sunOffset.clone());
+
+  const offsetRef = useRef(initialOffset.clone());
   const isTransitioningRef = useRef(false);
   const epsilonRef = useRef(TRANSITION.bigEpsilon);
 
@@ -38,14 +39,15 @@ export const SolarSystemLogicProvider = ({ children }) => {
     if (!selectedPlanet) {
       controlsRef.current.minDistance =
         SUN.radius * SCALE_FACTOR * ORBIT_CONTROL.minDistanceScalar;
-      offsetRef.current.copy(sunOffset);
+      offsetRef.current.copy(initialOffset);
       epsilonRef.current = TRANSITION.bigEpsilon;
     } else {
       controlsRef.current.minDistance =
         selectedPlanet.radius * ORBIT_CONTROL.minDistanceScalar;
-      offsetRef.current.copy(defaultOffset);
-      offsetRef.current.multiplyScalar(selectedPlanet.radius * 2);
-      epsilonRef.current = TRANSITION.littleEpsilon;
+      offsetRef.current.copy(relativeOffset);
+      offsetRef.current.multiplyScalar(selectedPlanet.radius);
+      epsilonRef.current =
+        selectedPlanet.radius * TRANSITION.littleEpsilonScalar;
     }
     isTransitioningRef.current = true;
   }, [selectedPlanet]);

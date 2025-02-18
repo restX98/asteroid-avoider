@@ -15,7 +15,6 @@ const performancePanelEnabled =
   import.meta.env.VITE_PERFORMANCE_PANEL === "true";
 
 const Scene = memo(() => {
-  // TODO: Deep on near and far
   return (
     <div className="w-screen h-screen">
       <Canvas

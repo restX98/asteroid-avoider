@@ -61,7 +61,8 @@ function Asteroids() {
         name: asteroidId,
         trajectory,
         color: "grey",
-        radius: 0.001 * SCALE_FACTOR, // TODO: scale asteroids in the right way
+        radius:
+          (data.estimatedDiameter.astronomicalUnit.max * SCALE_FACTOR) / 2,
         objectRef: asteroidRefs.current[asteroidId],
         component: Asteroid,
       };
