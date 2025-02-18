@@ -54,13 +54,21 @@ function AsteroidListItem({ asteroid }) {
 
   return (
     <div className="px-4 py-3 bg-card text-card-foreground shadow-sm">
-      <div className="mb-2">
+      <div className="flex justify-between items-center mb-2">
         <h4 className="text-lg font-bold text-color-900">
           {asteroid.name}{" "}
           <span className="text-sm font-normal text-muted-foreground">
             ID: {asteroid.id}
           </span>
         </h4>
+        <a
+          className="flex items-center gap-1 text-sm text-blue-500"
+          href={asteroid.nasaJplUrl}
+          target="_blank"
+        >
+          <img className="h-6" src="/nasa-logo.svg" nasa-alt="logo" />
+          Compare Orbit
+        </a>
       </div>
 
       <div className="text-sm space-y-1">

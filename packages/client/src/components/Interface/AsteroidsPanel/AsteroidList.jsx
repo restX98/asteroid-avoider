@@ -109,7 +109,7 @@ function AsteroidList({ className, asteroids }) {
         {filteredAsteroids.map((asteroid) => (
           <div key={asteroid.id} className={!asteroid.visible ? "hidden" : ""}>
             <AsteroidListItem asteroid={asteroid} />
-            <Separator className="my-2 last:hidden" />
+            <Separator />
           </div>
         ))}
       </ScrollArea>

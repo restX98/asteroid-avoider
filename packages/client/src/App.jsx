@@ -33,7 +33,7 @@ const Scene = memo(() => {
             <SolarSystem />
           </SolarSystemLogicProvider>
         </Loader>
-        {performancePanelEnabled && <Perf position="bottom-right" />}
+        {performancePanelEnabled && <Perf position="bottom-left" />}
       </Canvas>
     </div>
   );
