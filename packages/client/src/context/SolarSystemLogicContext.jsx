@@ -30,10 +30,13 @@ export const SolarSystemLogicProvider = ({ children }) => {
   const sunRef = useRef();
   const planetRefs = useRef({});
   const asteroidsListRef = useRef([]);
+  const planetsRef = useRef([]);
 
   const offsetRef = useRef(initialOffset.clone());
   const isTransitioningRef = useRef(false);
   const epsilonRef = useRef(TRANSITION.bigEpsilon);
+
+  const { camera } = useThree();
 
   useEffect(() => {
     if (!selectedPlanet) {
@@ -52,54 +55,43 @@ export const SolarSystemLogicProvider = ({ children }) => {
     isTransitioningRef.current = true;
   }, [selectedPlanet]);
 
-  const {
-    camera,
-    gl: { domElement },
-  } = useThree();
+  planetsRef.current = useMemo(
+    () =>
+      Object.keys(planetData).map((planetKey) => {
+        const data = planetData[planetKey];
+        const trajectory = new Trajectory(
+          planetKey,
+          data.mean_anomaly,
+          data.orbital_period,
+          data.eccentricity,
+          data.semi_major_axis,
+          data.ascending_node_longitude,
+          data.perihelion_argument,
+          data.inclination
+        );
 
-  const planets = useMemo(() =>
-    Object.keys(planetData).map((planetKey) => {
-      const data = planetData[planetKey];
-      const trajectory = new Trajectory(
-        planetKey,
-        data.mean_anomaly,
-        data.orbital_period,
-        data.eccentricity,
-        data.semi_major_axis,
-        data.ascending_node_longitude,
-        data.perihelion_argument,
-        data.inclination
-      );
+        if (!planetRefs.current[planetKey]) {
+          planetRefs.current[planetKey] = createRef();
+        }
 
-      if (!planetRefs.current[planetKey]) {
-        planetRefs.current[planetKey] = createRef();
-      }
-
-      return {
-        name: planetKey,
-        trajectory,
-        color: data.color,
-        radius: data.radius * SCALE_FACTOR,
-        objectRef: planetRefs.current[planetKey],
-        component: data.component,
-      };
-    })
+        return {
+          name: planetKey,
+          trajectory,
+          color: data.color,
+          radius: data.radius * SCALE_FACTOR,
+          objectRef: planetRefs.current[planetKey],
+          component: data.component,
+        };
+      }),
+    []
   );
-
-  const orbitOnChange = () => {
-    if (!isTransitioningRef.current) {
-      const planet = selectedPlanet?.ref.current || sunRef.current;
-      offsetRef.current.copy(camera.position);
-      offsetRef.current.sub(planet.position);
-    }
-  };
 
   useFrame((_, delta) => {
     simulationTimeRef.current = new Date(
       simulationTimeRef.current.getTime() + delta * multiplierRef.current * 1000
     );
 
-    [...planets, ...asteroidsListRef.current].forEach(
+    [...planetsRef.current, ...asteroidsListRef.current].forEach(
       ({ trajectory, objectRef }) => {
         const { x, y, z } = trajectory.getCoordinatesByDate(
           simulationTimeRef.current
@@ -134,16 +126,17 @@ export const SolarSystemLogicProvider = ({ children }) => {
     }
   });
 
-  const logicValue = {
-    controlsRef,
-    sunRef,
-    planetRefs,
-    asteroidsListRef,
-    planets,
-    camera,
-    domElement,
-    orbitOnChange,
-  };
+  const logicValue = useMemo(() => {
+    return {
+      controlsRef,
+      sunRef,
+      planetRefs,
+      asteroidsListRef,
+      planetsRef,
+      offsetRef,
+      isTransitioningRef,
+    };
+  }, []);
 
   return (
     <SolarSystemLogicContext.Provider value={logicValue}>

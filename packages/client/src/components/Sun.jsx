@@ -50,7 +50,9 @@ function Model({ diameter, sunRef }) {
 
 useGLTF.preload("models/sun-transformed.glb");
 
-const Sun = memo(({ sunRef }) => {
+function Sun({ sunRef }) {
+  console.count("Rendering: Sun");
+
   const { radius, position, intensity, decay } = SUN;
   return (
     <>
@@ -58,6 +60,6 @@ const Sun = memo(({ sunRef }) => {
       <pointLight position={position} intensity={intensity} decay={decay} />
     </>
   );
-});
+}
 
 export default Sun;

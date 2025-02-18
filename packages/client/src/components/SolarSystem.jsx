@@ -1,15 +1,16 @@
-import { Environment, OrbitControls } from "@react-three/drei";
+import { memo } from "react";
+import { Environment } from "@react-three/drei";
 
 import { useSolarSystemLogicContext } from "@/context/SolarSystemLogicContext";
+import OrbitControlHandler from "@/components/OrbitControlsHandler";
 import OrbitalObject from "@/components/OrbitalObject";
 import Sun from "@/components/Sun";
 import Asteroids from "@/components/Asteroids";
 
-import { ENVIRONMENT, ORBIT_CONTROL } from "@/data/config";
+import { ENVIRONMENT } from "@/data/config";
 
 function SolarSystem() {
-  const { controlsRef, sunRef, planets, camera, domElement, orbitOnChange } =
-    useSolarSystemLogicContext();
+  const { sunRef, planetsRef } = useSolarSystemLogicContext();
 
   return (
     <>
@@ -19,24 +20,14 @@ function SolarSystem() {
         backgroundBlurriness={ENVIRONMENT.backgroundBlurriness}
         resolution={ENVIRONMENT.resolution}
       />
-      <mesh>
-        <ambientLight intensity={ENVIRONMENT.ambientLight} />
-        <OrbitControls
-          ref={controlsRef}
-          args={[camera, domElement]}
-          enableZoom={ORBIT_CONTROL.enableZoom}
-          zoomSpeed={ORBIT_CONTROL.zoomSpeed}
-          maxDistance={ORBIT_CONTROL.maxDistance}
-          enableRotate={ORBIT_CONTROL.enableRotate}
-          enablePan={ORBIT_CONTROL.enablePan}
-          enableDamping={ORBIT_CONTROL.enableDamping}
-          onChange={orbitOnChange}
-        />
-      </mesh>
+
+      <ambientLight intensity={ENVIRONMENT.ambientLight} />
+
+      <OrbitControlHandler />
 
       <Sun sunRef={sunRef} />
 
-      {planets.map(
+      {planetsRef.current.map(
         ({ name, trajectory, color, radius, model, objectRef, component }) => {
           return (
             <OrbitalObject
@@ -57,4 +48,4 @@ function SolarSystem() {
   );
 }
 
-export default SolarSystem;
+export default memo(SolarSystem);
