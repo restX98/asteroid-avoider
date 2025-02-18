@@ -9,7 +9,7 @@ This app fetches real-time asteroid data from **NASA's Asteroids - NeoWs API** a
 - **Real-time asteroid tracking** using NASA's NeoWs API.
 - **3D visualization** with **React Three Fiber**.
 - **Time travel**: move forward and backward to see orbital paths.
-- **Detailed asteroid information** on click.
+- **Detailed asteroid information**.
 - **Optimized caching** with Redis for better performance.
 
 ## 🚀 Getting Started
@@ -20,7 +20,7 @@ Ensure you have the following installed:
 
 - **Node.js v23.7.0**
 - **pnpm v10.1.0**
-- **Docker** (required to run Redis locally for caching API responses)
+- **Docker** (optionally required to run Redis locally for caching API responses)
 - **NASA API Key** (Required to fetch asteroid data from NASA)
   - Get your free API key here: [https://api.nasa.gov/](https://api.nasa.gov/)
 
