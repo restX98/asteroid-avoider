@@ -2,7 +2,7 @@ import { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
-import { PLANET_OUTLINE } from "@/data/config";
+import { ORBITAL_OBJECT } from "@/data/config";
 
 const CircleSprite = ({ color, onClick }) => {
   const spriteRef = useRef();
@@ -11,13 +11,13 @@ const CircleSprite = ({ color, onClick }) => {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
 
-    canvas.width = PLANET_OUTLINE.canvas.width;
-    canvas.height = PLANET_OUTLINE.canvas.height;
+    canvas.width = ORBITAL_OBJECT.outline.canvas.width;
+    canvas.height = ORBITAL_OBJECT.outline.canvas.height;
 
     ctx.beginPath();
-    const arc = PLANET_OUTLINE.arc;
+    const arc = ORBITAL_OBJECT.outline.arc;
     ctx.arc(arc.centerX, arc.centerY, arc.radius, 0, Math.PI * 2);
-    ctx.lineWidth = PLANET_OUTLINE.line.width;
+    ctx.lineWidth = ORBITAL_OBJECT.outline.line.width;
     ctx.strokeStyle = color;
     ctx.stroke();
 

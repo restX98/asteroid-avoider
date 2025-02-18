@@ -1,13 +1,30 @@
 export const SCALE_FACTOR = 1000000000;
 
+export const ORBITAL_OBJECT = {
+  defaultColor: "grey",
+  orbitalCurveThresholdScalar: 100,
+  outline: {
+    canvas: {
+      width: 256,
+      height: 256,
+    },
+    arc: {
+      centerX: 128,
+      centerY: 128,
+      radius: 118,
+    },
+    line: {
+      width: 15,
+    },
+  },
+};
+
 export const TRANSITION = {
   alphaDefault: 1,
   alpha: 0.25,
   bigEpsilon: 1e-2 * SCALE_FACTOR,
   littleEpsilonScalar: 1.3,
 };
-
-export const MAX_RANGE_DATE = 31;
 
 export const CAMERA = {
   near: 3e-12 * SCALE_FACTOR,
@@ -17,6 +34,11 @@ export const CAMERA = {
 export const ORBIT_CONTROL = {
   maxDistance: 50 * SCALE_FACTOR,
   minDistanceScalar: 1.2,
+  enableZoom: true,
+  zoomSpeed: 2,
+  enableRotate: true,
+  enablePan: true,
+  enableDamping: true,
 };
 
 export const ENVIRONMENT = {
@@ -33,21 +55,7 @@ export const SUN = {
   decay: 0.05,
 };
 
-export const PLANET_OUTLINE = {
-  canvas: {
-    width: 256,
-    height: 256,
-  },
-  arc: {
-    centerX: 128,
-    centerY: 128,
-    radius: 118,
-  },
-  line: {
-    width: 15,
-  },
-  defaultColor: "white",
-};
+export const MAX_RANGE_DATE = 31;
 
 export const TIME_MAPPING = [
   { label: "REAL TIME", multiplier: 1 },

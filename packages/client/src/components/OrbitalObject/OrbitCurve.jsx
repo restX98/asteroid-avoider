@@ -3,7 +3,7 @@ import * as THREE from "three";
 
 import { SCALE_FACTOR } from "@/data/config";
 
-const OrbitCurve = ({ coords, color }) => {
+const OrbitCurve = ({ orbitCurveRef, coords, color }) => {
   const geometry = useMemo(() => {
     const pts = [];
     for (let i = 0; i < coords.length; i++) {
@@ -16,7 +16,7 @@ const OrbitCurve = ({ coords, color }) => {
   }, [coords]);
 
   return (
-    <lineLoop geometry={geometry}>
+    <lineLoop ref={orbitCurveRef} geometry={geometry}>
       <lineBasicMaterial attach="material" color={color} />
     </lineLoop>
   );

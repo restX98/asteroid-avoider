@@ -24,11 +24,12 @@ function SolarSystem() {
         <OrbitControls
           ref={controlsRef}
           args={[camera, domElement]}
-          enableZoom={true}
+          enableZoom={ORBIT_CONTROL.enableZoom}
+          zoomSpeed={ORBIT_CONTROL.zoomSpeed}
           maxDistance={ORBIT_CONTROL.maxDistance}
-          enableRotate={true}
-          enablePan={true}
-          enableDamping={true}
+          enableRotate={ORBIT_CONTROL.enableRotate}
+          enablePan={ORBIT_CONTROL.enablePan}
+          enableDamping={ORBIT_CONTROL.enableDamping}
           onChange={orbitOnChange}
         />
       </mesh>

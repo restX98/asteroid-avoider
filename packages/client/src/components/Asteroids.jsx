@@ -81,6 +81,7 @@ function Asteroids() {
             model={model}
             objectRef={objectRef}
             component={component}
+            orbitalCurveThresholdScalar={5000000}
           />
         )
       )}
