@@ -7,7 +7,7 @@ const { splitDate, groupDatesInRanges } = require("../utils/dateUtils");
 const apiKey = process.env.NASA_API_KEY;
 const baseUrl = "https://api.nasa.gov/neo/rest/v1";
 
-const AU_IN_METERS = 149597870700;
+const AU_IN_METERS = 149597870691;
 
 /**
  * Maps the raw asteroid object to a simplified structure.
@@ -28,11 +28,11 @@ const mapAsteroidData = (asteroid) => ({
     ),
     unit: "km/h",
   },
-  miss_distance: {
+  missDistance: {
     value: Number(asteroid.close_approach_data[0].miss_distance.kilometers),
     unit: "km",
   },
-  is_potentially_hazardous: asteroid.is_potentially_hazardous_asteroid,
+  isPotentiallyHazardous: asteroid.is_potentially_hazardous_asteroid,
 });
 
 /**

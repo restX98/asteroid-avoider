@@ -75,17 +75,16 @@ function AsteroidListItem({ asteroid }) {
         </p>
         <p>
           <span className="font-medium">Miss Distance:</span>{" "}
-          {asteroid.miss_distance.value.toFixed(2)}{" "}
-          {asteroid.miss_distance.unit}
+          {asteroid.missDistance.value.toFixed(2)} {asteroid.missDistance.unit}
         </p>
         <p
           className={`font-medium ${
-            asteroid.is_potentially_hazardous
+            asteroid.isPotentiallyHazardous
               ? "text-destructive"
               : "text-[hsl(120,100%,40%)]"
           }`}
         >
-          {asteroid.is_potentially_hazardous
+          {asteroid.isPotentiallyHazardous
             ? "Potentially Hazardous"
             : "Not Hazardous"}
         </p>

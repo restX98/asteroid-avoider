@@ -77,13 +77,13 @@ function AsteroidList({ className, asteroids }) {
     // Filter by Miss Distance
     if (
       filters.missDistanceMin &&
-      asteroid.miss_distance.value < Number(filters.missDistanceMin)
+      asteroid.missDistance.value < Number(filters.missDistanceMin)
     ) {
       return { visible: false, ...asteroid };
     }
     if (
       filters.missDistanceMax &&
-      asteroid.miss_distance.value > Number(filters.missDistanceMax)
+      asteroid.missDistance.value > Number(filters.missDistanceMax)
     ) {
       return { visible: false, ...asteroid };
     }
@@ -91,7 +91,7 @@ function AsteroidList({ className, asteroids }) {
     // Filter by Hazardous
     if (filters.hazardous !== "") {
       const isHazardous = filters.hazardous === "true";
-      if (asteroid.is_potentially_hazardous !== isHazardous) {
+      if (asteroid.isPotentiallyHazardous !== isHazardous) {
         return { visible: false, ...asteroid };
       }
     }
