@@ -1,9 +1,4 @@
-import React, { createContext, useState, useRef, useContext } from "react";
-import { useEffect } from "react";
-import * as THREE from "three";
-
-const sunOffset = new THREE.Vector3(0, 0, 5000);
-const defaultOffset = new THREE.Vector3(0, 0, 0.1);
+import { createContext, useState, useRef, useContext } from "react";
 
 const SolarSystemInfoContext = createContext();
 
@@ -14,14 +9,6 @@ export const SolarSystemInfoProvider = ({ children }) => {
   const simulationTimeRef = useRef(new Date());
   const multiplierRef = useRef(1);
 
-  const offsetRef = useRef(sunOffset.clone());
-  const isTransitioningRef = useRef(false);
-
-  useEffect(() => {
-    offsetRef.current.copy(!selectedPlanet ? sunOffset : defaultOffset);
-    isTransitioningRef.current = true;
-  }, [selectedPlanet]);
-
   return (
     <SolarSystemInfoContext.Provider
       value={{
@@ -31,8 +18,6 @@ export const SolarSystemInfoProvider = ({ children }) => {
         multiplierRef,
         selectedPlanet,
         setSelectedPlanet,
-        offsetRef,
-        isTransitioningRef,
       }}
     >
       {children}

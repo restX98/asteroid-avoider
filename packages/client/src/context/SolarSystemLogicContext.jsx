@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useRef, useMemo } from "react";
+import {
+  useEffect,
+  createContext,
+  useContext,
+  useRef,
+  createRef,
+  useMemo,
+} from "react";
 import { useThree, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -7,26 +14,41 @@ import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
 import Trajectory from "@/lib/Trajectory";
 
 import planetData from "@/data/planets.js";
-import { SCALE_FACTOR, ALPHA_DEFAULT, ALPHA_TRANSITION } from "@/data/config";
+import { SCALE_FACTOR, TRANSITION, SUN, ORBIT_CONTROL } from "@/data/config";
 
-const EPSILON = 1;
 const utilityVector3 = new THREE.Vector3(0, 0, 0);
+const sunOffset = new THREE.Vector3(0, 0, 5000);
+const defaultOffset = new THREE.Vector3(0, 0.2, 1);
 
 const SolarSystemLogicContext = createContext();
 
 export const SolarSystemLogicProvider = ({ children }) => {
-  const {
-    simulationTimeRef,
-    multiplierRef,
-    selectedPlanet,
-    offsetRef,
-    isTransitioningRef,
-  } = useSolarSystemInfoContext();
+  const { simulationTimeRef, multiplierRef, selectedPlanet } =
+    useSolarSystemInfoContext();
 
   const controlsRef = useRef();
   const sunRef = useRef();
   const planetRefs = useRef({});
   const asteroidsListRef = useRef([]);
+  const offsetRef = useRef(sunOffset.clone());
+  const isTransitioningRef = useRef(false);
+  const epsilonRef = useRef(TRANSITION.bigEpsilon);
+
+  useEffect(() => {
+    if (!selectedPlanet) {
+      controlsRef.current.minDistance =
+        SUN.radius * SCALE_FACTOR * ORBIT_CONTROL.minDistanceScalar;
+      offsetRef.current.copy(sunOffset);
+      epsilonRef.current = TRANSITION.bigEpsilon;
+    } else {
+      controlsRef.current.minDistance =
+        selectedPlanet.radius * ORBIT_CONTROL.minDistanceScalar;
+      offsetRef.current.copy(defaultOffset);
+      offsetRef.current.multiplyScalar(selectedPlanet.radius * 2);
+      epsilonRef.current = TRANSITION.littleEpsilon;
+    }
+    isTransitioningRef.current = true;
+  }, [selectedPlanet]);
 
   const {
     camera,
@@ -48,7 +70,7 @@ export const SolarSystemLogicProvider = ({ children }) => {
       );
 
       if (!planetRefs.current[planetKey]) {
-        planetRefs.current[planetKey] = React.createRef();
+        planetRefs.current[planetKey] = createRef();
       }
 
       return {
@@ -64,7 +86,7 @@ export const SolarSystemLogicProvider = ({ children }) => {
 
   const orbitOnChange = () => {
     if (!isTransitioningRef.current) {
-      const planet = selectedPlanet?.current || sunRef.current;
+      const planet = selectedPlanet?.ref.current || sunRef.current;
       offsetRef.current.copy(camera.position);
       offsetRef.current.sub(planet.position);
     }
@@ -90,19 +112,19 @@ export const SolarSystemLogicProvider = ({ children }) => {
     );
 
     if (controlsRef.current) {
-      const planet = selectedPlanet?.current || sunRef.current;
-      controlsRef.current.target.lerp(planet.position, ALPHA_DEFAULT);
+      const planet = selectedPlanet?.ref.current || sunRef.current;
+      controlsRef.current.target.lerp(planet.position, TRANSITION.alphaDefault);
 
       utilityVector3.copy(planet.position);
       utilityVector3.add(offsetRef.current);
       camera.position.lerp(
         utilityVector3,
-        isTransitioningRef.current ? ALPHA_TRANSITION : ALPHA_DEFAULT
+        isTransitioningRef.current ? TRANSITION.alpha : TRANSITION.alphaDefault
       );
 
       if (
         isTransitioningRef.current &&
-        camera.position.distanceTo(utilityVector3) < EPSILON
+        camera.position.distanceTo(utilityVector3) < epsilonRef.current
       ) {
         isTransitioningRef.current = false;
       }

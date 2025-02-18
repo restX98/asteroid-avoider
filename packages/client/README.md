@@ -15,7 +15,7 @@ TODO List:
 - [x] create arrow to navigate out of planet
 - [ ] create interface to show information
 - [x] call backend to retrieve asteroids near to earth
-- [ ] add max and min zoom and avoid go inside planet
+- [x] add max and min distance to avoid go inside planet
 - [x] add loader
 - [x] move camera with planet
 - [x] add profiling tool to check performance

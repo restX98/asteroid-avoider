@@ -6,7 +6,7 @@ import OrbitCurve from "./OrbitCurve";
 import CircleSprite from "./CircleSprite";
 
 const OrbitalObject = memo(
-  ({ trajectory, color, radius, objectRef, component }) => {
+  ({ orbitCoords, color, radius, objectRef, component }) => {
     const ObjectComponent = component;
 
     const { selectedPlanet, setSelectedPlanet } = useSolarSystemInfoContext();
@@ -14,19 +14,22 @@ const OrbitalObject = memo(
     return (
       <>
         <group ref={objectRef}>
-          {selectedPlanet === objectRef && (
+          {selectedPlanet?.ref === objectRef && (
             <Disposable>
               <ObjectComponent diameter={radius * 2} />
             </Disposable>
           )}
           <CircleSprite
             onClick={() => {
-              setSelectedPlanet(objectRef);
+              setSelectedPlanet({
+                radius: radius,
+                ref: objectRef,
+              });
             }}
           />
         </group>
 
-        <OrbitCurve coords={trajectory.orbitCoords} color={color} />
+        <OrbitCurve coords={orbitCoords} color={color} />
       </>
     );
   }

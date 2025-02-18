@@ -59,7 +59,7 @@ function Asteroids() {
 
       return {
         name: asteroidId,
-        trajectory,
+        orbitCoords: trajectory.orbitCoords,
         color: "grey",
         radius: 0.001 * SCALE_FACTOR, // TODO: scale asteroids in the right way
         objectRef: asteroidRefs.current[asteroidId],

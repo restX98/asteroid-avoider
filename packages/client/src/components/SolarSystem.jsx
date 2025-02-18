@@ -5,7 +5,7 @@ import OrbitalObject from "@/components/OrbitalObject";
 import Sun from "@/components/Sun";
 import Asteroids from "@/components/Asteroids";
 
-import { ENVIRONMENT } from "@/data/config.js";
+import { ENVIRONMENT, ORBIT_CONTROL } from "@/data/config";
 
 function SolarSystem() {
   const { controlsRef, sunRef, planets, camera, domElement, orbitOnChange } =
@@ -25,6 +25,7 @@ function SolarSystem() {
           ref={controlsRef}
           args={[camera, domElement]}
           enableZoom={true}
+          maxDistance={ORBIT_CONTROL.maxDistance}
           enableRotate={true}
           enablePan={true}
           enableDamping={true}
@@ -39,7 +40,7 @@ function SolarSystem() {
           return (
             <OrbitalObject
               key={name}
-              trajectory={trajectory}
+              orbitCoords={trajectory.orbitCoords}
               color={color}
               radius={radius}
               model={model}
