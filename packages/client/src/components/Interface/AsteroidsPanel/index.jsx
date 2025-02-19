@@ -3,9 +3,13 @@ import { useState, useMemo, useEffect, useRef } from "react";
 import { useAsteroids } from "@/hooks/useAsteroids";
 import { useToast } from "@/hooks/use-toast";
 
-import AsteroidIcon from "@/components/icons/AsteroidIcon";
-import CustomSheet from "@/components/ui/custom-sheet";
-import RangeDatePicker from "@/components/ui/range-date-picker";
+import { AsteroidIcon } from "@/components/icons/AsteroidIcon";
+import {
+  CustomSheet,
+  CustomSheetTrigger,
+  CustomSheetContent,
+} from "@/components/ui/custom-sheet";
+import { RangeDatePicker } from "@/components/ui/range-date-picker";
 import AsteroidList from "./AsteroidList";
 
 function AsteroidsPanel({ className }) {
@@ -49,17 +53,17 @@ function AsteroidsPanel({ className }) {
 
   return (
     <CustomSheet>
-      <CustomSheet.Trigger variant="outline" className={className}>
+      <CustomSheetTrigger variant="outline" className={className}>
         <AsteroidIcon />
         <span className="hidden md:inline">Asteroids</span>
-      </CustomSheet.Trigger>
-      <CustomSheet.Content className="flex flex-col">
+      </CustomSheetTrigger>
+      <CustomSheetContent className="flex flex-col">
         <h2 className="text-lg font-semibold text-foreground">Asteroids</h2>
 
         <RangeDatePicker dates={dates} setDates={setDates} />
 
         {asteroids && <AsteroidList className="flex-1" asteroids={asteroids} />}
-      </CustomSheet.Content>
+      </CustomSheetContent>
     </CustomSheet>
   );
 }

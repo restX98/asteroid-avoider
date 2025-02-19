@@ -13,7 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 import { MAX_RANGE_DATE } from "@/data/config";
 
-function RangeDatePicker({ dates, setDates }) {
+const RangeDatePicker = ({ dates, setDates }) => {
   const disabledStartDates = useMemo(() => {
     if (dates.to) {
       const after = new Date(dates.to);
@@ -105,6 +105,6 @@ function RangeDatePicker({ dates, setDates }) {
       </Popover>
     </div>
   );
-}
+};
 
-export default RangeDatePicker;
+export { RangeDatePicker };

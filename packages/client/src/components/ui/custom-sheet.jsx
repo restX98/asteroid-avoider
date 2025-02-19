@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
 
-export function CustomSheet({ children }) {
+const CustomSheet = ({ children }) => {
   const [open, setOpen] = React.useState(false);
 
   const enhancedChildren = React.Children.map(children, (child) => {
@@ -29,22 +29,22 @@ export function CustomSheet({ children }) {
   });
 
   return <>{enhancedChildren}</>;
-}
+};
 
-export function CustomSheetTrigger({
+const CustomSheetTrigger = ({
   children,
   onClick,
   variant = "default",
   className,
-}) {
+}) => {
   return (
     <Button onClick={onClick} variant={variant} className={className}>
       {children}
     </Button>
   );
-}
+};
 
-export function CustomSheetContent({ open, onClose, children, className }) {
+const CustomSheetContent = ({ open, onClose, children, className }) => {
   return createPortal(
     <div>
       {/* Overlay */}
@@ -78,10 +78,6 @@ export function CustomSheetContent({ open, onClose, children, className }) {
     </div>,
     document.body
   );
-}
+};
 
-// Export subcomponents as properties for easy composition:
-CustomSheet.Trigger = CustomSheetTrigger;
-CustomSheet.Content = CustomSheetContent;
-
-export default CustomSheet;
+export { CustomSheet, CustomSheetTrigger, CustomSheetContent };

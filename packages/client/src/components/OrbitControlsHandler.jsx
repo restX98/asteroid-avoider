@@ -7,7 +7,7 @@ import { useSolarSystemLogicContext } from "@/context/SolarSystemLogicContext";
 
 import { ORBIT_CONTROL } from "@/data/config";
 
-const OrbitControlHandler = memo(() => {
+const OrbitControlHandler = () => {
   const {
     camera,
     gl: { domElement },
@@ -38,6 +38,6 @@ const OrbitControlHandler = memo(() => {
       onChange={orbitOnChange}
     />
   );
-});
+};
 
 export default OrbitControlHandler;

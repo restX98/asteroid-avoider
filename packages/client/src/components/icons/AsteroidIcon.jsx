@@ -56,4 +56,4 @@ const AsteroidIcon = (props) => (
   </svg>
 );
 
-export default AsteroidIcon;
+export { AsteroidIcon };
