@@ -4,6 +4,11 @@ Ever wanted to **navigate around the solar system** without crashing into astero
 
 This app fetches real-time asteroid data from **NASA's Asteroids - NeoWs API** and visualizes their motion along with the planets. You can travel forward and backward in time to see how celestial bodies move and avoid potential asteroid traffic jams!
 
+### ⚠️ Accuracy Disclaimer
+
+While the app provides an accurate visualization of the planet orbits, the asteroid orbits trajectories may not be perfectly precise. Over time, the gravitational influence of planets and other celestial bodies can slightly alter asteroid paths, meaning their future positions might differ from the projections shown here.
+The trajectories are calculated using the formula described by [Planetoweb](http://planetoweb.net/en/how-it-works).
+
 ## ✨ Features
 
 - **Real-time asteroid tracking** using NASA's NeoWs API.
