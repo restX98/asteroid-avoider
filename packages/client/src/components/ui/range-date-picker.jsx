@@ -24,7 +24,7 @@ function RangeDatePicker({ dates, setDates }) {
       };
     }
     return {};
-  });
+  }, [dates.to]);
 
   const disabledEndDates = useMemo(() => {
     if (dates.from) {
@@ -36,7 +36,7 @@ function RangeDatePicker({ dates, setDates }) {
       };
     }
     return {};
-  });
+  }, [dates.from]);
 
   return (
     <div className="flex gap-x-2 py-2">
