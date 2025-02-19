@@ -57,11 +57,7 @@ const OrbitalObject = ({
         />
       </group>
 
-      <OrbitCurve
-        orbitCurveRef={orbitCurveRef}
-        coords={orbitCoords}
-        color={color}
-      />
+      <OrbitCurve ref={orbitCurveRef} coords={orbitCoords} color={color} />
     </>
   );
 };

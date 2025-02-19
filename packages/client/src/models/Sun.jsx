@@ -8,22 +8,22 @@ Source: https://sketchfab.com/3d-models/sun-9ef1c68fbb944147bcfcc891d3912645
 Title: Sun
 */
 
-import { useRef } from "react";
+import { useRef, forwardRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useAutoScale } from "@/hooks/useAutoScale";
 
 import { SCALE_FACTOR, SUN } from "@/data/config";
 
-function Sun({ sunRef }) {
+const Sun = forwardRef((_, ref) => {
   const { radius, position, intensity, decay } = SUN;
 
-  const group = sunRef || useRef();
+  const groupRef = ref || useRef();
   const { nodes, materials } = useGLTF("/models/sun-transformed.glb");
 
-  useAutoScale(group, radius * 2 * SCALE_FACTOR);
+  useAutoScale(groupRef, radius * 2 * SCALE_FACTOR);
 
   return (
-    <group ref={group} dispose={null} position={position}>
+    <group ref={groupRef} dispose={null} position={position}>
       <group name="Sketchfab_Scene">
         <group name="RootNode">
           <group name="UnstableStarCore" rotation={[-Math.PI / 2, 0, 0]}>
@@ -49,7 +49,7 @@ function Sun({ sunRef }) {
       <pointLight intensity={intensity} decay={decay} />
     </group>
   );
-}
+});
 
 useGLTF.preload("models/sun-transformed.glb");
 

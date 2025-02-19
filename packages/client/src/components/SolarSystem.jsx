@@ -24,7 +24,7 @@ const SolarSystem = () => {
 
       <OrbitControlHandler />
 
-      <Sun sunRef={sunRef} />
+      <Sun ref={sunRef} />
 
       <OrbitalObjects />
     </>
