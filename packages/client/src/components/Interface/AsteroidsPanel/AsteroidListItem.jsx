@@ -66,7 +66,7 @@ const AsteroidListItem = ({ asteroid }) => {
       <div className="flex justify-between items-center mb-2">
         <h4 className="text-lg font-bold text-color-900">
           {asteroid.name}{" "}
-          <span className="text-sm font-normal text-muted-foreground">
+          <span className="text-sm font-normal text-muted-foreground text-nowrap">
             ID: {asteroid.id}
           </span>
         </h4>

@@ -52,7 +52,7 @@ const AsteroidFilterBar = ({ filters, setFilters }) => {
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                className="w-auto justify-start text-left font-normal"
+                className="w-auto justify-start text-left font-normal px-3"
               >
                 Valocity
               </Button>
@@ -90,7 +90,7 @@ const AsteroidFilterBar = ({ filters, setFilters }) => {
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                className="w-auto justify-start text-left font-normal"
+                className="w-auto justify-start text-left font-normal px-3"
               >
                 Lower Diameter
               </Button>
@@ -126,7 +126,7 @@ const AsteroidFilterBar = ({ filters, setFilters }) => {
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                className="w-auto justify-start text-left font-normal"
+                className="w-auto justify-start text-left font-normal px-3"
               >
                 Higher Diameter
               </Button>
@@ -162,7 +162,7 @@ const AsteroidFilterBar = ({ filters, setFilters }) => {
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                className="w-auto justify-start text-left font-normal"
+                className="w-auto justify-start text-left font-normal px-3"
               >
                 Miss Distance
               </Button>
@@ -199,7 +199,7 @@ const AsteroidFilterBar = ({ filters, setFilters }) => {
               setFilters((prev) => ({ ...prev, hazardous: value }))
             }
           >
-            <SelectTrigger className="w-auto">
+            <SelectTrigger className="w-auto gap-x-1">
               <SelectValue placeholder="Is hazardous?" />
             </SelectTrigger>
             <SelectContent>
