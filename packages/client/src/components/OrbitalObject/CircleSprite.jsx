@@ -1,8 +1,10 @@
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, memo } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 import { ORBITAL_OBJECT } from "@/data/config";
+
+const worldPos = new THREE.Vector3();
 
 const CircleSprite = ({ color, onClick }) => {
   const spriteRef = useRef();
@@ -24,7 +26,6 @@ const CircleSprite = ({ color, onClick }) => {
     return new THREE.CanvasTexture(canvas);
   }, []);
 
-  const worldPos = new THREE.Vector3();
   useFrame(({ camera }) => {
     if (spriteRef.current) {
       spriteRef.current.getWorldPosition(worldPos);
@@ -43,4 +44,8 @@ const CircleSprite = ({ color, onClick }) => {
   );
 };
 
-export default CircleSprite;
+const areEqualProps = (prevProps, nextProps) => {
+  return prevProps.color === nextProps.color;
+};
+
+export default memo(CircleSprite, areEqualProps);

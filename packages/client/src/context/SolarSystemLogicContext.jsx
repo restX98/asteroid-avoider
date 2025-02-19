@@ -23,7 +23,7 @@ const relativeOffset = new THREE.Vector3(0, 0.4, 2);
 
 const SolarSystemLogicContext = createContext();
 
-export const SolarSystemLogicProvider = ({ children }) => {
+const SolarSystemLogicProvider = ({ children }) => {
   const { simulationTimeRef, multiplierRef, selectedPlanet, asteroidList } =
     useSolarSystemInfoContext();
 
@@ -159,16 +159,17 @@ export const SolarSystemLogicProvider = ({ children }) => {
     }
   });
 
-  const logicValue = useMemo(() => {
-    return {
+  const logicValue = useMemo(
+    () => ({
       sunRef,
       asteroidsRef,
       planetsRef,
       controlsRef,
       offsetRef,
       isTransitioningRef,
-    };
-  }, []);
+    }),
+    []
+  );
 
   return (
     <SolarSystemLogicContext.Provider value={logicValue}>
@@ -177,7 +178,7 @@ export const SolarSystemLogicProvider = ({ children }) => {
   );
 };
 
-export function useSolarSystemLogicContext() {
+const useSolarSystemLogicContext = () => {
   const context = useContext(SolarSystemLogicContext);
   if (!context) {
     throw new Error(
@@ -185,4 +186,6 @@ export function useSolarSystemLogicContext() {
     );
   }
   return context;
-}
+};
+
+export { SolarSystemLogicProvider, useSolarSystemLogicContext };

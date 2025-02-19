@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, memo } from "react";
 import * as THREE from "three";
 
 import { SCALE_FACTOR } from "@/data/config";
@@ -22,4 +22,10 @@ const OrbitCurve = ({ orbitCurveRef, coords, color }) => {
   );
 };
 
-export default OrbitCurve;
+const areEqualProps = (prevProps, nextProps) => {
+  return (
+    prevProps.coords === nextProps.coords && prevProps.color === nextProps.color
+  );
+};
+
+export default memo(OrbitCurve, areEqualProps);
