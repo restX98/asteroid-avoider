@@ -37,10 +37,12 @@ const TimeTravelPanel = ({ className }) => {
   return (
     <div className="flex flex-col justify-center items-center mx-auto lg:w-1/2 md:w-2/3 w-4/5">
       <CurrentDate />
+
       <span className="mb-4 text-2xl">
         {sliderIndex.isForward === -1 ? "-" : ""}
         {selected?.label}
       </span>
+
       <Slider
         className={className}
         value={[sliderIndex.value * sliderIndex.isForward]}
@@ -49,7 +51,7 @@ const TimeTravelPanel = ({ className }) => {
         max={TIME_MAPPING.length - 1}
         step={1}
         onValueChange={(value) => {
-          setSliderIndex((prev) => {
+          setSliderIndex(() => {
             const isForward = value[0] >= 0 ? 1 : -1;
             return { value: value[0] * isForward, isForward: isForward };
           });

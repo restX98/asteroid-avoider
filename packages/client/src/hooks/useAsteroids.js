@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import { fetchAsteroids } from "@/services/asteroidService";
 
+/**
+ * Custom hook to manage fetching asteroids list.
+ * @param {Date} startDate - The asteroid's id.
+ * @param {Date} endDate - Enable fetching.
+ * @returns {Object} - Returns the asteroids state, loading state and error state.
+ */
 export function useAsteroids({ startDate, endDate }) {
   const [asteroids, setAsteroids] = useState([]);
   const [loading, setLoading] = useState(true);
