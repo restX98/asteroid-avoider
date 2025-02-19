@@ -40,7 +40,6 @@ const AsteroidsPanel = ({ className }) => {
         from: rollbackDates.current.from,
         to: rollbackDates.current.to,
       });
-      return;
     }
   }, [error]);
 

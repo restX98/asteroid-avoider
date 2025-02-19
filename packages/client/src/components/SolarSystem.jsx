@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { Environment } from "@react-three/drei";
 
 import { useSolarSystemLogicContext } from "@/context/SolarSystemLogicContext";
@@ -32,4 +31,4 @@ const SolarSystem = () => {
   );
 };
 
-export default memo(SolarSystem);
+export default SolarSystem;

@@ -1,3 +1,6 @@
+export const PERFORMANCE_PANEL_ENABLED =
+  import.meta.env.VITE_PERFORMANCE_PANEL === "true";
+
 export const SCALE_FACTOR = 1000000000;
 
 export const ORBITAL_OBJECT = {
