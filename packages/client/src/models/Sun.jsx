@@ -8,20 +8,22 @@ Source: https://sketchfab.com/3d-models/sun-9ef1c68fbb944147bcfcc891d3912645
 Title: Sun
 */
 
-import { useRef, memo } from "react";
+import { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useAutoScale } from "@/hooks/useAutoScale";
 
 import { SCALE_FACTOR, SUN } from "@/data/config";
 
-function Model({ diameter, sunRef }) {
+function Sun({ sunRef }) {
+  const { radius, position, intensity, decay } = SUN;
+
   const group = sunRef || useRef();
   const { nodes, materials } = useGLTF("/models/sun-transformed.glb");
 
-  useAutoScale(group, diameter);
+  useAutoScale(group, radius * 2 * SCALE_FACTOR);
 
   return (
-    <group ref={group} dispose={null}>
+    <group ref={group} dispose={null} position={position}>
       <group name="Sketchfab_Scene">
         <group name="RootNode">
           <group name="UnstableStarCore" rotation={[-Math.PI / 2, 0, 0]}>
@@ -44,20 +46,11 @@ function Model({ diameter, sunRef }) {
           </group>
         </group>
       </group>
+      <pointLight intensity={intensity} decay={decay} />
     </group>
   );
 }
 
 useGLTF.preload("models/sun-transformed.glb");
-
-function Sun({ sunRef }) {
-  const { radius, position, intensity, decay } = SUN;
-  return (
-    <>
-      <Model sunRef={sunRef} diameter={radius * 2 * SCALE_FACTOR} />
-      <pointLight position={position} intensity={intensity} decay={decay} />
-    </>
-  );
-}
 
 export default Sun;

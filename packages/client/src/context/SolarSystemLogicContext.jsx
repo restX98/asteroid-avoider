@@ -10,7 +10,7 @@ import { useThree, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
-import Asteroid from "@/components/Asteroid";
+import Asteroid from "@/models/Asteroid";
 
 import Trajectory from "@/lib/Trajectory";
 

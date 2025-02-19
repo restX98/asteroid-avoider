@@ -7,7 +7,7 @@ import {
   Saturn,
   Uranus,
   Neptune,
-} from "@/components/planets";
+} from "@/models";
 
 const planetData = {
   mercury: {

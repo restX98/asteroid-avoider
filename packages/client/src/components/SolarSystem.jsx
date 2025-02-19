@@ -3,8 +3,9 @@ import { Environment } from "@react-three/drei";
 
 import { useSolarSystemLogicContext } from "@/context/SolarSystemLogicContext";
 import OrbitControlHandler from "@/components/OrbitControlsHandler";
-import Sun from "@/components/Sun";
 import OrbitalObjects from "@/components/OrbitalObjects";
+
+import Sun from "@/models/Sun";
 
 import { ENVIRONMENT } from "@/data/config";
 
