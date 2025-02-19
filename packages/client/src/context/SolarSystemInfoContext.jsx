@@ -3,9 +3,6 @@ import { createContext, useState, useRef, useContext, useMemo } from "react";
 const SolarSystemInfoContext = createContext();
 
 const SolarSystemInfoProvider = ({ children }) => {
-  const [selectedPlanet, setSelectedPlanet] = useState(null);
-  const [asteroidList, setAsteroidList] = useState({});
-
   const simulationTimeRef = useRef(new Date());
   const multiplierRef = useRef(1);
 
@@ -13,12 +10,8 @@ const SolarSystemInfoProvider = ({ children }) => {
     () => ({
       simulationTimeRef,
       multiplierRef,
-      selectedPlanet,
-      setSelectedPlanet,
-      asteroidList,
-      setAsteroidList,
     }),
-    [selectedPlanet, asteroidList]
+    []
   );
 
   return (

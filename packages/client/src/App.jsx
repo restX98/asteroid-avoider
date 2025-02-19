@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { SolarSystemInfoProvider } from "@/context/SolarSystemInfoContext";
+import { SolarSystemActionProvider } from "@/context/SolarSystemActionContext";
 
 import CanvasWrapper from "@/components/CanvasWrapper";
 import Interface from "@/components/Interface";
@@ -10,9 +11,11 @@ function App() {
 
   return (
     <SolarSystemInfoProvider>
-      <CanvasWrapper setIsLoaded={setIsLoaded} />
+      <SolarSystemActionProvider>
+        <CanvasWrapper setIsLoaded={setIsLoaded} />
 
-      {isLoaded && <Interface isLoaded={isLoaded} />}
+        {isLoaded && <Interface isLoaded={isLoaded} />}
+      </SolarSystemActionProvider>
     </SolarSystemInfoProvider>
   );
 }

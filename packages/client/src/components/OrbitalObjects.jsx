@@ -1,9 +1,10 @@
-import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
+import { useSolarSystemActionContext } from "@/context/SolarSystemActionContext";
 import { useSolarSystemLogicContext } from "@/context/SolarSystemLogicContext";
+
 import OrbitalObject from "@/components/OrbitalObject";
 
 const OrbitalObjects = () => {
-  const { selectedPlanet, setSelectedPlanet } = useSolarSystemInfoContext();
+  const { selectedPlanet, setSelectedPlanet } = useSolarSystemActionContext();
   const { planetsRef, asteroidsRef } = useSolarSystemLogicContext();
 
   return (

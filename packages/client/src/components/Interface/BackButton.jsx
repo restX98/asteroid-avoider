@@ -1,9 +1,9 @@
 import { ArrowLeft } from "lucide-react";
-import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
+import { useSolarSystemActionContext } from "@/context/SolarSystemActionContext";
 import { cn } from "@/lib/utils";
 
 const BackButton = ({ className }) => {
-  const { selectedPlanet, setSelectedPlanet } = useSolarSystemInfoContext();
+  const { selectedPlanet, setSelectedPlanet } = useSolarSystemActionContext();
 
   return (
     <button

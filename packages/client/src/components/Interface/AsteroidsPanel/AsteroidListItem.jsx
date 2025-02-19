@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
+import { useSolarSystemActionContext } from "@/context/SolarSystemActionContext";
 
 import { useAsteroidDetail } from "@/hooks/useAsteroidDetail";
 import { useToast } from "@/hooks/use-toast";
@@ -14,7 +14,7 @@ const AsteroidListItem = ({ asteroid }) => {
     asteroidId: null,
   });
 
-  const { setAsteroidList } = useSolarSystemInfoContext();
+  const { setAsteroidList } = useSolarSystemActionContext();
 
   const { toast } = useToast();
   const { asteroidDetail, error } = useAsteroidDetail(asteroidState.asteroidId);

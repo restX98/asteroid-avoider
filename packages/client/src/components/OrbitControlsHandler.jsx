@@ -2,10 +2,10 @@ import { useCallback } from "react";
 import { useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 
-import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
 import { useSolarSystemLogicContext } from "@/context/SolarSystemLogicContext";
 
 import { ORBIT_CONTROL } from "@/data/config";
+import { useSolarSystemActionContext } from "@/context/SolarSystemActionContext";
 
 const OrbitControlHandler = () => {
   const {
@@ -13,7 +13,7 @@ const OrbitControlHandler = () => {
     gl: { domElement },
   } = useThree();
 
-  const { selectedPlanet } = useSolarSystemInfoContext();
+  const { selectedPlanet } = useSolarSystemActionContext();
   const { controlsRef, isTransitioningRef, offsetRef, sunRef } =
     useSolarSystemLogicContext();
 

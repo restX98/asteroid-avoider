@@ -10,6 +10,8 @@ import { useThree, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
+import { useSolarSystemActionContext } from "@/context/SolarSystemActionContext";
+
 import Asteroid from "@/models/Asteroid";
 
 import Trajectory from "@/lib/Trajectory";
@@ -24,8 +26,8 @@ const relativeOffset = new THREE.Vector3(0, 0.4, 2);
 const SolarSystemLogicContext = createContext();
 
 const SolarSystemLogicProvider = ({ children }) => {
-  const { simulationTimeRef, multiplierRef, selectedPlanet, asteroidList } =
-    useSolarSystemInfoContext();
+  const { simulationTimeRef, multiplierRef } = useSolarSystemInfoContext();
+  const { selectedPlanet, asteroidList } = useSolarSystemActionContext();
 
   const controlsRef = useRef();
   const sunRef = useRef();
