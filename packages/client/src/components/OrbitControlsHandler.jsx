@@ -8,8 +8,6 @@ import { useSolarSystemLogicContext } from "@/context/SolarSystemLogicContext";
 import { ORBIT_CONTROL } from "@/data/config";
 
 const OrbitControlHandler = memo(() => {
-  console.count("Render OrbitControlHandler");
-
   const {
     camera,
     gl: { domElement },

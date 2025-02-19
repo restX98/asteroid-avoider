@@ -51,8 +51,6 @@ function Model({ diameter, sunRef }) {
 useGLTF.preload("models/sun-transformed.glb");
 
 function Sun({ sunRef }) {
-  console.count("Rendering: Sun");
-
   const { radius, position, intensity, decay } = SUN;
   return (
     <>

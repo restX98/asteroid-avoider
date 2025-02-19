@@ -4,7 +4,7 @@ import OrbitalObject from "@/components/OrbitalObject";
 
 function OrbitalObjects() {
   const { selectedPlanet, setSelectedPlanet } = useSolarSystemInfoContext();
-  const { planetsRef } = useSolarSystemLogicContext();
+  const { planetsRef, asteroidsRef } = useSolarSystemLogicContext();
 
   return (
     <>
@@ -24,6 +24,22 @@ function OrbitalObjects() {
             />
           );
         }
+      )}
+
+      {asteroidsRef.current.map(
+        ({ name, trajectory, radius, model, objectRef, component }) => (
+          <OrbitalObject
+            active={selectedPlanet?.ref === objectRef}
+            key={name}
+            orbitCoords={trajectory.orbitCoords}
+            radius={radius}
+            model={model}
+            objectRef={objectRef}
+            component={component}
+            orbitalCurveThresholdScalar={5000000}
+            selectPlanet={setSelectedPlanet}
+          />
+        )
       )}
     </>
   );

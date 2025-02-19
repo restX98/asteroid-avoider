@@ -5,7 +5,6 @@ import { useSolarSystemLogicContext } from "@/context/SolarSystemLogicContext";
 import OrbitControlHandler from "@/components/OrbitControlsHandler";
 import Sun from "@/components/Sun";
 import OrbitalObjects from "@/components/OrbitalObjects";
-import Asteroids from "@/components/Asteroids";
 
 import { ENVIRONMENT } from "@/data/config";
 
@@ -28,8 +27,6 @@ function SolarSystem() {
       <Sun sunRef={sunRef} />
 
       <OrbitalObjects />
-
-      <Asteroids />
     </>
   );
 }

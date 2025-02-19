@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react";
 
+import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
+
 import { useAsteroidDetail } from "@/hooks/useAsteroidDetail";
 import { useToast } from "@/hooks/use-toast";
 
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
-import emitter from "@/lib/emitter";
-
 function AsteroidListItem({ asteroid }) {
   const [asteroidState, setAsteroidState] = useState({
     checked: false,
     asteroidId: null,
   });
+
+  const { setAsteroidList } = useSolarSystemInfoContext();
 
   const { toast } = useToast();
   const { asteroidDetail, error } = useAsteroidDetail(asteroidState.asteroidId);
@@ -32,23 +34,30 @@ function AsteroidListItem({ asteroid }) {
     }
   }, [error]);
 
+  const addAsteroid = (id, asteroidDetail) => {
+    setAsteroidList((prevState) => ({
+      [id]: asteroidDetail,
+      ...prevState,
+    }));
+  };
+
+  const removeAsteroid = (id) => {
+    setAsteroidList((prevState) => {
+      const asteroidList = { ...prevState };
+      delete asteroidList[id];
+      return asteroidList;
+    });
+  };
+
   useEffect(() => {
     if (asteroidState.checked) {
-      asteroidDetail &&
-        emitter.emit("addAsteroid", {
-          asteroidId: asteroid.id,
-          asteroidDetail: asteroidDetail,
-        });
+      asteroidDetail && addAsteroid(asteroid.id, asteroidDetail);
     } else {
-      emitter.emit("removeAsteroid", {
-        asteroidId: asteroid.id,
-      });
+      removeAsteroid(asteroid.id);
     }
 
     return () => {
-      emitter.emit("removeAsteroid", {
-        asteroidId: asteroid.id,
-      });
+      removeAsteroid(asteroid.id);
     };
   }, [asteroidState, asteroidDetail]);
 

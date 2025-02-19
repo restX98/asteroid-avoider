@@ -5,6 +5,7 @@ const SolarSystemInfoContext = createContext();
 export const SolarSystemInfoProvider = ({ children }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [selectedPlanet, setSelectedPlanet] = useState(null);
+  const [asteroidList, setAsteroidList] = useState({});
 
   const simulationTimeRef = useRef(new Date());
   const multiplierRef = useRef(1);
@@ -18,6 +19,8 @@ export const SolarSystemInfoProvider = ({ children }) => {
         multiplierRef,
         selectedPlanet,
         setSelectedPlanet,
+        asteroidList,
+        setAsteroidList,
       }}
     >
       {children}

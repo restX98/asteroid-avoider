@@ -10,6 +10,7 @@ import { useThree, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
+import Asteroid from "@/components/Asteroid";
 
 import Trajectory from "@/lib/Trajectory";
 
@@ -23,14 +24,15 @@ const relativeOffset = new THREE.Vector3(0, 0.4, 2);
 const SolarSystemLogicContext = createContext();
 
 export const SolarSystemLogicProvider = ({ children }) => {
-  const { simulationTimeRef, multiplierRef, selectedPlanet } =
+  const { simulationTimeRef, multiplierRef, selectedPlanet, asteroidList } =
     useSolarSystemInfoContext();
 
   const controlsRef = useRef();
   const sunRef = useRef();
-  const planetRefs = useRef({});
-  const asteroidsListRef = useRef([]);
+
+  const orbitalObjectRefs = useRef({});
   const planetsRef = useRef([]);
+  const asteroidsRef = useRef([]);
 
   const offsetRef = useRef(initialOffset.clone());
   const isTransitioningRef = useRef(false);
@@ -70,8 +72,8 @@ export const SolarSystemLogicProvider = ({ children }) => {
           data.inclination
         );
 
-        if (!planetRefs.current[planetKey]) {
-          planetRefs.current[planetKey] = createRef();
+        if (!orbitalObjectRefs.current[planetKey]) {
+          orbitalObjectRefs.current[planetKey] = createRef();
         }
 
         return {
@@ -79,11 +81,42 @@ export const SolarSystemLogicProvider = ({ children }) => {
           trajectory,
           color: data.color,
           radius: data.radius * SCALE_FACTOR,
-          objectRef: planetRefs.current[planetKey],
+          objectRef: orbitalObjectRefs.current[planetKey],
           component: data.component,
         };
       }),
     []
+  );
+
+  asteroidsRef.current = useMemo(
+    () =>
+      Object.keys(asteroidList).map((asteroidId) => {
+        const data = asteroidList[asteroidId];
+        const trajectory = new Trajectory(
+          asteroidId,
+          data.meanAnomaly,
+          data.orbitalPeriod,
+          data.eccentricity,
+          data.semiMajorAxis,
+          data.ascendingNodeLongitude,
+          data.perihelionArgument,
+          data.inclination
+        );
+
+        if (!orbitalObjectRefs.current[asteroidId]) {
+          orbitalObjectRefs.current[asteroidId] = createRef();
+        }
+
+        return {
+          name: asteroidId,
+          trajectory,
+          radius:
+            (data.estimatedDiameter.astronomicalUnit.max * SCALE_FACTOR) / 2,
+          objectRef: orbitalObjectRefs.current[asteroidId],
+          component: Asteroid,
+        };
+      }),
+    [asteroidList]
   );
 
   useFrame((_, delta) => {
@@ -91,7 +124,7 @@ export const SolarSystemLogicProvider = ({ children }) => {
       simulationTimeRef.current.getTime() + delta * multiplierRef.current * 1000
     );
 
-    [...planetsRef.current, ...asteroidsListRef.current].forEach(
+    [...planetsRef.current, ...asteroidsRef.current].forEach(
       ({ trajectory, objectRef }) => {
         const { x, y, z } = trajectory.getCoordinatesByDate(
           simulationTimeRef.current
@@ -128,11 +161,10 @@ export const SolarSystemLogicProvider = ({ children }) => {
 
   const logicValue = useMemo(() => {
     return {
-      controlsRef,
       sunRef,
-      planetRefs,
-      asteroidsListRef,
+      asteroidsRef,
       planetsRef,
+      controlsRef,
       offsetRef,
       isTransitioningRef,
     };
