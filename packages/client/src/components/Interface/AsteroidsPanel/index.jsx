@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 
 import { useAsteroids } from "@/hooks/useAsteroids";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/useToast";
 
 import { AsteroidIcon } from "@/components/icons/AsteroidIcon";
 import {

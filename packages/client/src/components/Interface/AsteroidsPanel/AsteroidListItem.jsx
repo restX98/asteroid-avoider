@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useSolarSystemActionContext } from "@/context/SolarSystemActionContext";
 
 import { useAsteroidDetail } from "@/hooks/useAsteroidDetail";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/useToast";
 
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
