@@ -8,7 +8,7 @@ import { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useAutoScale } from "@/hooks/useAutoScale";
 
-function Jupiter({ diameter }) {
+const Jupiter = ({ diameter }) => {
   const group = useRef();
   const { nodes, materials } = useGLTF("/models/jupiter-transformed.glb");
 
@@ -19,7 +19,7 @@ function Jupiter({ diameter }) {
       <mesh geometry={nodes.cubemap.geometry} material={materials.None} />
     </group>
   );
-}
+};
 
 export default Jupiter;
 

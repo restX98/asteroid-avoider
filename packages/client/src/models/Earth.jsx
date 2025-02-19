@@ -8,7 +8,7 @@ import { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useAutoScale } from "@/hooks/useAutoScale";
 
-function Earth({ diameter }) {
+const Earth = ({ diameter }) => {
   const group = useRef();
   const { nodes, materials } = useGLTF("/models/earth-transformed.glb");
 
@@ -22,7 +22,7 @@ function Earth({ diameter }) {
       />
     </group>
   );
-}
+};
 
 export default Earth;
 

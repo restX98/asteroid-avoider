@@ -8,7 +8,7 @@ import { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useAutoScale } from "@/hooks/useAutoScale";
 
-function Saturn({ diameter }) {
+const Saturn = ({ diameter }) => {
   const group = useRef();
   const { nodes, materials } = useGLTF("/models/saturn-transformed.glb");
 
@@ -23,7 +23,7 @@ function Saturn({ diameter }) {
       />
     </group>
   );
-}
+};
 
 export default Saturn;
 

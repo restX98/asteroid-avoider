@@ -8,7 +8,7 @@ import { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useAutoScale } from "@/hooks/useAutoScale";
 
-function Venus({ diameter }) {
+const Venus = ({ diameter }) => {
   const group = useRef();
   const { nodes, materials } = useGLTF("/models/venus-transformed.glb");
 
@@ -22,7 +22,7 @@ function Venus({ diameter }) {
       />
     </group>
   );
-}
+};
 
 export default Venus;
 

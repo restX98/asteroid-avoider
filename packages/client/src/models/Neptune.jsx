@@ -8,7 +8,7 @@ import { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useAutoScale } from "@/hooks/useAutoScale";
 
-function Neptune({ diameter }) {
+const Neptune = ({ diameter }) => {
   const group = useRef();
   const { nodes, materials } = useGLTF("/models/neptune-transformed.glb");
 
@@ -23,7 +23,7 @@ function Neptune({ diameter }) {
       />
     </group>
   );
-}
+};
 
 export default Neptune;
 

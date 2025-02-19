@@ -8,7 +8,7 @@ import { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useAutoScale } from "@/hooks/useAutoScale";
 
-function Uranus({ diameter }) {
+const Uranus = ({ diameter }) => {
   const group = useRef();
   const { nodes, materials } = useGLTF("/models/uranus-transformed.glb");
 
@@ -23,7 +23,7 @@ function Uranus({ diameter }) {
       />
     </group>
   );
-}
+};
 
 export default Uranus;
 

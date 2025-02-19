@@ -8,7 +8,7 @@ import { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useAutoScale } from "@/hooks/useAutoScale";
 
-function Mercury({ diameter }) {
+const Mercury = ({ diameter }) => {
   const group = useRef();
   const { nodes, materials } = useGLTF("/models/mercury-transformed.glb");
 
@@ -22,7 +22,7 @@ function Mercury({ diameter }) {
       />
     </group>
   );
-}
+};
 
 export default Mercury;
 

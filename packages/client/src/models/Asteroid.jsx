@@ -8,7 +8,7 @@ import { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useAutoScale } from "@/hooks/useAutoScale";
 
-function Asteroid({ diameter }) {
+const Asteroid = ({ diameter }) => {
   const group = useRef();
   const { nodes, materials } = useGLTF("/models/asteroid-transformed.glb");
 
@@ -19,7 +19,7 @@ function Asteroid({ diameter }) {
       <mesh geometry={nodes.itokawa_LP.geometry} material={materials.itokawa} />
     </group>
   );
-}
+};
 
 export default Asteroid;
 
