@@ -3,14 +3,14 @@ import { Environment } from "@react-three/drei";
 
 import { useSolarSystemLogicContext } from "@/context/SolarSystemLogicContext";
 import OrbitControlHandler from "@/components/OrbitControlsHandler";
-import OrbitalObject from "@/components/OrbitalObject";
 import Sun from "@/components/Sun";
+import OrbitalObjects from "@/components/OrbitalObjects";
 import Asteroids from "@/components/Asteroids";
 
 import { ENVIRONMENT } from "@/data/config";
 
 function SolarSystem() {
-  const { sunRef, planetsRef } = useSolarSystemLogicContext();
+  const { sunRef } = useSolarSystemLogicContext();
 
   return (
     <>
@@ -27,21 +27,7 @@ function SolarSystem() {
 
       <Sun sunRef={sunRef} />
 
-      {planetsRef.current.map(
-        ({ name, trajectory, color, radius, model, objectRef, component }) => {
-          return (
-            <OrbitalObject
-              key={name}
-              orbitCoords={trajectory.orbitCoords}
-              color={color}
-              radius={radius}
-              model={model}
-              objectRef={objectRef}
-              component={component}
-            />
-          );
-        }
-      )}
+      <OrbitalObjects />
 
       <Asteroids />
     </>
