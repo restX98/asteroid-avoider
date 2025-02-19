@@ -7,7 +7,7 @@ import AsteroidFilterBar from "./AsteroidFilterBar";
 
 import { cn } from "@/lib/utils";
 
-function AsteroidList({ className, asteroids }) {
+const AsteroidList = ({ className, asteroids }) => {
   const [filters, setFilters] = useState({
     search: "",
     velocityMin: "",
@@ -115,6 +115,6 @@ function AsteroidList({ className, asteroids }) {
       </ScrollArea>
     </>
   );
-}
+};
 
 export default AsteroidList;

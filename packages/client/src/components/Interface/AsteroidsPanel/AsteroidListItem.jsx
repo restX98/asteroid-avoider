@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
-function AsteroidListItem({ asteroid }) {
+const AsteroidListItem = ({ asteroid }) => {
   const [asteroidState, setAsteroidState] = useState({
     checked: false,
     asteroidId: null,
@@ -125,6 +125,6 @@ function AsteroidListItem({ asteroid }) {
       </div>
     </div>
   );
-}
+};
 
 export default AsteroidListItem;

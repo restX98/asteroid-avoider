@@ -12,7 +12,7 @@ import {
 import { RangeDatePicker } from "@/components/ui/range-date-picker";
 import AsteroidList from "./AsteroidList";
 
-function AsteroidsPanel({ className }) {
+const AsteroidsPanel = ({ className }) => {
   const { toast } = useToast();
 
   const nowDate = useMemo(() => new Date(), []);
@@ -66,6 +66,6 @@ function AsteroidsPanel({ className }) {
       </CustomSheetContent>
     </CustomSheet>
   );
-}
+};
 
 export default AsteroidsPanel;

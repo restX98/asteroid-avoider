@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-function AsteroidFilterBar({ filters, setFilters }) {
+const AsteroidFilterBar = ({ filters, setFilters }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -211,6 +211,6 @@ function AsteroidFilterBar({ filters, setFilters }) {
       </div>
     </div>
   );
-}
+};
 
 export default AsteroidFilterBar;

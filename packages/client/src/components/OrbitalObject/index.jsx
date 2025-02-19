@@ -7,7 +7,7 @@ import CircleSprite from "./CircleSprite";
 
 import { ORBITAL_OBJECT } from "@/data/config";
 
-function OrbitalObject({
+const OrbitalObject = ({
   active,
   orbitCoords,
   color = ORBITAL_OBJECT.defaultColor,
@@ -16,7 +16,7 @@ function OrbitalObject({
   component,
   orbitalCurveThresholdScalar = ORBITAL_OBJECT.orbitalCurveThresholdScalar,
   selectPlanet,
-}) {
+}) => {
   const ObjectComponent = component;
 
   const orbitCurveRef = useRef();
@@ -64,10 +64,10 @@ function OrbitalObject({
       />
     </>
   );
-}
+};
 
-function areEqualProps(prevProps, nextProps) {
+const areEqualProps = (prevProps, nextProps) => {
   return prevProps.active === nextProps.active;
-}
+};
 
 export default memo(OrbitalObject, areEqualProps);

@@ -5,7 +5,7 @@ import { TopBar, BottomBar } from "./NavBars";
 import BackButton from "./BackButton";
 import { Toaster } from "@/components/ui/toaster";
 
-function Interface() {
+const Interface = () => {
   const { isLoaded } = useSolarSystemInfoContext();
 
   return (
@@ -25,6 +25,6 @@ function Interface() {
       </>
     )
   );
-}
+};
 
 export default Interface;

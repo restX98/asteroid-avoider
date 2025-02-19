@@ -12,7 +12,7 @@ const ProgressBar = ({ progress }) => {
   );
 };
 
-function Loader({ children }) {
+const Loader = ({ children }) => {
   const { setIsLoaded } = useSolarSystemInfoContext();
   const { progress } = useProgress();
 
@@ -27,6 +27,6 @@ function Loader({ children }) {
       {children}
     </Suspense>
   );
-}
+};
 
 export default Loader;

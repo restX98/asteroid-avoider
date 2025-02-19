@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 
-function Disposable({ children }) {
+const Disposable = ({ children }) => {
   const localRef = useRef();
 
   useEffect(() => {
@@ -19,6 +19,6 @@ function Disposable({ children }) {
   }, [localRef]);
 
   return <group ref={localRef}>{children}</group>;
-}
+};
 
 export default Disposable;

@@ -2,7 +2,7 @@ import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
 import { useSolarSystemLogicContext } from "@/context/SolarSystemLogicContext";
 import OrbitalObject from "@/components/OrbitalObject";
 
-function OrbitalObjects() {
+const OrbitalObjects = () => {
   const { selectedPlanet, setSelectedPlanet } = useSolarSystemInfoContext();
   const { planetsRef, asteroidsRef } = useSolarSystemLogicContext();
 
@@ -43,6 +43,6 @@ function OrbitalObjects() {
       )}
     </>
   );
-}
+};
 
 export default OrbitalObjects;

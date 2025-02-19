@@ -9,7 +9,7 @@ import Sun from "@/models/Sun";
 
 import { ENVIRONMENT } from "@/data/config";
 
-function SolarSystem() {
+const SolarSystem = () => {
   const { sunRef } = useSolarSystemLogicContext();
 
   return (
@@ -30,6 +30,6 @@ function SolarSystem() {
       <OrbitalObjects />
     </>
   );
-}
+};
 
 export default memo(SolarSystem);

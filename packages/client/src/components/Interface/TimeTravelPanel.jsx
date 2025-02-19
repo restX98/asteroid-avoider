@@ -6,7 +6,7 @@ import { Slider } from "@/components/ui/slider";
 
 import { TIME_MAPPING } from "@/data/config";
 
-function CurrentDate() {
+const CurrentDate = () => {
   const { simulationTimeRef } = useSolarSystemInfoContext();
 
   const [displayTime, setDisplayTime] = useState(simulationTimeRef.current);
@@ -19,7 +19,7 @@ function CurrentDate() {
   }, []);
 
   return <span>{format(displayTime, "d/M/y H:mm:ss")}</span>;
-}
+};
 
 const TimeTravelPanel = ({ className }) => {
   const { multiplierRef } = useSolarSystemInfoContext();
