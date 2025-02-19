@@ -3,8 +3,6 @@ import { createContext, useState, useContext, useMemo } from "react";
 const SolarSystemActionContext = createContext();
 
 const SolarSystemActionProvider = ({ children }) => {
-  console.count("Update SolarSystemActionProvider");
-
   const [selectedPlanet, setSelectedPlanet] = useState(null);
   const [asteroidList, setAsteroidList] = useState({});
 
