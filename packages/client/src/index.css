@@ -48,6 +48,11 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  html {
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
 }
 
 @layer base {
