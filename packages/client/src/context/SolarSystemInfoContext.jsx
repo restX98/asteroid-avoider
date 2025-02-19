@@ -3,7 +3,6 @@ import { createContext, useState, useRef, useContext, useMemo } from "react";
 const SolarSystemInfoContext = createContext();
 
 const SolarSystemInfoProvider = ({ children }) => {
-  const [isLoaded, setIsLoaded] = useState(false);
   const [selectedPlanet, setSelectedPlanet] = useState(null);
   const [asteroidList, setAsteroidList] = useState({});
 
@@ -12,8 +11,6 @@ const SolarSystemInfoProvider = ({ children }) => {
 
   const logicValue = useMemo(
     () => ({
-      isLoaded,
-      setIsLoaded,
       simulationTimeRef,
       multiplierRef,
       selectedPlanet,

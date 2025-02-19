@@ -1,29 +1,24 @@
-import { useSolarSystemInfoContext } from "@/context/SolarSystemInfoContext";
-import TimeTravelPanel from "./TimeTravelPanel";
-import AsteroidsPanel from "./AsteroidsPanel";
+import { Toaster } from "@/components/ui/toaster";
 import { TopBar, BottomBar } from "./NavBars";
 import BackButton from "./BackButton";
-import { Toaster } from "@/components/ui/toaster";
+import AsteroidsPanel from "./AsteroidsPanel";
+import TimeTravelPanel from "./TimeTravelPanel";
 
 const Interface = () => {
-  const { isLoaded } = useSolarSystemInfoContext();
-
   return (
-    isLoaded && (
-      <>
-        <TopBar className="flex items-center justify-between pointer-events-none">
-          <BackButton className="pointer-events-auto" />
+    <>
+      <TopBar className="flex items-center justify-between pointer-events-none">
+        <BackButton className="pointer-events-auto" />
 
-          <AsteroidsPanel className="pointer-events-auto" />
-        </TopBar>
+        <AsteroidsPanel className="pointer-events-auto" />
+      </TopBar>
 
-        <BottomBar className="mb-6 pointer-events-none">
-          <TimeTravelPanel className="pointer-events-auto" />
-        </BottomBar>
+      <BottomBar className="mb-6 pointer-events-none">
+        <TimeTravelPanel className="pointer-events-auto" />
+      </BottomBar>
 
-        <Toaster />
-      </>
-    )
+      <Toaster />
+    </>
   );
 };
 

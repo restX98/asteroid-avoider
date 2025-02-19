@@ -8,7 +8,7 @@ import SolarSystem from "@/components/SolarSystem";
 
 import { CAMERA, PERFORMANCE_PANEL_ENABLED } from "@/data/config";
 
-const CanvasWrapper = () => {
+const CanvasWrapper = ({ setIsLoaded }) => {
   return (
     <div className="w-screen h-screen">
       <Canvas
@@ -22,7 +22,7 @@ const CanvasWrapper = () => {
           physicallyCorrectLights: false,
         }}
       >
-        <Loader>
+        <Loader setIsLoaded={setIsLoaded}>
           <SolarSystemLogicProvider>
             <SolarSystem />
           </SolarSystemLogicProvider>
