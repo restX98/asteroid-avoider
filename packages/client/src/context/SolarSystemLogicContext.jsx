@@ -123,9 +123,12 @@ const SolarSystemLogicProvider = ({ children }) => {
   );
 
   useFrame((_, delta) => {
-    simulationTimeRef.current = new Date(
-      simulationTimeRef.current.getTime() + delta * multiplierRef.current * 1000
-    );
+    if (!isTransitioningRef.current) {
+      simulationTimeRef.current = new Date(
+        simulationTimeRef.current.getTime() +
+          delta * multiplierRef.current * 1000
+      );
+    }
 
     [...planetsRef.current, ...asteroidsRef.current].forEach(
       ({ trajectory, objectRef }) => {
@@ -147,7 +150,10 @@ const SolarSystemLogicProvider = ({ children }) => {
 
       utilityVector3.copy(planet.position);
       utilityVector3.add(offsetRef.current);
-      camera.position.lerp(utilityVector3, TRANSITION.alphaDefault);
+      camera.position.lerp(
+        utilityVector3,
+        isTransitioningRef.current ? TRANSITION.alpha : TRANSITION.alphaDefault
+      );
 
       if (
         isTransitioningRef.current &&
