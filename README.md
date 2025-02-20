@@ -9,6 +9,8 @@ This app fetches real-time asteroid data from **NASA's Asteroids - NeoWs API** a
 While the app provides an accurate visualization of the planet orbits, the asteroid orbits trajectories may not be perfectly precise. Over time, the gravitational influence of planets and other celestial bodies can slightly alter asteroid paths, meaning their future positions might differ from the projections shown here.
 The trajectories are calculated using the formula described by [Planetoweb](http://planetoweb.net/en/how-it-works).
 
+### 🔗 [**Live Demo**](https://asteroid-avoider.vercel.app/)
+
 ## ✨ Features
 
 - **Real-time asteroid tracking** using NASA's NeoWs API.
@@ -52,10 +54,11 @@ cp apps/server/.env.template apps/server/.env
 ### Running the Project
 
 ```sh
-# Optional:
-# Start Redis locally:
-pnpm start:redis`
-# or set the Redis URL of your hosted DB in the server .env file
+# (Optional) Start Redis locally (this command internally calls the `docker run` command,
+# so you must have Docker Engine installed to use it):
+pnpm start:redis
+
+# or, if you prefer to use a hosted Redis database, edit the REDIS_URL variable in the server .env file
 
 # Run the client and server concurrently
 pnpm dev
