@@ -10,15 +10,15 @@ const ProgressBar = ({ progress }) => {
       fullscreen={true}
       className="flex flex-col justify-center items-center gap-y-5"
     >
-      <div className="flex gap-x-3 text-4xl">
+      <div className="flex lg:gap-x-3 md:gap-x-3 gap-x-2 lg:text-4xl md:text-4xl text-2xl">
         <AsteroidIcon
-          className="h-10"
+          className="lg:h-10 md:h-10 h-8"
           fillColor="#4A4A4A"
           strokeColor="black"
         />
-        <span>ASTEROID AVOIDER</span>
+        <span className="text-nowrap">ASTEROID AVOIDER</span>
         <AsteroidIcon
-          className="h-10"
+          className="lg:h-10 md:h-10 h-8"
           fillColor="#4A4A4A"
           strokeColor="black"
         />
