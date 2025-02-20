@@ -147,10 +147,7 @@ const SolarSystemLogicProvider = ({ children }) => {
 
       utilityVector3.copy(planet.position);
       utilityVector3.add(offsetRef.current);
-      camera.position.lerp(
-        utilityVector3,
-        isTransitioningRef.current ? TRANSITION.alpha : TRANSITION.alphaDefault
-      );
+      camera.position.lerp(utilityVector3, TRANSITION.alphaDefault);
 
       if (
         isTransitioningRef.current &&
