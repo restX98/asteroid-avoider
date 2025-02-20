@@ -28,6 +28,12 @@ const OrbitalObject = ({
 
   useEffect(() => {
     orbitCurveRef.current.visible = true;
+
+    return () => {
+      if (active) {
+        selectPlanet(null);
+      }
+    };
   }, [active]);
 
   useFrame(({ camera }) => {
