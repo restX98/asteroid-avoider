@@ -17,6 +17,7 @@ export function useAsteroidDetail(asteroidId) {
 
     async function getAsteroidDetails() {
       try {
+        setLoading(true);
         const data = await fetchAsteroidDetails({ asteroidId });
         setAsteroidDetail(data);
       } catch (err) {

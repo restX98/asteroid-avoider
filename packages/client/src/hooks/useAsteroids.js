@@ -20,6 +20,7 @@ export function useAsteroids({ startDate, endDate }) {
 
     async function getAsteroidsData() {
       try {
+        setLoading(true);
         const data = await fetchAsteroids({ startDate, endDate });
         setAsteroids(data);
       } catch (err) {

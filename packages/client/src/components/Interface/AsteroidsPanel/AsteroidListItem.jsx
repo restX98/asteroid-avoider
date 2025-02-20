@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/useToast";
 
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
 
 const AsteroidListItem = ({ asteroid }) => {
   const [asteroidState, setAsteroidState] = useState({
@@ -17,7 +18,9 @@ const AsteroidListItem = ({ asteroid }) => {
   const { setAsteroidList } = useSolarSystemActionContext();
 
   const { toast } = useToast();
-  const { asteroidDetail, error } = useAsteroidDetail(asteroidState.asteroidId);
+  const { asteroidDetail, loading, error } = useAsteroidDetail(
+    asteroidState.asteroidId
+  );
 
   useEffect(() => {
     if (error) {
@@ -122,6 +125,7 @@ const AsteroidListItem = ({ asteroid }) => {
         <Label htmlFor={asteroid.id} className="text-sm">
           Show Asteroid
         </Label>
+        {loading && <Spinner size="sm" className="bg-foreground" />}
       </div>
     </div>
   );
