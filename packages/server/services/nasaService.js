@@ -2,7 +2,11 @@ const axios = require("axios");
 const { format } = require("date-fns");
 
 const redisClient = require("../redisClient");
-const { splitDate, groupDatesInRanges } = require("../utils/dateUtils");
+const {
+  splitDate,
+  groupDatesInRanges,
+  julianToGregorian,
+} = require("../utils/dateUtils");
 
 const apiKey = process.env.NASA_API_KEY;
 const baseUrl = "https://api.nasa.gov/neo/rest/v1";
@@ -150,6 +154,9 @@ const mapAsteroidDetailData = (data) => {
     ascendingNodeLongitude: Number(orbitalData.ascending_node_longitude),
     perihelionArgument: Number(orbitalData.perihelion_argument),
     inclination: Number(orbitalData.inclination),
+    epochOsculation: julianToGregorian(
+      Number(orbitalData.epoch_osculation)
+    ).getTime(),
   };
 };
 

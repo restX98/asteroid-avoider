@@ -83,8 +83,56 @@ function groupDatesInRanges(dates) {
   return ranges;
 }
 
+/**
+ * Convert a Julian Date (JD) to Gregorian Date.
+ * The conversion is based on the Fliegel-Van Flandern algorithm.
+ *
+ * @param {number} jd - The Julian Date.
+ * @returns {Date} A JavaScript Date object in UTC.
+ */
+function julianToGregorian(jd) {
+  // Adjust JD to start at midnight.
+  const J = jd + 0.5;
+  const j = Math.floor(J);
+  const f = J - j;
+  let A;
+  if (j >= 2299161) {
+    const alpha = Math.floor((j - 1867216.25) / 36524.25);
+    A = j + 1 + alpha - Math.floor(alpha / 4);
+  } else {
+    A = j;
+  }
+  const B = A + 1524;
+  const C = Math.floor((B - 122.1) / 365.25);
+  const D = Math.floor(365.25 * C);
+  const E = Math.floor((B - D) / 30.6001);
+
+  // Compute day with fractional time.
+  const day = B - D - Math.floor(30.6001 * E) + f;
+  const month = E < 14 ? E - 1 : E - 13;
+  const year = month > 2 ? C - 4716 : C - 4715;
+
+  // Separate the day into its integer and fractional parts.
+  const integerDay = Math.floor(day);
+  const fractionalDay = day - integerDay;
+  const hours = Math.floor(fractionalDay * 24);
+  const minutes = Math.floor((fractionalDay * 24 - hours) * 60);
+  const seconds = Math.floor(
+    ((fractionalDay * 24 - hours) * 60 - minutes) * 60
+  );
+  const milliseconds = Math.floor(
+    (((fractionalDay * 24 - hours) * 60 - minutes) * 60 - seconds) * 1000
+  );
+
+  // Create a Date object (months in JS Date are 0-indexed).
+  return new Date(
+    Date.UTC(year, month - 1, integerDay, hours, minutes, seconds, milliseconds)
+  );
+}
+
 module.exports = {
   validateDates,
   splitDate,
   groupDatesInRanges,
+  julianToGregorian,
 };

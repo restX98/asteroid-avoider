@@ -102,7 +102,8 @@ const SolarSystemLogicProvider = ({ children }) => {
           data.semiMajorAxis,
           data.ascendingNodeLongitude,
           data.perihelionArgument,
-          data.inclination
+          data.inclination,
+          data.epochOsculation
         );
 
         if (!orbitalObjectRefs.current[asteroidId]) {

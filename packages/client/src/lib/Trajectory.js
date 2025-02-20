@@ -1,29 +1,30 @@
 class Trajectory {
-  static #EARTH_PERIOD = 365.25;
-  static #J2000 = new Date("2000-01-01");
+  static #J2000 = new Date("2000-01-01").getTime();
   static #MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 
   /**
    * Create a Planet instance with its orbital parameters.
    *
    * @param {number} name
-   * @param {number} M0 - Mean anomaly at epoch J2000.0 (in degree).
-   * @param {number} P  - Orbital period (in the same time unit as t).
-   * @param {number} e  - Orbital eccentricity.
-   * @param {number} a  - Semi-major axis.
-   * @param {number} N  - Longitude of ascending node (in degree).
-   * @param {number} w  - Argument of periapsis (in degree).
-   * @param {number} i  - Inclination (in degree).
+   * @param {number} M0    - Mean anomaly at [epoch] (in degree).
+   * @param {number} P     - Orbital period (in the same time unit as t).
+   * @param {number} e     - Orbital eccentricity.
+   * @param {number} a     - Semi-major axis.
+   * @param {number} N     - Longitude of ascending node (in degree).
+   * @param {number} w     - Argument of periapsis (in degree).
+   * @param {number} i     - Inclination (in degree).
+   * @param {number} epoch - epoch in milliseconds
    */
-  constructor(name, M0, P, e, a, N, w, i) {
+  constructor(name, M0, P, e, a, N, w, i, epoch = Trajectory.#J2000) {
     this.name = name;
     this.M0 = this.#degToRad(M0);
-    this.P = P * Trajectory.#EARTH_PERIOD;
+    this.P = P;
     this.e = e;
     this.a = a;
     this.N = this.#degToRad(N);
     this.w = this.#degToRad(w);
     this.i = this.#degToRad(i);
+    this.epoch = epoch;
 
     this.orbitCoords = this.#traceOrbit();
   }
@@ -58,7 +59,7 @@ class Trajectory {
    *    M = M0 + n * t
    * where n = 2π / P
    *
-   * @param {number} t - Time elapsed since the J2000.0 epoch.
+   * @param {number} t - Time elapsed since [epoch].
    * @return {number} Mean anomaly (in radians).
    */
   #getMeanAnomaly(t) {
@@ -105,7 +106,7 @@ class Trajectory {
    *    y = r [ sin(N) cos(v+w) + cos(N) sin(v+w) cos(i) ]
    *    z = r sin(v+w) sin(i)
    *
-   * @param {number} t - Time elapsed since the J2000.0 epoch.
+   * @param {number} t - Time elapsed since [epoch].
    * @return {Object} An object containing x, y, and z coordinates.
    */
   #getCoordinates(t) {
@@ -137,8 +138,7 @@ class Trajectory {
 
   getCoordinatesByDate(date) {
     const simTimeInDays =
-      (date.getTime() - Trajectory.#J2000.getTime()) /
-      Trajectory.#MILLISECONDS_PER_DAY;
+      (date.getTime() - this.epoch) / Trajectory.#MILLISECONDS_PER_DAY;
 
     return this.#getCoordinates(simTimeInDays);
   }

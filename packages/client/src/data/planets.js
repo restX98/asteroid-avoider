@@ -12,7 +12,7 @@ import {
 const planetData = {
   mercury: {
     mean_anomaly: 174.79,
-    orbital_period: 0.241,
+    orbital_period: 87.969,
     eccentricity: 0.205636,
     semi_major_axis: 0.3871,
     ascending_node_longitude: 48.33,
@@ -24,7 +24,7 @@ const planetData = {
   },
   venus: {
     mean_anomaly: 50.38,
-    orbital_period: 0.615,
+    orbital_period: 224.701,
     eccentricity: 0.006777,
     semi_major_axis: 0.72,
     ascending_node_longitude: 76.68,
@@ -36,7 +36,7 @@ const planetData = {
   },
   earth: {
     mean_anomaly: 358.617,
-    orbital_period: 1,
+    orbital_period: 365.25,
     eccentricity: 0.0167086,
     semi_major_axis: 1,
     ascending_node_longitude: 174.9,
@@ -48,7 +48,7 @@ const planetData = {
   },
   mars: {
     mean_anomaly: 19.39,
-    orbital_period: 1.88,
+    orbital_period: 686.98,
     eccentricity: 0.093394,
     semi_major_axis: 1.52,
     ascending_node_longitude: 49.56,
@@ -60,7 +60,7 @@ const planetData = {
   },
   jupiter: {
     mean_anomaly: 19.67,
-    orbital_period: 11.87,
+    orbital_period: 398.88,
     eccentricity: 0.048386,
     semi_major_axis: 5.2,
     ascending_node_longitude: 100.47,
@@ -72,7 +72,7 @@ const planetData = {
   },
   saturn: {
     mean_anomaly: -42.64,
-    orbital_period: 29.45,
+    orbital_period: 10755.7,
     eccentricity: 0.053862,
     semi_major_axis: 9.54,
     ascending_node_longitude: 113.66,
@@ -84,7 +84,7 @@ const planetData = {
   },
   uranus: {
     mean_anomaly: 142.28,
-    orbital_period: 84.06,
+    orbital_period: 30688.5,
     eccentricity: 0.047257,
     semi_major_axis: 19.19,
     ascending_node_longitude: 74.02,
@@ -96,7 +96,7 @@ const planetData = {
   },
   neptune: {
     mean_anomaly: -100.08,
-    orbital_period: 164.89,
+    orbital_period: 60195,
     eccentricity: 0.00859,
     semi_major_axis: 30.07,
     ascending_node_longitude: 131.78,
